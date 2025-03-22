@@ -1,0 +1,140 @@
+import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:mkr/features/componentstore/data/models/componentmodel/datum.dart';
+import 'package:mkr/features/componentstore/data/models/componentmodelrequest.dart';
+import 'package:mkr/features/componentstore/data/models/componentmovemoddel/datum.dart';
+import 'package:mkr/features/componentstore/data/models/componentmoverequest.dart';
+import 'package:mkr/features/componentstore/data/repos/componentrepoimp.dart';
+
+part 'component_state.dart';
+
+class ComponentCubit extends Cubit<ComponentState> {
+  final Componentrepoimp componentrepoimp;
+  ComponentCubit(this.componentrepoimp) : super(ComponentInitial());
+  List<Datum> components = [];
+  String materialstatus = "0";
+  List<datummoves> datamoves = [];
+  bool firstloading = false;
+  int motionpage = 1;
+  bool firstloadingmotion = false;
+  bool motionloading = false;
+
+  onpacktypechange() {
+    emit(packtypechange());
+  }
+
+  changematerialstatus(String val) {
+    materialstatus = val;
+    emit(changematerialstate());
+  }
+
+  addcoponent({required Componentmodelrequest component}) async {
+    emit(addcomponentloading());
+    var result = await componentrepoimp.addcomponent(comp: component);
+    result.fold((failure) {
+      emit(addcomponentfailure(errormessage: failure.error_message));
+    }, (Success) {
+      emit(addcomponentsuccess(successmessage: Success));
+    });
+  }
+
+  addcoponentmove({required Componentmoverequest component}) async {
+    emit(addcomponentmoveloading());
+    var result = await componentrepoimp.addcomponentmove(comp: component);
+    result.fold((failure) {
+      emit(addcomponentmovefailure(errormessage: failure.error_message));
+    }, (Success) {
+      emit(addcomponentmovesuccess(successmessage: Success));
+    });
+  }
+
+  editcoponent(
+      {required Componentmodelrequest component, required int id}) async {
+    emit(editcomponentloading());
+    var result = await componentrepoimp.editcomponent(comp: component, id: id);
+    result.fold((failure) {
+      emit(editcomponentfailure(errormessage: failure.error_message));
+    }, (Success) {
+      emit(editcomponentsuccess(successmessage: Success));
+    });
+  }
+
+  deletecomponent({required int componentid}) async {
+    emit(deletecomponentloading());
+    var result = await componentrepoimp.deletecomp(compid: componentid);
+    result.fold((failure) {
+      emit(deletecomponentfailure(errormessage: failure.error_message));
+    }, (Success) {
+      components.removeWhere((e) {
+        return e.id == componentid;
+      });
+      emit(deletecomponentsuccess(successmessage: Success));
+    });
+  }
+
+  deletecomponentmove({required int componentmoveid}) async {
+    emit(deletecomponentmoveloading());
+    var result =
+        await componentrepoimp.deletecompmove(compmoveid: componentmoveid);
+    result.fold((failure) {
+      emit(deletecomponentmovefailure(errormessage: failure.error_message));
+    }, (Success) {
+      datamoves.removeWhere((e) {
+        return e.id == componentmoveid;
+      });
+      emit(deletecomponentmovesuccess(successmessage: Success));
+    });
+  }
+
+  getcomponents() async {
+    emit(getcomponentloading());
+    var result = await componentrepoimp.getcomponents();
+    result.fold((failure) {
+      emit(getcomponentfailure(errormessage: failure.error_message));
+    }, (Success) {
+      components = Success.data!;
+      emit(getcomponentsuccess(successmessage: "تم الحصول علي البيانات بنجاح"));
+    });
+  }
+
+  getcomponentmotion({required int compid}) async {
+    if (firstloadingmotion == false) emit(getcomponentmoveloading());
+    this.motionpage = 1;
+    var result = await componentrepoimp.getcomponentsmoves(
+      compid: compid,
+      page: motionpage,
+    );
+    motionloading = true;
+    result.fold((failue) {
+      emit(getcomponentmovefailure(errormessage: failue.error_message));
+    }, (success) {
+      if (success.nextPageUrl == null) {
+        motionloading = false;
+      }
+      datamoves = success.data!;
+
+      firstloadingmotion = true;
+
+      emit(getcomponentmovesuccess(successmessage: ""));
+    });
+  }
+
+  getmorecomponentssmotion({required int componentid}) async {
+    motionpage++;
+    var result = await componentrepoimp.getcomponentsmoves(
+        page: motionpage, compid: componentid);
+    motionloading = true;
+    result.fold((failue) {
+      emit(getcomponentmovefailure(errormessage: failue.error_message));
+    }, (success) {
+      if (success.nextPageUrl == null) {
+        motionloading = false;
+      }
+
+      success.data!.forEach((e) {
+        datamoves.add(e);
+      });
+      emit(getcomponentmovesuccess(successmessage: ""));
+    });
+  }
+}
