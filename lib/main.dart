@@ -13,15 +13,16 @@ import 'package:mkr/features/clients/clieents/data/repos/clientrepoimp.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/clients.dart';
 import 'package:mkr/features/clients/clieents/presentation/viewmodel/client/client_cubit.dart';
 import 'package:mkr/features/clients/clientmoves/data/repos/clientmoverepoimp.dart';
-import 'package:mkr/features/clients/clientmoves/presentation/view/addaction.dart';
 import 'package:mkr/features/clients/clientmoves/presentation/viewmodel/cubit/clientmoves_cubit.dart';
 import 'package:mkr/features/componentstore/data/repos/componentrepoimp.dart';
 import 'package:mkr/features/componentstore/presentation/viewmodel/componentcuibt/component_cubit.dart';
 import 'package:mkr/features/fullprodstore/data/repos/fullprodtrpoimp.dart';
-import 'package:mkr/features/fullprodstore/presentation/view/fullprods/fullprods.dart';
 import 'package:mkr/features/fullprodstore/presentation/viewmodel/fullprodcuibt/fullprod_cubit.dart';
-import 'package:mkr/features/suppliers/data/repos/supplierrepoimp.dart';
-import 'package:mkr/features/suppliers/presentation/viewmodel/supplier/supplier_cubit.dart';
+import 'package:mkr/features/suppliers/supplier/data/repos/supplierrepoimp.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/suppliers.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/viewmodel/supplier/supplier_cubit.dart';
+import 'package:mkr/features/suppliers/suppliermoves/data/repos/suppliermoverepoimp.dart';
+import 'package:mkr/features/suppliers/suppliermoves/presentation/viewmodel/supplier/suppliermoves_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +62,9 @@ class MyApp extends StatelessWidget {
             create: (context) => ClientmovesCubit(Clientmoverepoimp()),
           ),
           BlocProvider(
+            create: (context) => suppliermovesCubit(suppliermoverepoimp()),
+          ),
+          BlocProvider(
             create: (context) => fullprodCubit(fullprodrepoimp()),
           ),
           BlocProvider(
@@ -94,6 +98,6 @@ class MyApp extends StatelessWidget {
               );
             },
             child:
-                fullprod() /* cashhelper.getdata(key: "token") == null ? Login() : home2()*/));
+                client() /* cashhelper.getdata(key: "token") == null ? Login() : home2()*/));
   }
 }

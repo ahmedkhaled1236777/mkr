@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/constants.dart';
@@ -15,32 +12,29 @@ import 'package:mkr/core/common/widgets/loading.dart';
 import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/core/common/widgets/showdialogerror.dart';
-import 'package:mkr/features/clients/clieents/presentation/viewmodel/client/client_cubit.dart';
-import 'package:mkr/features/clients/clientmoves/data/models/clientmovemodel/clientmovemodel.dart';
-import 'package:mkr/features/clients/clientmoves/data/models/clientmovemodel/datum.dart';
-import 'package:mkr/features/clients/clientmoves/presentation/view/addaction.dart';
-import 'package:mkr/features/clients/clientmoves/presentation/view/widgets/clientaction.dart';
-import 'package:mkr/features/clients/clientmoves/presentation/view/widgets/clientmovepdf.dart';
-import 'package:mkr/features/clients/clientmoves/presentation/view/widgets/movedesc.dart';
-import 'package:mkr/features/clients/clientmoves/presentation/viewmodel/cubit/clientmoves_cubit.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/viewmodel/supplier/supplier_cubit.dart';
+import 'package:mkr/features/suppliers/suppliermoves/presentation/view/addaction.dart';
+import 'package:mkr/features/suppliers/suppliermoves/presentation/view/widgets/supplieraction.dart';
+import 'package:mkr/features/suppliers/suppliermoves/presentation/view/widgets/movedesc.dart';
+import 'package:mkr/features/suppliers/suppliermoves/presentation/viewmodel/supplier/suppliermoves_cubit.dart';
 
-class clientmoves extends StatefulWidget {
+class suppliermoves extends StatefulWidget {
   ScrollController nscrollController = ScrollController();
-  final int clientid;
-  final String clientname;
+  final int supplierid;
+  final String suppliername;
 
-  clientmoves({
+  suppliermoves({
     super.key,
-    required this.clientid,
-    required this.clientname,
+    required this.supplierid,
+    required this.suppliername,
   });
 
   @override
-  State<clientmoves> createState() => _clientmovesState();
+  State<suppliermoves> createState() => _suppliermovesState();
 }
 
-class _clientmovesState extends State<clientmoves> {
-  final clientmoveheader = [
+class _suppliermovesState extends State<suppliermoves> {
+  final suppliermoveheader = [
     "التاريخ",
     "النوع",
     "المبلغ",
@@ -49,14 +43,14 @@ class _clientmovesState extends State<clientmoves> {
   ];
 
   getdata() async {
-    BlocProvider.of<ClientmovesCubit>(context).firstloading = false;
-    BlocProvider.of<ClientmovesCubit>(context)
-        .getclientmoves(clienid: widget.clientid);
+    BlocProvider.of<suppliermovesCubit>(context).firstloading = false;
+    BlocProvider.of<suppliermovesCubit>(context)
+        .getsuppliermoves(clienid: widget.supplierid);
     widget.nscrollController.addListener(() async {
       if (widget.nscrollController.position.pixels ==
           widget.nscrollController.position.maxScrollExtent) {
-        await BlocProvider.of<ClientmovesCubit>(context)
-            .getamoreclients(clientid: widget.clientid);
+        await BlocProvider.of<suppliermovesCubit>(context)
+            .getamoresuppliers(supplierid: widget.supplierid);
       }
     });
   }
@@ -78,8 +72,8 @@ class _clientmovesState extends State<clientmoves> {
               actions: [
                 IconButton(
                     onPressed: () {
-                      BlocProvider.of<ClientmovesCubit>(context)
-                          .getclientmoves(clienid: widget.clientid);
+                      BlocProvider.of<suppliermovesCubit>(context)
+                          .getsuppliermoves(clienid: widget.supplierid);
                     },
                     icon: Icon(
                       Icons.refresh,
@@ -121,7 +115,7 @@ class _clientmovesState extends State<clientmoves> {
               backgroundColor: appcolors.maincolor,
               centerTitle: true,
               title: Text(
-                "حركات العميل  ${widget.clientname}",
+                "حركات المورد  ${widget.suppliername}",
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: "cairo",
@@ -135,7 +129,7 @@ class _clientmovesState extends State<clientmoves> {
                   height: 50,
                   color: appcolors.maincolor.withOpacity(0.7),
                   child: Row(
-                      children: clientmoveheader
+                      children: suppliermoveheader
                           .map((e) => customheadertable(
                                 textStyle:
                                     Styles.getheadertextstyle(context: context),
@@ -146,22 +140,23 @@ class _clientmovesState extends State<clientmoves> {
                               ))
                           .toList()),
                 ),
-                Expanded(child: BlocBuilder<ClientmovesCubit, ClientmovesState>(
-                    builder: (context, state) {
-                  if (state is getclientmoveloading) return loadingshimmer();
-                  if (state is getclientmovefailure)
+                Expanded(child:
+                    BlocBuilder<suppliermovesCubit, suppliermovesState>(
+                        builder: (context, state) {
+                  if (state is getsuppliermoveloading) return loadingshimmer();
+                  if (state is getsuppliermovefailure)
                     return errorfailure(
                       errormessage: state.errormessage,
                     );
                   else {
-                    if (BlocProvider.of<ClientmovesCubit>(context)
+                    if (BlocProvider.of<suppliermovesCubit>(context)
                         .datamoves
                         .isEmpty) return nodata();
 
                     return ListView.separated(
                         controller: widget.nscrollController,
                         itemBuilder: (context, i) => i >=
-                                BlocProvider.of<ClientmovesCubit>(context)
+                                BlocProvider.of<suppliermovesCubit>(context)
                                     .datamoves
                                     .length
                             ? loading()
@@ -185,70 +180,72 @@ class _clientmovesState extends State<clientmoves> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(0)),
-                                            content: clientmoveitem(
-                                              clientmove: BlocProvider.of<
-                                                      ClientmovesCubit>(context)
+                                            content: suppliermoveitem(
+                                              suppliermove: BlocProvider.of<
+                                                          suppliermovesCubit>(
+                                                      context)
                                                   .datamoves[i],
                                             ));
                                       });
                                 },
-                                child: customtableclientmoveitem(
+                                child: customtablesuppliermoveitem(
                                   check: Checkbox(
-                                      value: BlocProvider.of<ClientmovesCubit>(
-                                              context)
-                                          .checks[i],
+                                      value:
+                                          BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .checks[i],
                                       onChanged: (val) {
-                                        BlocProvider.of<ClientmovesCubit>(
+                                        BlocProvider.of<suppliermovesCubit>(
                                                 context)
                                             .changecheckbox(val!, i);
                                       }),
                                   textStyle: Styles.gettabletextstyle(
                                       context: context),
                                   date:
-                                      "${BlocProvider.of<ClientmovesCubit>(context).datamoves[i].date!}",
-                                  price: BlocProvider.of<ClientmovesCubit>(context).datamoves[i].status == 0
-                                      ? (BlocProvider.of<ClientmovesCubit>(context)
+                                      "${BlocProvider.of<suppliermovesCubit>(context).datamoves[i].date!}",
+                                  price: BlocProvider.of<suppliermovesCubit>(context)
+                                              .datamoves[i]
+                                              .status ==
+                                          0
+                                      ? (BlocProvider.of<suppliermovesCubit>(context)
                                                   .datamoves[i]
                                                   .unitsPerPackaging! *
+                                              double.parse(BlocProvider.of<
+                                                          suppliermovesCubit>(
+                                                      context)
+                                                  .datamoves[i]
+                                                  .qty
+                                                  .toString()) *
                                               double.parse(
-                                                  BlocProvider.of<ClientmovesCubit>(context)
-                                                      .datamoves[i]
-                                                      .qty
-                                                      .toString()) *
-                                              ((100 -
-                                                      double.parse(
-                                                          BlocProvider.of<ClientmovesCubit>(context)
-                                                              .datamoves[i]
-                                                              .discountPercentage!)) /
-                                                  100) *
-                                              double.parse(
-                                                  BlocProvider.of<ClientmovesCubit>(context)
+                                                  BlocProvider.of<suppliermovesCubit>(
+                                                          context)
                                                       .datamoves[i]
                                                       .price!))
                                           .toStringAsFixed(1)
-                                      : BlocProvider.of<ClientmovesCubit>(context)
+                                      : BlocProvider.of<suppliermovesCubit>(context)
                                           .datamoves[i]
                                           .price!,
-                                  status:
-                                      BlocProvider.of<ClientmovesCubit>(context)
-                                                  .datamoves[i]
-                                                  .status ==
-                                              0
-                                          ? "عمليه"
-                                          : "دفع مبلغ",
+                                  status: BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .status ==
+                                          0
+                                      ? "توريد"
+                                      : "دفع مبلغ",
                                   delte: IconButton(
                                       onPressed: () {
                                         awsomdialogerror(
                                             context: context,
                                             mywidget: BlocConsumer<
-                                                ClientmovesCubit,
-                                                ClientmovesState>(
+                                                suppliermovesCubit,
+                                                suppliermovesState>(
                                               listener: (context, state) async {
                                                 if (state
-                                                    is deleteclientmovesuccess) {
+                                                    is deletesuppliermovesuccess) {
                                                   await BlocProvider.of<
-                                                          ClientCubit>(context)
-                                                      .getclients();
+                                                              supplierCubit>(
+                                                          context)
+                                                      .getsuppliers();
                                                   Navigator.pop(context);
 
                                                   showtoast(
@@ -259,7 +256,7 @@ class _clientmovesState extends State<clientmoves> {
                                                           Toaststate.succes);
                                                 }
                                                 if (state
-                                                    is deleteclientmovefailure) {
+                                                    is deletesuppliermovefailure) {
                                                   Navigator.pop(context);
 
                                                   showtoast(
@@ -272,7 +269,7 @@ class _clientmovesState extends State<clientmoves> {
                                               },
                                               builder: (context, state) {
                                                 if (state
-                                                    is deleteclientmoveloading)
+                                                    is deletesuppliermoveloading)
                                                   return deleteloading();
                                                 return SizedBox(
                                                   height: 50,
@@ -289,11 +286,11 @@ class _clientmovesState extends State<clientmoves> {
                                                       ),
                                                       onPressed: () async {
                                                         await BlocProvider.of<
-                                                                    ClientmovesCubit>(
+                                                                    suppliermovesCubit>(
                                                                 context)
-                                                            .deleteclientmove(
+                                                            .deletesuppliermove(
                                                                 moveid: BlocProvider.of<
-                                                                            ClientmovesCubit>(
+                                                                            suppliermovesCubit>(
                                                                         context)
                                                                     .datamoves[
                                                                         i]
@@ -323,14 +320,14 @@ class _clientmovesState extends State<clientmoves> {
                               color: Colors.grey,
                             ),
                         itemCount:
-                            BlocProvider.of<ClientmovesCubit>(context)
+                            BlocProvider.of<suppliermovesCubit>(context)
                                         .loading ==
                                     true
-                                ? BlocProvider.of<ClientmovesCubit>(context)
+                                ? BlocProvider.of<suppliermovesCubit>(context)
                                         .datamoves
                                         .length +
                                     1
-                                : BlocProvider.of<ClientmovesCubit>(context)
+                                : BlocProvider.of<suppliermovesCubit>(context)
                                     .datamoves
                                     .length);
                   }
@@ -345,77 +342,7 @@ class _clientmovesState extends State<clientmoves> {
                       width: 15,
                     ),
                     InkWell(
-                        onTap: () async {
-                          List<datummoves> clientfatora = [];
-                          double totalprocess = 0;
-                          double totalpay = 0;
-                          for (int i = 0;
-                              i <
-                                  BlocProvider.of<ClientmovesCubit>(context)
-                                      .checks
-                                      .length;
-                              i++) {
-                            if (BlocProvider.of<ClientmovesCubit>(context)
-                                    .checks[i] ==
-                                true) {
-                              if (BlocProvider.of<ClientmovesCubit>(context)
-                                      .datamoves[i]
-                                      .status ==
-                                  0) {
-                                totalprocess = totalprocess +
-                                    (BlocProvider.of<ClientmovesCubit>(context)
-                                            .datamoves[i]
-                                            .qty! *
-                                        BlocProvider.of<ClientmovesCubit>(
-                                                context)
-                                            .datamoves[i]
-                                            .unitsPerPackaging! *
-                                        double.parse(
-                                            BlocProvider.of<ClientmovesCubit>(
-                                                    context)
-                                                .datamoves[i]
-                                                .price!) *
-                                        ((100 -
-                                                double.parse(BlocProvider.of<
-                                                            ClientmovesCubit>(
-                                                        context)
-                                                    .datamoves[i]
-                                                    .discountPercentage
-                                                    .toString())) /
-                                            100));
-                              }
-                              if (BlocProvider.of<ClientmovesCubit>(context)
-                                      .datamoves[i]
-                                      .status ==
-                                  1) {
-                                totalpay = totalpay +
-                                    double.parse(
-                                        BlocProvider.of<ClientmovesCubit>(
-                                                context)
-                                            .datamoves[i]
-                                            .price!);
-                              }
-                              clientfatora.add(
-                                  BlocProvider.of<ClientmovesCubit>(context)
-                                      .datamoves[i]);
-                            }
-                          }
-                          final img =
-                              await rootBundle.load('assets/images/logo.jpeg');
-                          final imageBytes = img.buffer.asUint8List();
-                          File file = await Clientmovepdf.generatepdf(
-                            clientname: widget.clientname,
-                            categories: clientfatora,
-                            maden: totalprocess >= totalpay
-                                ? (totalprocess - totalpay).toStringAsFixed(1)
-                                : "0",
-                            daen: totalpay >= totalprocess
-                                ? (totalpay - totalprocess).toStringAsFixed(1)
-                                : "0",
-                            imageBytes: imageBytes,
-                          );
-                          Clientmovepdf.openfile(file);
-                        },
+                        onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
                               color: appcolors.primarycolor,
@@ -450,9 +377,9 @@ class _clientmovesState extends State<clientmoves> {
                         onTap: () {
                           navigateto(
                               context: context,
-                              page: addclientmove(
-                                  clientid: widget.clientid,
-                                  clientname: widget.clientname));
+                              page: addsuppliermove(
+                                  supplierid: widget.supplierid,
+                                  suppliername: widget.suppliername));
                         },
                         child: Container(
                           height: 45,

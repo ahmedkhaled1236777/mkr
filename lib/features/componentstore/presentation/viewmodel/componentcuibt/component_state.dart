@@ -4,6 +4,10 @@ abstract class ComponentState {}
 
 class ComponentInitial extends ComponentState {}
 
+class changeprodstste extends ComponentState {}
+
+class changetypestate extends ComponentState {}
+
 class changematerialstate extends ComponentState {}
 
 class packtypechange extends ComponentState {}

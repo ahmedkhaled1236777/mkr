@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:mkr/core/common/errors/failure.dart';
-import 'package:mkr/features/suppliers/data/models/suppliermodel/suppliermodel.dart';
-import 'package:mkr/features/suppliers/data/models/supplierrequest.dart';
+import 'package:mkr/features/suppliers/supplier/data/models/suppliermodel/suppliermodel.dart';
+import 'package:mkr/features/suppliers/supplier/data/models/supplierrequest.dart';
 
 abstract class supplierrepo {
   Future<Either<failure, String>> addsupplier(

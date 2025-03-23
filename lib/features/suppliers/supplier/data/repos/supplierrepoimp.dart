@@ -5,9 +5,9 @@ import 'package:mkr/core/common/errors/handlingerror.dart';
 import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/common/urls.dart';
 import 'package:mkr/core/services/apiservice.dart';
-import 'package:mkr/features/suppliers/data/models/suppliermodel/suppliermodel.dart';
-import 'package:mkr/features/suppliers/data/models/supplierrequest.dart';
-import 'package:mkr/features/suppliers/data/repos/supplierrepo.dart';
+import 'package:mkr/features/suppliers/supplier/data/models/suppliermodel/suppliermodel.dart';
+import 'package:mkr/features/suppliers/supplier/data/models/supplierrequest.dart';
+import 'package:mkr/features/suppliers/supplier/data/repos/supplierrepo.dart';
 
 class supplierrepoimp extends supplierrepo {
   @override

@@ -18,9 +18,30 @@ class ComponentCubit extends Cubit<ComponentState> {
   int motionpage = 1;
   bool firstloadingmotion = false;
   bool motionloading = false;
-
+  String productname = "اختر المنتج";
+  String type = "0";
+  List<String> products = [];
+  Map<String, int> productid = {};
+  Map<String, dynamic> productpacktype = {};
   onpacktypechange() {
     emit(packtypechange());
+  }
+
+  changetype({required String value}) {
+    type = value;
+    emit(changetypestate());
+  }
+
+  String packtype = "";
+  changeproduct(String value) {
+    productname = value;
+    emit(changeprodstste());
+  }
+
+  resetprodname() {
+    productname = "اختر المنتج";
+    ;
+    emit(changeprodstste());
   }
 
   changematerialstatus(String val) {
@@ -92,6 +113,12 @@ class ComponentCubit extends Cubit<ComponentState> {
     result.fold((failure) {
       emit(getcomponentfailure(errormessage: failure.error_message));
     }, (Success) {
+      products.clear();
+      Success.data!.forEach((e) {
+        products.add(e.name!);
+        productid.addAll({e.name!: e.id!});
+        productpacktype.addAll({e.name!: e.packagingType!});
+      });
       components = Success.data!;
       emit(getcomponentsuccess(successmessage: "تم الحصول علي البيانات بنجاح"));
     });

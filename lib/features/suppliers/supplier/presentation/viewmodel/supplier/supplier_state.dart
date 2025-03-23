@@ -20,20 +20,6 @@ class addsupplierfailure extends supplierState {
   addsupplierfailure({required this.errormessage});
 }
 
-class addsuppliermoveloading extends supplierState {}
-
-class addsuppliermovesuccess extends supplierState {
-  final String successmessage;
-
-  addsuppliermovesuccess({required this.successmessage});
-}
-
-class addsuppliermovefailure extends supplierState {
-  final String errormessage;
-
-  addsuppliermovefailure({required this.errormessage});
-}
-
 class deletesupplierloading extends supplierState {}
 
 class deletesuppliersuccess extends supplierState {
@@ -46,20 +32,6 @@ class deletesupplierfailure extends supplierState {
   final String errormessage;
 
   deletesupplierfailure({required this.errormessage});
-}
-
-class deletesuppliermoveloading extends supplierState {}
-
-class deletesuppliermovesuccess extends supplierState {
-  final String successmessage;
-
-  deletesuppliermovesuccess({required this.successmessage});
-}
-
-class deletesuppliermovefailure extends supplierState {
-  final String errormessage;
-
-  deletesuppliermovefailure({required this.errormessage});
 }
 
 class getsupplierloading extends supplierState {}
@@ -76,20 +48,6 @@ class getsupplierfailure extends supplierState {
   getsupplierfailure({required this.errormessage});
 }
 
-class getsuppliermoveloading extends supplierState {}
-
-class getsuppliermovesuccess extends supplierState {
-  final String successmessage;
-
-  getsuppliermovesuccess({required this.successmessage});
-}
-
-class getsuppliermovefailure extends supplierState {
-  final String errormessage;
-
-  getsuppliermovefailure({required this.errormessage});
-}
-
 class editsupplierloading extends supplierState {}
 
 class editsuppliersuccess extends supplierState {
@@ -102,18 +60,4 @@ class editsupplierfailure extends supplierState {
   final String errormessage;
 
   editsupplierfailure({required this.errormessage});
-}
-
-class editsuppliermoveloading extends supplierState {}
-
-class editsuppliermovesuccess extends supplierState {
-  final String successmessage;
-
-  editsuppliermovesuccess({required this.successmessage});
-}
-
-class editsuppliermovefailure extends supplierState {
-  final String errormessage;
-
-  editsuppliermovefailure({required this.errormessage});
 }

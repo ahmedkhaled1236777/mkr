@@ -6,6 +6,7 @@ abstract class urls {
   static const String login = "login";
   static const String addcomponent = "stocks";
   static const String fullprod = "warehouses";
+  static const String supplierprocesses = "supplier-processes";
   static const String fullprodmoves = "warehouse-moves";
   static const String componentmoves = "stock-moves";
   static const String reports = "reports";

@@ -7,8 +7,8 @@ import 'package:mkr/core/common/widgets/custommaterialbutton%20copy.dart';
 import 'package:mkr/core/common/widgets/customtextform.dart';
 import 'package:flutter/material.dart';
 import 'package:mkr/core/common/widgets/errorwidget.dart';
-import 'package:mkr/features/suppliers/data/models/supplierrequest.dart';
-import 'package:mkr/features/suppliers/presentation/viewmodel/supplier/supplier_cubit.dart';
+import 'package:mkr/features/suppliers/supplier/data/models/supplierrequest.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/viewmodel/supplier/supplier_cubit.dart';
 
 class addsupplier extends StatefulWidget {
   @override

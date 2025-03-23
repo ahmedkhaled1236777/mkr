@@ -12,10 +12,11 @@ import 'package:mkr/core/common/widgets/showdialogerror.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mkr/features/suppliers/presentation/view/clieents/addsupplier.dart';
-import 'package:mkr/features/suppliers/presentation/view/clieents/widgets/customsupplieritem.dart';
-import 'package:mkr/features/suppliers/presentation/view/clieents/widgets/editsupplier.dart';
-import 'package:mkr/features/suppliers/presentation/viewmodel/supplier/supplier_cubit.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/addsupplier.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/widgets/customsupplieritem.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/widgets/editsupplier.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/viewmodel/supplier/supplier_cubit.dart';
+import 'package:mkr/features/suppliers/suppliermoves/presentation/view/suppliersaction.dart';
 
 class supplier extends StatefulWidget {
   @override
@@ -148,44 +149,40 @@ class _supplierState extends State<supplier> {
                         itemBuilder: (context, i) => InkWell(
                               onDoubleTap: () {},
                               onTap: () {
-                                /*   navigateto(
+                                navigateto(
                                     context: context,
                                     page: suppliermoves(
-                                        supplierid:
-                                            BlocProvider.of<supplierCubit>(
-                                                    context)
-                                                .suppliers[i]
-                                                .id!,
-                                        suppliername:
-                                            BlocProvider.of<supplierCubit>(
-                                                    context)
-                                                .suppliers[i]
-                                                .name!,
-                                        packtype:
-                                            BlocProvider.of<supplierCubit>(
-                                                    context)
-                                                .suppliers[i]
-                                                .packagingType!));*/
+                                      supplierid:
+                                          BlocProvider.of<supplierCubit>(
+                                                  context)
+                                              .suppliers[i]
+                                              .id!,
+                                      suppliername:
+                                          BlocProvider.of<supplierCubit>(
+                                                  context)
+                                              .suppliers[i]
+                                              .name!,
+                                    ));
                               },
                               child: Customsupplieritem(
-                                  maden: BlocProvider.of<supplierCubit>(context).suppliers[i].totalProcess! >
+                                  maden: BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid! >
+                                          BlocProvider.of<supplierCubit>(context)
+                                              .suppliers[i]
+                                              .totalProcess!
+                                      ? (BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid! -
+                                              BlocProvider.of<supplierCubit>(context)
+                                                  .suppliers[i]
+                                                  .totalProcess!)
+                                          .toStringAsFixed(1)
+                                      : "0",
+                                  daen: BlocProvider.of<supplierCubit>(context).suppliers[i].totalProcess! >
                                           BlocProvider.of<supplierCubit>(context)
                                               .suppliers[i]
                                               .totalPaid!
                                       ? (BlocProvider.of<supplierCubit>(context)
                                                   .suppliers[i]
                                                   .totalProcess! -
-                                              BlocProvider.of<supplierCubit>(context)
-                                                  .suppliers[i]
-                                                  .totalPaid!)
-                                          .toStringAsFixed(1)
-                                      : "0",
-                                  daen: BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid! >
-                                          BlocProvider.of<supplierCubit>(context)
-                                              .suppliers[i]
-                                              .totalProcess!
-                                      ? (BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid! -
-                                              BlocProvider.of<supplierCubit>(context).suppliers[i].totalProcess!)
+                                              BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid!)
                                           .toStringAsFixed(1)
                                       : "0",
                                   supplierphone: BlocProvider.of<supplierCubit>(context).suppliers[i].phone!,

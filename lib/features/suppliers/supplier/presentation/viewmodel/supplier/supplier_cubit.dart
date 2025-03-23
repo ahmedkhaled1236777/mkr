@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mkr/features/suppliers/data/models/suppliermodel/datum.dart';
-import 'package:mkr/features/suppliers/data/models/supplierrequest.dart';
-import 'package:mkr/features/suppliers/data/repos/supplierrepoimp.dart';
+import 'package:mkr/features/suppliers/supplier/data/models/suppliermodel/datum.dart';
+import 'package:mkr/features/suppliers/supplier/data/models/supplierrequest.dart';
+import 'package:mkr/features/suppliers/supplier/data/repos/supplierrepoimp.dart';
 
 part 'supplier_state.dart';
 
