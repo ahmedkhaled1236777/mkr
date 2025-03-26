@@ -49,6 +49,8 @@ class Getdata {
     var respnse = await Apiservice.dio.get(path,
         queryParameters: queryParameters,
         options: Options(
+            receiveTimeout: Duration(minutes: 2),
+            sendTimeout: Duration(minutes: 2),
             headers: {"Accept": "application/json", "Authorization": token}));
     return respnse;
   }

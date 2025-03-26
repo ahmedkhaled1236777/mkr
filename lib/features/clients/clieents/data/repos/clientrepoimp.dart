@@ -79,10 +79,13 @@ class Clientrepoimp extends clientrepo {
   }
 
   @override
-  Future<Either<failure, Clientmodel>> getclients() async {
+  Future<Either<failure, Clientmodel>> getclients(
+      {Map<String, dynamic>? queryparma}) async {
     try {
       Response response = await Getdata.getdata(
-          token: cashhelper.getdata(key: "token"), path: urls.clients);
+          queryParameters: queryparma,
+          token: cashhelper.getdata(key: "token"),
+          path: urls.clients);
       if (response.statusCode == 200 && response.data["status"] == true) {
         return right(Clientmodel.fromJson(response.data));
       } else {

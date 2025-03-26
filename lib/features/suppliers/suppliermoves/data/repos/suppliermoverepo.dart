@@ -12,7 +12,10 @@ abstract class suppliermovesrepo {
   Future<Either<failure, String>> deletsuppliermove({required int moveid});
   // Future<Either<failure, String>> deletecompmove({required int compmoveid});
   Future<Either<failure, Suppliermovemodel>> getsuppliersmoves(
-      {required int supplierid, required int page});
+      {required int supplierid,
+      required int page,
+      String? datefrom,
+      String? dateto});
   /* Future<Either<failure, suppliermovemoddel>> getsuppliersmoves(
       {required int compid, required int page});*/
 }

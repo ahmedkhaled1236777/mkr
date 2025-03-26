@@ -15,6 +15,10 @@ class requestfailure extends failure {
     }
   }
   factory requestfailure.fromdioexception(DioException dioException) {
+    print("llllllllllllllllllllllll");
+    print(dioException.message);
+    print(dioException.response);
+    print(dioException.error.toString());
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
         return requestfailure(error_message: "لقد انتهي وقت الاتصال");
@@ -48,7 +52,7 @@ class requestfailure extends failure {
   }
   factory requestfailure.fromresponse(int statuscode, dynamic respnse) {
     if (statuscode == 422 || statuscode == 400 || statuscode == 403) {
-      return requestfailure(error_message: respnse["data"][0]);
+      return requestfailure(error_message: respnse["data"]["message"]);
     } else if (statuscode == 401) {
       return requestfailure(error_message: "تم تسجيل الخروج من التطبيق");
     } else if (statuscode == 404) {

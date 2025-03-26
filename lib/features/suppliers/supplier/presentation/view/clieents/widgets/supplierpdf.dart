@@ -8,7 +8,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
-class clientpdf {
+class Supplierpdf {
   static Future<File> generatepdf({
     required Uint8List imageBytes,
     required String maden,
@@ -24,12 +24,16 @@ class clientpdf {
     );
     final data = categories.map((item) {
       return [
-        double.parse(item.totalPaid!) > double.parse(item.totalProcess!)
-            ? (double.parse(item.totalPaid!) - double.parse(item.totalProcess!))
+        double.parse(item.totalPaid!.toString()) >
+                double.parse(item.totalProcess!.toString())
+            ? (double.parse(item.totalPaid!.toString()) -
+                    double.parse(item.totalProcess!.toString()))
                 .toStringAsFixed(1)
             : "0",
-        double.parse(item.totalProcess!) > double.parse(item.totalPaid!)
-            ? (double.parse(item.totalProcess!) - double.parse(item.totalPaid!))
+        double.parse(item.totalProcess!.toString()) >
+                double.parse(item.totalPaid!.toString())
+            ? (double.parse(item.totalProcess!.toString()) -
+                    double.parse(item.totalPaid!.toString()))
                 .toStringAsFixed(1)
             : "0",
         item.phone,
@@ -93,10 +97,10 @@ class clientpdf {
                 fontBold: pw.Font.courierBold(),
                 fontSize: 14),
             headers: [
-              "دائن",
               "مدين",
+              "دائن",
               "رقم الهاتف",
-              "اسم العميل",
+              "اسم المورد",
             ],
             data: data),
         pw.Container(
@@ -118,7 +122,7 @@ class clientpdf {
               pw.Container(
                   width: PdfPageFormat.cm * 4,
                   padding: pw.EdgeInsets.symmetric(horizontal: 20),
-                  child: pw.Text("اجمالى المدين",
+                  child: pw.Text("اجمالى الدائن",
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(color: PdfColors.blue800)),
                   decoration: pw.BoxDecoration(
@@ -141,7 +145,7 @@ class clientpdf {
             child: pw.Row(children: [
               pw.Container(
                   width: PdfPageFormat.cm * 4,
-                  child: pw.Text("اجمالي الدائن",
+                  child: pw.Text("اجمالي المدين",
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(color: PdfColors.blue800)),
                   decoration: pw.BoxDecoration(
@@ -162,7 +166,7 @@ class clientpdf {
       ],
     ));
 
-    return await savepdf("العملاء", pdf);
+    return await savepdf("الموردين", pdf);
   }
 
   static Future<File> savepdf(String filename, pw.Document pdf) async {
@@ -321,7 +325,7 @@ item.worker
 
   static buildbasic(String date) {
     return pw.Row(children: [
-      pw.Text("العملاء",
+      pw.Text("الموردين",
           style: pw.TextStyle(
               decoration: pw.TextDecoration.underline, fontSize: 17)),
       pw.Spacer(),

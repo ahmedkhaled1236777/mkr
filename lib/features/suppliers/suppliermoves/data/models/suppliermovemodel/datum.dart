@@ -6,18 +6,22 @@ class datummoves extends Equatable {
   final dynamic notes;
   final int? supplierId;
   final String? date;
-  final int? unitsPerPackaging;
+  final num? unitsPerPackaging;
   final int? stockId;
-  final int? qty;
+  final num? qty;
   final String? price;
+  final String? stock_name;
+  final String? packagetype;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   const datummoves({
     this.id,
     this.status,
+    this.packagetype,
     this.notes,
     this.supplierId,
+    this.stock_name,
     this.date,
     this.unitsPerPackaging,
     this.stockId,
@@ -33,10 +37,12 @@ class datummoves extends Equatable {
         notes: json['notes'] as dynamic,
         supplierId: json['supplier_id'] as int?,
         date: json['date'] as String?,
-        unitsPerPackaging: json['units_per_packaging'] as int?,
+        packagetype: json['packaging_type'] as String?,
+        unitsPerPackaging: json['units_per_packaging'] as num?,
         stockId: json['stock_id'] as int?,
-        qty: json['qty'] as int?,
+        qty: json['qty'] as num?,
         price: json['price'] as String?,
+        stock_name: json['stock_name'] as String?,
         createdAt: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at'] as String),
@@ -69,6 +75,7 @@ class datummoves extends Equatable {
       date,
       unitsPerPackaging,
       stockId,
+      stock_name,
       qty,
       price,
       createdAt,

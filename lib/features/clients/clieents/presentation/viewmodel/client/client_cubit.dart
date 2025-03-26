@@ -10,6 +10,7 @@ class ClientCubit extends Cubit<clientState> {
   ClientCubit(this.clientrepoimp) : super(clientInitial());
   final Clientrepoimp clientrepoimp;
   List<Datum> clients = [];
+  Map<String, dynamic>? queryparma;
   addcoponent({required Clientrequest client}) async {
     emit(addclientloading());
     var result = await clientrepoimp.addclient(client: client);
@@ -45,7 +46,7 @@ class ClientCubit extends Cubit<clientState> {
 
   getclients() async {
     emit(getclientloading());
-    var result = await clientrepoimp.getclients();
+    var result = await clientrepoimp.getclients(queryparma: queryparma);
     result.fold((failure) {
       emit(getclientfailure(errormessage: failure.error_message));
     }, (Success) {

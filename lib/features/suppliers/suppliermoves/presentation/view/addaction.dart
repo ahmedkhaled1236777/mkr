@@ -270,7 +270,7 @@ class _addsuppliermoveState extends State<addsuppliermove> {
                                   await BlocProvider.of<suppliermovesCubit>(
                                           context)
                                       .getsuppliermoves(
-                                          clienid: widget.supplierid);
+                                          supplierid: widget.supplierid);
                                   await BlocProvider.of<supplierCubit>(context)
                                       .getsuppliers();
                                   showtoast(

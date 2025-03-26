@@ -11,7 +11,8 @@ class suppliermovesCubit extends Cubit<suppliermovesState> {
   List<datummoves> datamoves = [];
   List<bool> checks = [];
   int page = 1;
-
+  String? datefrom;
+  String? dateto;
   bool loading = false;
   bool firstloading = false;
   addsuppliermovemove({required suppliermoverequest suppliermove}) async {
@@ -43,13 +44,15 @@ class suppliermovesCubit extends Cubit<suppliermovesState> {
     });
   }
 
-  getsuppliermoves({required int clienid}) async {
+  getsuppliermoves({required int supplierid}) async {
     if (firstloading == false) emit(getsuppliermoveloading());
     this.page = 1;
 
     var result = await suppliermoverepoim.getsuppliersmoves(
       page: page,
-      supplierid: clienid,
+      supplierid: supplierid,
+      datefrom: datefrom,
+      dateto: dateto,
     );
     loading = true;
     result.fold((failue) {
@@ -76,6 +79,8 @@ class suppliermovesCubit extends Cubit<suppliermovesState> {
     var result = await suppliermoverepoim.getsuppliersmoves(
       page: page,
       supplierid: supplierid,
+      datefrom: datefrom,
+      dateto: dateto,
     );
     loading = true;
     result.fold((failue) {

@@ -15,7 +15,12 @@ abstract class fullprodrepo {
 
   Future<Either<failure, String>> deletefullprod({required int compid});
   Future<Either<failure, String>> deletefullprodmove({required int compmoveid});
-  Future<Either<failure, Fullprodmodel>> getfullprods();
+  Future<Either<failure, Fullprodmodel>> getfullprods(
+      {Map<String, dynamic>? queryparams});
   Future<Either<failure, Fullprodmovemodel>> getfullprodsmoves(
-      {required int compid, required int page});
+      {required int compid,
+      required int page,
+      String? name_of_client,
+      String? datefrom,
+      String? dateto});
 }

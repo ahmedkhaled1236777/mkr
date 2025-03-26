@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/constants.dart';
+import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/navigation.dart';
-import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/widgets/pdf/pdf.dart';
+import 'package:mkr/core/common/sharedpref/cashhelper.dart';
+import 'package:mkr/core/common/widgets/dialogerror.dart';
+import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/widgets/pdf/fullprodpdf.dart';
 import 'package:mkr/core/common/styles/styles.dart';
 import 'package:mkr/core/common/toast/toast.dart';
 import 'package:mkr/core/common/widgets/error.dart';
@@ -19,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/fullprodmove.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprods/addfullprod.dart';
+import 'package:mkr/features/fullprodstore/presentation/view/fullprods/widgets/alertfullprodsearch.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprods/widgets/customtablefullproditem.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprods/widgets/editdialod.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprods/widgets/fullproditem.dart';
@@ -42,6 +46,8 @@ class _fullprodState extends State<fullprod> {
   ];
 
   getdata() async {
+    BlocProvider.of<fullprodCubit>(context).queryparams = null;
+
     await BlocProvider.of<fullprodCubit>(context).getfullprods();
   }
 
@@ -66,7 +72,13 @@ class _fullprodState extends State<fullprod> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      navigateto(context: context, page: addfullprod());
+                      if (!cashhelper
+                          .getdata(key: "permessions")
+                          .contains('addfullprod')) {
+                        showdialogerror(
+                            error: "ليس لديك الصلاحيه", context: context);
+                      } else
+                        navigateto(context: context, page: addfullprod());
                     }),
                 SizedBox(
                   width: 10,
@@ -79,14 +91,21 @@ class _fullprodState extends State<fullprod> {
                       color: Colors.white,
                     ),
                     onPressed: () async {
-                      final img =
-                          await rootBundle.load('assets/images/logo.jpeg');
-                      final imageBytes = img.buffer.asUint8List();
-                      File file = await storagepdf.generatepdf(
-                          imageBytes: imageBytes,
-                          categories: BlocProvider.of<fullprodCubit>(context)
-                              .fullprods);
-                      await storagepdf.openfile(file);
+                      if (!cashhelper
+                          .getdata(key: "permessions")
+                          .contains('fullprodpdf')) {
+                        showdialogerror(
+                            error: "ليس لديك الصلاحيه", context: context);
+                      } else {
+                        final img =
+                            await rootBundle.load('assets/images/logo.jpeg');
+                        final imageBytes = img.buffer.asUint8List();
+                        File file = await storagepdf.generatepdf(
+                            imageBytes: imageBytes,
+                            categories: BlocProvider.of<fullprodCubit>(context)
+                                .fullprods);
+                        await storagepdf.openfile(file);
+                      }
                     }),
               ],
             ),
@@ -96,20 +115,28 @@ class _fullprodState extends State<fullprod> {
               ),
               actions: [
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      BlocProvider.of<fullprodCubit>(context).queryparams =
+                          null;
+                      await BlocProvider.of<fullprodCubit>(context)
+                          .getfullprods();
+                    },
                     icon: Icon(
                       Icons.refresh,
                       color: Colors.white,
                     )),
                 IconButton(
                     onPressed: () {
-                      /*     showDialog(
+                      BlocProvider.of<DateCubit>(context).cleardates();
+
+                      showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0)),
                               title: Container(
-                                height: 20,
                                 alignment: Alignment.topLeft,
                                 child: IconButton(
                                     onPressed: () {
@@ -123,9 +150,9 @@ class _fullprodState extends State<fullprod> {
                               contentPadding: EdgeInsets.all(10),
                               backgroundColor: Colors.white,
                               insetPadding: EdgeInsets.all(35),
-                              content: Alertmoldcontent(),
+                              content: Alertfullprodsearch(),
                             );
-                          });*/
+                          });
                     },
                     icon: Icon(
                       Icons.search,
@@ -207,30 +234,38 @@ class _fullprodState extends State<fullprod> {
                                     });
                               },
                               onTap: () {
-                                navigateto(
-                                    context: context,
-                                    page: fullprodmoves(
-                                        qtyintype:
-                                            BlocProvider.of<fullprodCubit>(
-                                                    context)
-                                                .fullprods[i]
-                                                .unitsPerPackaging!
-                                                .toString(),
-                                        fullprodid:
-                                            BlocProvider.of<fullprodCubit>(
-                                                    context)
-                                                .fullprods[i]
-                                                .id!,
-                                        fullprodname:
-                                            BlocProvider.of<fullprodCubit>(
-                                                    context)
-                                                .fullprods[i]
-                                                .name!,
-                                        packtype:
-                                            BlocProvider.of<fullprodCubit>(
-                                                    context)
-                                                .fullprods[i]
-                                                .packagingType!));
+                                if (!cashhelper
+                                    .getdata(key: "permessions")
+                                    .contains('showfullprodmove')) {
+                                  showdialogerror(
+                                      error: "ليس لديك الصلاحيه",
+                                      context: context);
+                                } else {
+                                  navigateto(
+                                      context: context,
+                                      page: fullprodmoves(
+                                          qtyintype:
+                                              BlocProvider.of<fullprodCubit>(
+                                                      context)
+                                                  .fullprods[i]
+                                                  .unitsPerPackaging!
+                                                  .toString(),
+                                          fullprodid:
+                                              BlocProvider.of<fullprodCubit>(
+                                                      context)
+                                                  .fullprods[i]
+                                                  .id!,
+                                          fullprodname:
+                                              BlocProvider.of<fullprodCubit>(
+                                                      context)
+                                                  .fullprods[i]
+                                                  .name!,
+                                          packtype:
+                                              BlocProvider.of<fullprodCubit>(
+                                                      context)
+                                                  .fullprods[i]
+                                                  .packagingType!));
+                                }
                               },
                               child: Customtablefullproditem(
                                   pieceprice: BlocProvider.of<fullprodCubit>(context)
@@ -265,138 +300,157 @@ class _fullprodState extends State<fullprod> {
                                           ? Colors.white
                                           : const Color.fromARGB(255, 9, 62, 88),
                                       onPressed: () {
-                                        showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Container(
-                                                  height: 20,
-                                                  alignment: Alignment.topLeft,
-                                                  child: IconButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.close,
-                                                        color:
-                                                            appcolors.maincolor,
-                                                      )),
-                                                ),
-                                                contentPadding:
-                                                    EdgeInsets.all(10),
-                                                backgroundColor: Colors.white,
-                                                insetPadding:
-                                                    EdgeInsets.all(35),
-                                                content: editfullproddialog(
-                                                    fullprodname: TextEditingController(
-                                                        text: BlocProvider.of<fullprodCubit>(context)
-                                                            .fullprods[i]
-                                                            .name),
-                                                    price: TextEditingController(
-                                                        text: BlocProvider.of<fullprodCubit>(context)
-                                                            .fullprods[i]
-                                                            .priceUnit),
-                                                    quantity:
-                                                        BlocProvider.of<fullprodCubit>(context)
-                                                            .fullprods[i]
-                                                            .qty!
-                                                            .toString(),
-                                                    packtype: TextEditingController(
-                                                        text: BlocProvider.of<fullprodCubit>(context)
-                                                            .fullprods[i]
-                                                            .packagingType),
-                                                    qtyinpack: TextEditingController(
-                                                        text: BlocProvider.of<fullprodCubit>(context)
-                                                            .fullprods[i]
-                                                            .unitsPerPackaging
-                                                            .toString()),
-                                                    alarm: TextEditingController(
-                                                        text: BlocProvider.of<fullprodCubit>(context)
-                                                            .fullprods[i]
-                                                            .warningQty
-                                                            .toString()),
-                                                    id: BlocProvider.of<fullprodCubit>(context).fullprods[i].id!),
-                                              );
-                                            });
+                                        if (!cashhelper
+                                            .getdata(key: "permessions")
+                                            .contains('editfullprod')) {
+                                          showdialogerror(
+                                              error: "ليس لديك الصلاحيه",
+                                              context: context);
+                                        } else {
+                                          showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Container(
+                                                    height: 20,
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.close,
+                                                          color: appcolors
+                                                              .maincolor,
+                                                        )),
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.all(10),
+                                                  backgroundColor: Colors.white,
+                                                  insetPadding:
+                                                      EdgeInsets.all(35),
+                                                  content: editfullproddialog(
+                                                      fullprodname: TextEditingController(
+                                                          text: BlocProvider.of<fullprodCubit>(context)
+                                                              .fullprods[i]
+                                                              .name),
+                                                      price: TextEditingController(
+                                                          text: BlocProvider.of<fullprodCubit>(context)
+                                                              .fullprods[i]
+                                                              .priceUnit),
+                                                      quantity: BlocProvider.of<fullprodCubit>(context)
+                                                          .fullprods[i]
+                                                          .qty!
+                                                          .toString(),
+                                                      packtype: TextEditingController(
+                                                          text: BlocProvider.of<fullprodCubit>(context)
+                                                              .fullprods[i]
+                                                              .packagingType),
+                                                      qtyinpack: TextEditingController(
+                                                          text: BlocProvider.of<fullprodCubit>(context)
+                                                              .fullprods[i]
+                                                              .unitsPerPackaging
+                                                              .toString()),
+                                                      alarm: TextEditingController(
+                                                          text: BlocProvider.of<fullprodCubit>(context)
+                                                              .fullprods[i]
+                                                              .warningQty
+                                                              .toString()),
+                                                      id: BlocProvider.of<fullprodCubit>(context).fullprods[i].id!),
+                                                );
+                                              });
+                                        }
                                       },
                                       icon: Icon(editeicon)),
                                   quantity: BlocProvider.of<fullprodCubit>(context).fullprods[i].qty!.toString(),
                                   packtype: BlocProvider.of<fullprodCubit>(context).fullprods[i].packagingType ?? "",
                                   delete: IconButton(
                                       onPressed: () {
-                                        awsomdialogerror(
-                                            context: context,
-                                            mywidget: BlocConsumer<
-                                                fullprodCubit, fullprodState>(
-                                              listener: (context, state) {
-                                                if (state
-                                                    is deletefullprodsuccess) {
-                                                  Navigator.pop(context);
+                                        if (!cashhelper
+                                            .getdata(key: "permessions")
+                                            .contains('deletefullprod')) {
+                                          showdialogerror(
+                                              error: "ليس لديك الصلاحيه",
+                                              context: context);
+                                        } else {
+                                          awsomdialogerror(
+                                              context: context,
+                                              mywidget: BlocConsumer<
+                                                  fullprodCubit, fullprodState>(
+                                                listener: (context, state) {
+                                                  if (state
+                                                      is deletefullprodsuccess) {
+                                                    Navigator.pop(context);
 
-                                                  showtoast(
-                                                      message:
-                                                          state.successmessage,
-                                                      toaststate:
-                                                          Toaststate.succes,
-                                                      context: context);
-                                                }
-                                                if (state
-                                                    is deletefullprodfailure) {
-                                                  Navigator.pop(context);
+                                                    showtoast(
+                                                        message: state
+                                                            .successmessage,
+                                                        toaststate:
+                                                            Toaststate.succes,
+                                                        context: context);
+                                                  }
+                                                  if (state
+                                                      is deletefullprodfailure) {
+                                                    Navigator.pop(context);
 
-                                                  showtoast(
-                                                      message:
-                                                          state.errormessage,
-                                                      toaststate:
-                                                          Toaststate.error,
-                                                      context: context);
-                                                }
-                                              },
-                                              builder: (context, state) {
-                                                if (state
-                                                    is deletefullprodloading)
-                                                  return deleteloading();
-                                                return SizedBox(
-                                                  height: 50,
-                                                  width: 100,
-                                                  child: ElevatedButton(
-                                                      style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll(
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    37,
-                                                                    163,
-                                                                    42)),
-                                                      ),
-                                                      onPressed: () async {
-                                                        await BlocProvider.of<
-                                                                    fullprodCubit>(
-                                                                context)
-                                                            .deletefullprod(
-                                                                fullprodid: BlocProvider.of<
-                                                                            fullprodCubit>(
-                                                                        context)
-                                                                    .fullprods[
-                                                                        i]
-                                                                    .id!);
-                                                      },
-                                                      child: const Text(
-                                                        "تاكيد",
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontFamily: "cairo",
-                                                            color:
-                                                                Colors.white),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                );
-                                              },
-                                            ),
-                                            tittle: "هل تريد الحذف ؟");
+                                                    showtoast(
+                                                        message:
+                                                            state.errormessage,
+                                                        toaststate:
+                                                            Toaststate.error,
+                                                        context: context);
+                                                  }
+                                                },
+                                                builder: (context, state) {
+                                                  if (state
+                                                      is deletefullprodloading)
+                                                    return deleteloading();
+                                                  return SizedBox(
+                                                    height: 50,
+                                                    width: 100,
+                                                    child: ElevatedButton(
+                                                        style:
+                                                            const ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStatePropertyAll(
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          37,
+                                                                          163,
+                                                                          42)),
+                                                        ),
+                                                        onPressed: () async {
+                                                          await BlocProvider.of<
+                                                                      fullprodCubit>(
+                                                                  context)
+                                                              .deletefullprod(
+                                                                  fullprodid: BlocProvider.of<
+                                                                              fullprodCubit>(
+                                                                          context)
+                                                                      .fullprods[
+                                                                          i]
+                                                                      .id!);
+                                                        },
+                                                        child: const Text(
+                                                          "تاكيد",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  "cairo",
+                                                              color:
+                                                                  Colors.white),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        )),
+                                                  );
+                                                },
+                                              ),
+                                              tittle: "هل تريد الحذف ؟");
+                                        }
                                       },
                                       icon: Icon(
                                         deleteicon,

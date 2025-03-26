@@ -58,12 +58,17 @@ class suppliermoverepoimp extends suppliermovesrepo {
 
   @override
   Future<Either<failure, Suppliermovemodel>> getsuppliersmoves(
-      {required int supplierid, required int page}) async {
+      {required int supplierid,
+      required int page,
+      String? datefrom,
+      String? dateto}) async {
     try {
       Response response = await Getdata.getdata(
           token: cashhelper.getdata(key: "token"),
           path: urls.supplierprocesses,
           queryParameters: {
+            if (datefrom != null) "date_from": datefrom,
+            if (dateto != null) "date_to": dateto,
             "page": page,
             "supplier_id": supplierid,
           });

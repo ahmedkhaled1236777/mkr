@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/constants.dart';
+import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/navigation.dart';
+import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/common/styles/styles.dart';
 import 'package:mkr/core/common/toast/toast.dart';
+import 'package:mkr/core/common/widgets/dialogerror.dart';
 import 'package:mkr/core/common/widgets/error.dart';
 import 'package:mkr/core/common/widgets/errorwidget.dart';
 import 'package:mkr/core/common/widgets/headerwidget.dart';
@@ -13,6 +16,7 @@ import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/core/common/widgets/showdialogerror.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/addmove.dart';
+import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/widgets/alertfullprodearch.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/widgets/customtablefullprodmoveitem.dart';
 import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/widgets/fullprodmoveitem.dart';
 
@@ -46,6 +50,9 @@ class _fullprodmovesState extends State<fullprodmoves> {
   ];
 
   getdata() async {
+    BlocProvider.of<fullprodCubit>(context).datefrom = null;
+    BlocProvider.of<fullprodCubit>(context).dateto = null;
+    BlocProvider.of<fullprodCubit>(context).name_of_client = null;
     BlocProvider.of<fullprodCubit>(context).firstloadingmotion = false;
     BlocProvider.of<fullprodCubit>(context)
         .getfullprodmotion(compid: widget.fullprodid);
@@ -74,8 +81,12 @@ class _fullprodmovesState extends State<fullprodmoves> {
               ),
               actions: [
                 IconButton(
-                    onPressed: () {
-                      BlocProvider.of<fullprodCubit>(context)
+                    onPressed: () async {
+                      BlocProvider.of<fullprodCubit>(context).datefrom = null;
+                      BlocProvider.of<fullprodCubit>(context).dateto = null;
+                      BlocProvider.of<fullprodCubit>(context).name_of_client =
+                          null;
+                      await BlocProvider.of<fullprodCubit>(context)
                           .getfullprodmotion(compid: widget.fullprodid);
                     },
                     icon: Icon(
@@ -84,13 +95,16 @@ class _fullprodmovesState extends State<fullprodmoves> {
                     )),
                 IconButton(
                     onPressed: () {
-                      /*showDialog(
+                      BlocProvider.of<DateCubit>(context).cleardates();
+
+                      showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0)),
                               title: Container(
-                                height: 20,
                                 alignment: Alignment.topLeft,
                                 child: IconButton(
                                     onPressed: () {
@@ -104,11 +118,11 @@ class _fullprodmovesState extends State<fullprodmoves> {
                               contentPadding: EdgeInsets.all(10),
                               backgroundColor: Colors.white,
                               insetPadding: EdgeInsets.all(35),
-                              content: Dateaccessoriesearch(
-                                accessorieid: widget.accessorieid,
+                              content: Alertfullprodmovessearch(
+                                fullprodid: widget.fullprodid,
                               ),
                             );
-                          });*/
+                          });
                     },
                     icon: Icon(
                       Icons.search,
@@ -206,80 +220,101 @@ class _fullprodmovesState extends State<fullprodmoves> {
                                           : "سحب",
                                   delete: IconButton(
                                       onPressed: () {
-                                        awsomdialogerror(
-                                            context: context,
-                                            mywidget: BlocConsumer<
-                                                fullprodCubit, fullprodState>(
-                                              listener: (context, state) async {
-                                                if (state
-                                                    is deletefullprodmovesuccess) {
-                                                  await BlocProvider.of<
-                                                              fullprodCubit>(
-                                                          context)
-                                                      .getfullprods();
-                                                  Navigator.pop(context);
+                                        if (!cashhelper
+                                            .getdata(key: "permessions")
+                                            .contains('deletefullprodmove')) {
+                                          showdialogerror(
+                                              error: "ليس لديك الصلاحيه",
+                                              context: context);
+                                        } else {
+                                          if (BlocProvider.of<fullprodCubit>(
+                                                      context)
+                                                  .datamoves[i]
+                                                  .type ==
+                                              1) {
+                                            showdialogerror(
+                                                error:
+                                                    "يتم المسح من حركات العملاء",
+                                                context: context);
+                                          } else {
+                                            awsomdialogerror(
+                                                context: context,
+                                                mywidget: BlocConsumer<
+                                                    fullprodCubit,
+                                                    fullprodState>(
+                                                  listener:
+                                                      (context, state) async {
+                                                    if (state
+                                                        is deletefullprodmovesuccess) {
+                                                      await BlocProvider.of<
+                                                                  fullprodCubit>(
+                                                              context)
+                                                          .getfullprods();
+                                                      Navigator.pop(context);
 
-                                                  showtoast(
-                                                      context: context,
-                                                      message:
-                                                          state.successmessage,
-                                                      toaststate:
-                                                          Toaststate.succes);
-                                                }
-                                                if (state
-                                                    is deletefullprodmovefailure) {
-                                                  Navigator.pop(context);
+                                                      showtoast(
+                                                          context: context,
+                                                          message: state
+                                                              .successmessage,
+                                                          toaststate: Toaststate
+                                                              .succes);
+                                                    }
+                                                    if (state
+                                                        is deletefullprodmovefailure) {
+                                                      Navigator.pop(context);
 
-                                                  showtoast(
-                                                      context: context,
-                                                      message:
-                                                          state.errormessage,
-                                                      toaststate:
-                                                          Toaststate.error);
-                                                }
-                                              },
-                                              builder: (context, state) {
-                                                if (state
-                                                    is deletefullprodmoveloading)
-                                                  return deleteloading();
-                                                return SizedBox(
-                                                  height: 50,
-                                                  width: 100,
-                                                  child: ElevatedButton(
-                                                      style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll(
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    37,
-                                                                    163,
-                                                                    42)),
-                                                      ),
-                                                      onPressed: () async {
-                                                        await BlocProvider.of<
-                                                                    fullprodCubit>(
-                                                                context)
-                                                            .deletefullprodmove(
-                                                                fullprodmoveid:
-                                                                    BlocProvider.of<fullprodCubit>(
+                                                      showtoast(
+                                                          context: context,
+                                                          message: state
+                                                              .errormessage,
+                                                          toaststate:
+                                                              Toaststate.error);
+                                                    }
+                                                  },
+                                                  builder: (context, state) {
+                                                    if (state
+                                                        is deletefullprodmoveloading)
+                                                      return deleteloading();
+                                                    return SizedBox(
+                                                      height: 50,
+                                                      width: 100,
+                                                      child: ElevatedButton(
+                                                          style:
+                                                              const ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStatePropertyAll(
+                                                                    Color.fromARGB(
+                                                                        255,
+                                                                        37,
+                                                                        163,
+                                                                        42)),
+                                                          ),
+                                                          onPressed: () async {
+                                                            await BlocProvider
+                                                                    .of<fullprodCubit>(
+                                                                        context)
+                                                                .deletefullprodmove(
+                                                                    fullprodmoveid: BlocProvider.of<fullprodCubit>(
                                                                             context)
                                                                         .datamoves[
                                                                             i]
                                                                         .id!);
-                                                      },
-                                                      child: const Text(
-                                                        "تاكيد",
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                Colors.white),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                );
-                                              },
-                                            ),
-                                            tittle: "هل تريد حذف الحركه");
+                                                          },
+                                                          child: const Text(
+                                                            "تاكيد",
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .white),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          )),
+                                                    );
+                                                  },
+                                                ),
+                                                tittle: "هل تريد حذف الحركه");
+                                          }
+                                        }
                                       },
                                       icon: Icon(
                                         color: Colors.red,
@@ -312,46 +347,20 @@ class _fullprodmovesState extends State<fullprodmoves> {
                       width: 15,
                     ),
                     InkWell(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: appcolors.primarycolor,
-                              borderRadius: BorderRadius.circular(7)),
-                          height: 45,
-                          width: 45,
-                          child: Icon(
-                            Icons.picture_as_pdf,
-                            color: Colors.white,
-                          ),
-                        )),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    InkWell(
-                        onTap: () async {},
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          child: Icon(
-                            Icons.share,
-                            color: Colors.white,
-                          ),
-                          decoration: BoxDecoration(
-                              color: appcolors.primarycolor,
-                              borderRadius: BorderRadius.circular(7)),
-                        )),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    InkWell(
                         onTap: () {
-                          navigateto(
-                              context: context,
-                              page: Addfullprodmove(
-                                packtype: widget.packtype,
-                                prodname: widget.fullprodname,
-                                prodid: widget.fullprodid,
-                              ));
+                          if (!cashhelper
+                              .getdata(key: "permessions")
+                              .contains('addfullprodmove')) {
+                            showdialogerror(
+                                error: "ليس لديك الصلاحيه", context: context);
+                          } else
+                            navigateto(
+                                context: context,
+                                page: Addfullprodmove(
+                                  packtype: widget.packtype,
+                                  prodname: widget.fullprodname,
+                                  prodid: widget.fullprodid,
+                                ));
                         },
                         child: Container(
                           height: 45,

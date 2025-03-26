@@ -12,6 +12,7 @@ class ComponentCubit extends Cubit<ComponentState> {
   final Componentrepoimp componentrepoimp;
   ComponentCubit(this.componentrepoimp) : super(ComponentInitial());
   List<Datum> components = [];
+  Map<String, dynamic>? queryparms;
   String materialstatus = "0";
   List<datummoves> datamoves = [];
   bool firstloading = false;
@@ -23,6 +24,9 @@ class ComponentCubit extends Cubit<ComponentState> {
   List<String> products = [];
   Map<String, int> productid = {};
   Map<String, dynamic> productpacktype = {};
+  String? name_of_supplier;
+  String? datefrom;
+  String? dateto;
   onpacktypechange() {
     emit(packtypechange());
   }
@@ -109,7 +113,7 @@ class ComponentCubit extends Cubit<ComponentState> {
 
   getcomponents() async {
     emit(getcomponentloading());
-    var result = await componentrepoimp.getcomponents();
+    var result = await componentrepoimp.getcomponents(queryparms: queryparms);
     result.fold((failure) {
       emit(getcomponentfailure(errormessage: failure.error_message));
     }, (Success) {
@@ -130,6 +134,9 @@ class ComponentCubit extends Cubit<ComponentState> {
     var result = await componentrepoimp.getcomponentsmoves(
       compid: compid,
       page: motionpage,
+      name_of_supplier: name_of_supplier,
+      dateto: dateto,
+      datefrom: datefrom,
     );
     motionloading = true;
     result.fold((failue) {
@@ -149,7 +156,12 @@ class ComponentCubit extends Cubit<ComponentState> {
   getmorecomponentssmotion({required int componentid}) async {
     motionpage++;
     var result = await componentrepoimp.getcomponentsmoves(
-        page: motionpage, compid: componentid);
+      page: motionpage,
+      compid: componentid,
+      name_of_supplier: name_of_supplier,
+      dateto: dateto,
+      datefrom: datefrom,
+    );
     motionloading = true;
     result.fold((failue) {
       emit(getcomponentmovefailure(errormessage: failue.error_message));

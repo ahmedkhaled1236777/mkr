@@ -4,14 +4,18 @@ import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/styles/styles.dart';
 import 'package:mkr/core/common/widgets/choosedate.dart';
+
 import 'package:mkr/core/common/widgets/custommaterialbutton%20copy.dart';
+import 'package:mkr/core/common/widgets/customtextform.dart';
 import 'package:mkr/core/common/widgets/dialogerror.dart';
-import 'package:mkr/features/suppliers/suppliermoves/presentation/viewmodel/supplier/suppliermoves_cubit.dart';
+import 'package:mkr/features/componentstore/presentation/viewmodel/componentcuibt/component_cubit.dart';
+import 'package:mkr/features/fullprodstore/presentation/viewmodel/fullprodcuibt/fullprod_cubit.dart';
 
-class suppliermovesearch extends StatelessWidget {
-  final int supplierid;
+class Alertfullprodmovessearch extends StatelessWidget {
+  final int fullprodid;
+  TextEditingController clientname = TextEditingController();
 
-  const suppliermovesearch({super.key, required this.supplierid});
+  Alertfullprodmovessearch({super.key, required this.fullprodid});
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -40,6 +44,9 @@ class suppliermovesearch extends StatelessWidget {
                             const SizedBox(
                               height: 15,
                             ),
+                            custommytextform(
+                                controller: clientname, hintText: "اسم العميل"),
+                            SizedBox(height: 10),
                             BlocBuilder<DateCubit, DateState>(
                               builder: (context, state) {
                                 return choosedate(
@@ -90,7 +97,7 @@ class suppliermovesearch extends StatelessWidget {
                                           "برجاء تحديد التاريخ من والتاريخ الي",
                                       context: context);
                                 } else {
-                                  BlocProvider.of<suppliermovesCubit>(context)
+                                  BlocProvider.of<fullprodCubit>(context)
                                           .datefrom =
                                       BlocProvider.of<DateCubit>(context)
                                                   .date3 ==
@@ -98,7 +105,7 @@ class suppliermovesearch extends StatelessWidget {
                                           ? null
                                           : BlocProvider.of<DateCubit>(context)
                                               .date3;
-                                  BlocProvider.of<suppliermovesCubit>(context)
+                                  BlocProvider.of<fullprodCubit>(context)
                                           .dateto =
                                       BlocProvider.of<DateCubit>(context)
                                                   .date4 ==
@@ -106,10 +113,14 @@ class suppliermovesearch extends StatelessWidget {
                                           ? null
                                           : BlocProvider.of<DateCubit>(context)
                                               .date4;
-                                  await BlocProvider.of<suppliermovesCubit>(
-                                          context)
-                                      .getsuppliermoves(
-                                    supplierid: supplierid,
+                                  BlocProvider.of<fullprodCubit>(context)
+                                          .name_of_client =
+                                      clientname.text.isEmpty
+                                          ? null
+                                          : clientname.text;
+                                  await BlocProvider.of<fullprodCubit>(context)
+                                      .getfullprodmotion(
+                                    compid: fullprodid,
                                   );
                                   Navigator.pop(context);
                                 }

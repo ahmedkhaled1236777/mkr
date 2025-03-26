@@ -80,10 +80,13 @@ class supplierrepoimp extends supplierrepo {
   }
 
   @override
-  Future<Either<failure, Suppliermodel>> getsuppliers() async {
+  Future<Either<failure, Suppliermodel>> getsuppliers(
+      {Map<String, dynamic>? queryparma}) async {
     try {
       Response response = await Getdata.getdata(
-          token: cashhelper.getdata(key: "token"), path: urls.suppliers);
+          queryParameters: queryparma,
+          token: cashhelper.getdata(key: "token"),
+          path: urls.suppliers);
       if (response.statusCode == 200 && response.data["status"] == true) {
         return right(Suppliermodel.fromJson(response.data));
       } else {

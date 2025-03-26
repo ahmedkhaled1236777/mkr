@@ -10,6 +10,7 @@ class supplierCubit extends Cubit<supplierState> {
   supplierCubit(this.supplierrepoim) : super(supplierInitial());
   final supplierrepoimp supplierrepoim;
   List<Datum> suppliers = [];
+  Map<String, dynamic>? queryparma;
   addcoponent({required supplierrequest supplier}) async {
     emit(addsupplierloading());
     var result = await supplierrepoim.addsupplier(supplier: supplier);
@@ -45,7 +46,7 @@ class supplierCubit extends Cubit<supplierState> {
 
   getsuppliers() async {
     emit(getsupplierloading());
-    var result = await supplierrepoim.getsuppliers();
+    var result = await supplierrepoim.getsuppliers(queryparma: queryparma);
     result.fold((failure) {
       emit(getsupplierfailure(errormessage: failure.error_message));
     }, (Success) {

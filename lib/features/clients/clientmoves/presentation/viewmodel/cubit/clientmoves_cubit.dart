@@ -11,7 +11,8 @@ class ClientmovesCubit extends Cubit<ClientmovesState> {
   List<datummoves> datamoves = [];
   List<bool> checks = [];
   int page = 1;
-
+  String? datefrom;
+  String? dateto;
   bool loading = false;
   bool firstloading = false;
   addclientmovemove({required Clientmoverequest clientmove}) async {
@@ -47,9 +48,7 @@ class ClientmovesCubit extends Cubit<ClientmovesState> {
     this.page = 1;
 
     var result = await clientmoverepoimp.getclientsmoves(
-      page: page,
-      clientid: clienid,
-    );
+        page: page, clientid: clienid, datefrom: datefrom, dateto: dateto);
     loading = true;
     result.fold((failue) {
       emit(getclientmovefailure(errormessage: failue.error_message));
@@ -73,9 +72,7 @@ class ClientmovesCubit extends Cubit<ClientmovesState> {
   getamoreclients({required int clientid}) async {
     page++;
     var result = await clientmoverepoimp.getclientsmoves(
-      page: page,
-      clientid: clientid,
-    );
+        page: page, clientid: clientid, datefrom: datefrom, dateto: dateto);
     loading = true;
     result.fold((failue) {
       emit(getclientmovefailure(errormessage: failue.error_message));

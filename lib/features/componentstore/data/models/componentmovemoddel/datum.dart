@@ -2,19 +2,23 @@ import 'package:equatable/equatable.dart';
 
 class datummoves extends Equatable {
   final int? id;
+  final int? type;
   final int? stockId;
+  final dynamic discountPercentage;
   final bool? status;
-  final DateTime? date;
-  final int? qty;
+  final String? date;
+  final num? qty;
   final String? price;
-  final dynamic nameOfSupplier;
+  final String? nameOfSupplier;
   final dynamic notes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   const datummoves({
     this.id,
+    this.type,
     this.stockId,
+    this.discountPercentage,
     this.status,
     this.date,
     this.qty,
@@ -27,14 +31,14 @@ class datummoves extends Equatable {
 
   factory datummoves.fromJson(Map<String, dynamic> json) => datummoves(
         id: json['id'] as int?,
+        type: json['type'] as int?,
         stockId: json['stock_id'] as int?,
+        discountPercentage: json['discount_percentage'] as dynamic,
         status: json['status'] as bool?,
-        date: json['date'] == null
-            ? null
-            : DateTime.parse(json['date'] as String),
-        qty: json['qty'] as int?,
+        date: json['date'] as String?,
+        qty: json['qty'] as num?,
         price: json['price'] as String?,
-        nameOfSupplier: json['name_of_supplier'] as dynamic,
+        nameOfSupplier: json['name_of_supplier'] as String?,
         notes: json['notes'] as dynamic,
         createdAt: json['created_at'] == null
             ? null
@@ -46,9 +50,11 @@ class datummoves extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'type': type,
         'stock_id': stockId,
+        'discount_percentage': discountPercentage,
         'status': status,
-        'date': date?.toIso8601String(),
+        'date': date,
         'qty': qty,
         'price': price,
         'name_of_supplier': nameOfSupplier,
@@ -61,7 +67,9 @@ class datummoves extends Equatable {
   List<Object?> get props {
     return [
       id,
+      type,
       stockId,
+      discountPercentage,
       status,
       date,
       qty,

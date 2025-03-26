@@ -42,7 +42,7 @@ class Login extends StatelessWidget {
                           TextStyle(fontFamily: apptexts.appfonfamily, fontSize: 20),
                     ),*/
                     Image.asset(
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.fill,
                       "assets/images/logo.jpeg",
                       height: 160,
                     ),

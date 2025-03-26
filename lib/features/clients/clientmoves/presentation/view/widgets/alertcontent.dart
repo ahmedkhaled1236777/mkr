@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/styles/styles.dart';
 import 'package:mkr/core/common/widgets/choosedate.dart';
 import 'package:mkr/core/common/widgets/custommaterialbutton%20copy.dart';
+import 'package:mkr/core/common/widgets/dialogerror.dart';
+import 'package:mkr/features/clients/clientmoves/presentation/viewmodel/cubit/clientmoves_cubit.dart';
 
-class Alertcontent extends StatefulWidget {
+class clientmovesearch extends StatelessWidget {
   final int clientid;
 
-  const Alertcontent({super.key, required this.clientid});
-  @override
-  State<Alertcontent> createState() => _AlertcontentcontentState();
-}
-
-class _AlertcontentcontentState extends State<Alertcontent> {
+  const clientmovesearch({super.key, required this.clientid});
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -48,20 +44,76 @@ class _AlertcontentcontentState extends State<Alertcontent> {
                               builder: (context, state) {
                                 return choosedate(
                                   date:
-                                      BlocProvider.of<DateCubit>(context).date1,
+                                      BlocProvider.of<DateCubit>(context).date3,
                                   onPressed: () {
                                     BlocProvider.of<DateCubit>(context)
-                                        .changedate(context);
+                                        .changedate3(context);
                                   },
                                 );
                               },
                             ),
                             const SizedBox(
+                              height: 10,
+                            ),
+                            BlocBuilder<DateCubit, DateState>(
+                              builder: (context, state) {
+                                return choosedate(
+                                  date:
+                                      BlocProvider.of<DateCubit>(context).date4,
+                                  onPressed: () {
+                                    BlocProvider.of<DateCubit>(context)
+                                        .changedate4(context);
+                                  },
+                                );
+                              },
+                            ),
+                            SizedBox(
                               height: 15,
                             ),
                             custommaterialbutton(
                               button_name: "بحث",
-                              onPressed: () {},
+                              onPressed: () async {
+                                if ((BlocProvider.of<DateCubit>(context)
+                                                .date3 ==
+                                            "التاريخ من" &&
+                                        BlocProvider.of<DateCubit>(context)
+                                                .date4 !=
+                                            "التاريخ الي") ||
+                                    (BlocProvider.of<DateCubit>(context)
+                                                .date3 !=
+                                            "التاريخ من" &&
+                                        BlocProvider.of<DateCubit>(context)
+                                                .date4 ==
+                                            "التاريخ الي")) {
+                                  showdialogerror(
+                                      error:
+                                          "برجاء تحديد التاريخ من والتاريخ الي",
+                                      context: context);
+                                } else {
+                                  BlocProvider.of<ClientmovesCubit>(context)
+                                          .datefrom =
+                                      BlocProvider.of<DateCubit>(context)
+                                                  .date3 ==
+                                              "التاريخ من"
+                                          ? null
+                                          : BlocProvider.of<DateCubit>(context)
+                                              .date3;
+                                  BlocProvider.of<ClientmovesCubit>(context)
+                                          .dateto =
+                                      BlocProvider.of<DateCubit>(context)
+                                                  .date4 ==
+                                              "التاريخ الي"
+                                          ? null
+                                          : BlocProvider.of<DateCubit>(context)
+                                              .date4;
+                                  await BlocProvider.of<ClientmovesCubit>(
+                                          context)
+                                      .getclientmoves(
+                                    clienid: clientid,
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              },
                             )
                           ]))))
             ])));

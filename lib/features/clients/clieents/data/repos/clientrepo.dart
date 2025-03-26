@@ -12,7 +12,8 @@ abstract class clientrepo {
 
   Future<Either<failure, String>> deletclient({required int clientid});
   // Future<Either<failure, String>> deletecompmove({required int compmoveid});
-  Future<Either<failure, Clientmodel>> getclients();
+  Future<Either<failure, Clientmodel>> getclients(
+      {Map<String, dynamic>? queryparma});
   /* Future<Either<failure, clientmovemoddel>> getclientsmoves(
       {required int compid, required int page});*/
 }

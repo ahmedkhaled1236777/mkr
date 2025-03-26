@@ -5,10 +5,10 @@ class Datum extends Equatable {
   final String? image;
   final String? name;
   final String? priceUnit;
-  final int? qty;
+  final num? qty;
   final String? packagingType;
-  final int? unitsPerPackaging;
-  final int? warningQty;
+  final num? unitsPerPackaging;
+  final num? warningQty;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -30,10 +30,10 @@ class Datum extends Equatable {
         image: json['image'] as String?,
         name: json['name'] as String?,
         priceUnit: json['price_unit'] as String?,
-        qty: json['qty'] as int?,
+        qty: json['qty'] as num?,
         packagingType: json['packaging_type'] as String?,
-        unitsPerPackaging: json['units_per_packaging'] as int?,
-        warningQty: json['warning_qty'] as int?,
+        unitsPerPackaging: json['units_per_packaging'] as num?,
+        warningQty: json['warning_qty'] as num?,
         createdAt: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at'] as String),

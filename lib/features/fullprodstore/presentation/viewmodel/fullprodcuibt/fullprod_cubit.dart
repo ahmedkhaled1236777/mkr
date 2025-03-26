@@ -15,6 +15,7 @@ class fullprodCubit extends Cubit<fullprodState> {
   final fullprodrepoimp fullprodrepoim;
   fullprodCubit(this.fullprodrepoim) : super(fullprodInitial());
   List<Datum> fullprods = [];
+  Map<String, dynamic>? queryparams;
   String materialstatus = "0";
   List<datummoves> datamoves = [];
   bool firstloading = false;
@@ -26,6 +27,9 @@ class fullprodCubit extends Cubit<fullprodState> {
   Map<String, dynamic> productpacktype = {};
   String productname = "اختر المنتج";
   String type = "0";
+  String? name_of_client;
+  String? datefrom;
+  String? dateto;
   changetype({required String value}) {
     type = value;
     emit(changetypestate());
@@ -112,7 +116,7 @@ class fullprodCubit extends Cubit<fullprodState> {
 
   getfullprods() async {
     emit(getfullprodloading());
-    var result = await fullprodrepoim.getfullprods();
+    var result = await fullprodrepoim.getfullprods(queryparams: queryparams);
     result.fold((failure) {
       emit(getfullprodfailure(errormessage: failure.error_message));
     }, (Success) {
@@ -128,12 +132,16 @@ class fullprodCubit extends Cubit<fullprodState> {
   }
 
   getfullprodmotion({required int compid}) async {
+    print("llllllllllllllllllllllllllll");
+    print(name_of_client);
     if (firstloadingmotion == false) emit(getfullprodmoveloading());
     this.motionpage = 1;
     var result = await fullprodrepoim.getfullprodsmoves(
-      compid: compid,
-      page: motionpage,
-    );
+        compid: compid,
+        page: motionpage,
+        datefrom: datefrom,
+        dateto: dateto,
+        name_of_client: name_of_client);
     motionloading = true;
     result.fold((failue) {
       emit(getfullprodmovefailure(errormessage: failue.error_message));
@@ -168,8 +176,13 @@ class fullprodCubit extends Cubit<fullprodState> {
   getmorefullprodssmotion({required int fullprodid}) async {
     motionpage++;
     var result = await fullprodrepoim.getfullprodsmoves(
-        page: motionpage, compid: fullprodid);
+        datefrom: datefrom,
+        dateto: dateto,
+        name_of_client: name_of_client,
+        page: motionpage,
+        compid: fullprodid);
     motionloading = true;
+
     result.fold((failue) {
       emit(getfullprodmovefailure(errormessage: failue.error_message));
     }, (success) {

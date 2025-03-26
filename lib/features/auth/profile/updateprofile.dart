@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
+import 'package:mkr/features/home/presentation/view/home2.dart';
 
 class Updateprofile extends StatefulWidget {
   final TextEditingController name;
@@ -240,7 +241,7 @@ class _UpdateprofileState extends State<Updateprofile> {
                           key: "email", value: state.success.data!.email);
                       cashhelper.setdata(
                           key: "phone", value: state.success.data!.phone);
-                      //  navigateandfinish(page: home2(), context: context);
+                      navigateandfinish(page: home2(), context: context);
 
                       showtoast(
                           context: context,
@@ -253,14 +254,22 @@ class _UpdateprofileState extends State<Updateprofile> {
                     return custommaterialbutton(
                       button_name: "تعديل البيانات",
                       onPressed: () async {
-                        BlocProvider.of<AuthCubit>(context).updateprofile(
-                            email: widget.email.text,
-                            phone: widget.phone.text,
-                            name: widget.name.text,
-                            oldpass: widget.oldpass.text,
-                            newpassconfirm: widget.newpassconfirm.text,
-                            newpass: widget.newpass.text,
-                            photo: photo);
+                        if (widget.oldpass.text.isNotEmpty &&
+                            widget.newpass.text != widget.newpassconfirm.text) {
+                          showtoast(
+                              message:
+                                  "كلمه المرور الجديده والتاكيد ليست متشابهمين",
+                              toaststate: Toaststate.error,
+                              context: context);
+                        } else
+                          BlocProvider.of<AuthCubit>(context).updateprofile(
+                              email: widget.email.text,
+                              phone: widget.phone.text,
+                              name: widget.name.text,
+                              oldpass: widget.oldpass.text,
+                              newpassconfirm: widget.newpassconfirm.text,
+                              newpass: widget.newpass.text,
+                              photo: photo);
                       },
                     );
                   },

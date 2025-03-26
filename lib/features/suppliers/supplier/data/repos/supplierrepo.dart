@@ -13,7 +13,8 @@ abstract class supplierrepo {
 
   Future<Either<failure, String>> deletsupplier({required int supplierid});
   // Future<Either<failure, String>> deletecompmove({required int compmoveid});
-  Future<Either<failure, Suppliermodel>> getsuppliers();
+  Future<Either<failure, Suppliermodel>> getsuppliers(
+      {Map<String, dynamic>? queryparma});
   /* Future<Either<failure, suppliermovemoddel>> getsuppliersmoves(
       {required int compid, required int page});*/
 }

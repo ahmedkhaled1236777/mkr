@@ -60,12 +60,17 @@ class Clientmoverepoimp extends clientmovesrepo {
 
   @override
   Future<Either<failure, Clientmovemodel>> getclientsmoves(
-      {required int clientid, required int page}) async {
+      {required int clientid,
+      required int page,
+      String? datefrom,
+      String? dateto}) async {
     try {
       Response response = await Getdata.getdata(
           token: cashhelper.getdata(key: "token"),
           path: urls.clientprocesses,
           queryParameters: {
+            if (datefrom != null) "date_from": datefrom,
+            if (dateto != null) "date_to": dateto,
             "page": page,
             "client_id": clientid,
           });

@@ -5,13 +5,14 @@ class Datum extends Equatable {
   final int? isActive;
   final int? roleId;
   final String? name;
-  final dynamic img;
+  final String? img;
   final String? email;
   final String? phone;
   final String? jobTitle;
   final dynamic emailVerifiedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final List<String>? permissions;
 
   const Datum({
     this.id,
@@ -25,6 +26,7 @@ class Datum extends Equatable {
     this.emailVerifiedAt,
     this.createdAt,
     this.updatedAt,
+    this.permissions,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -32,7 +34,7 @@ class Datum extends Equatable {
         isActive: json['is_active'] as int?,
         roleId: json['role_id'] as int?,
         name: json['name'] as String?,
-        img: json['img'] as dynamic,
+        img: json['img'] as String?,
         email: json['email'] as String?,
         phone: json['phone'] as String?,
         jobTitle: json['job_title'] as String?,
@@ -43,6 +45,7 @@ class Datum extends Equatable {
         updatedAt: json['updated_at'] == null
             ? null
             : DateTime.parse(json['updated_at'] as String),
+        permissions: List<String>.from(json['permissions'] ?? []),
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,6 +60,7 @@ class Datum extends Equatable {
         'email_verified_at': emailVerifiedAt,
         'created_at': createdAt?.toIso8601String(),
         'updated_at': updatedAt?.toIso8601String(),
+        'permissions': permissions,
       };
 
   @override
@@ -73,6 +77,7 @@ class Datum extends Equatable {
       emailVerifiedAt,
       createdAt,
       updatedAt,
+      permissions,
     ];
   }
 }

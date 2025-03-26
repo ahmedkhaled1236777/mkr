@@ -5,6 +5,10 @@ import 'package:mkr/core/common/widgets/dialogerror.dart';
 //import 'package:mkr/features/accessories/presentation/views/accessories.dart';
 import 'package:mkr/features/auth/login/presentation/view/login.dart';
 import 'package:mkr/features/auth/profile/profile.dart';
+import 'package:mkr/features/clients/clieents/presentation/view/clients.dart';
+import 'package:mkr/features/componentstore/presentation/view/components/components.dart';
+import 'package:mkr/features/fullprodstore/presentation/view/fullprods/fullprods.dart';
+import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/suppliers.dart';
 /*import 'package:mkr/features/components/presentation/views/components.dart';
 import 'package:mkr/features/clients/presentation/view/widgets/customers/customers.dart';
 import 'package:mkr/features/factorytools/presentation/views/factorytools.dart';
@@ -25,8 +29,32 @@ class home2 extends StatelessWidget {
   List<dynamic> categories = cashhelper.getdata(key: "permessions");
   List homegrid = [
     {
+      "name": "العملاء",
+      "name-en": "client",
+      "image": "assets/images/public-service.png",
+      "page": client()
+    },
+    {
+      "name": "الموردين",
+      "name-en": "supplier",
+      "image": "assets/images/manager.png",
+      "page": supplier()
+    },
+    {
+      "name": "مخزن المنتج التام",
+      "name-en": "fullprod",
+      "image": "assets/images/boxes.png",
+      "page": fullprod()
+    },
+    {
+      "name": "مخزن المكونات والخامات",
+      "name-en": "component",
+      "image": "assets/images/recycle.png",
+      "page": component()
+    },
+    {
       "name": "الموظفين",
-      "name-en": "employeesش",
+      "name-en": "fullprodصص",
       "image": "assets/images/division.png",
       "page": Login()
     },
@@ -34,31 +62,7 @@ class home2 extends StatelessWidget {
       "name": "المستخدمين",
       "name-en": "users",
       "image": "assets/images/team.png",
-      "page": Employees()
-    },
-    {
-      "name": "العملاء",
-      "name-en": "customers",
-      "image": "assets/images/public-service.png",
-      "page": Login()
-    },
-    {
-      "name": "الموردين",
-      "name-en": "suppliers",
-      "image": "assets/images/manager.png",
-      "page": Login()
-    },
-    {
-      "name": "مخزن المنتج التام",
-      "name-en": "material_store",
-      "image": "assets/images/full.png",
-      "page": Login()
-    },
-    {
-      "name": "مخزن المكونات والخامات",
-      "name-en": "accessories_store",
-      "image": "assets/images/compo.jpeg",
-      "page": Login()
+      "page": users()
     },
     {
       "name": "الاعدادات",
@@ -82,7 +86,7 @@ class home2 extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 10,
+                    width: 25,
                   ),
                   cashhelper.getdata(key: "image") == null
                       ? Material(
@@ -94,7 +98,7 @@ class home2 extends StatelessWidget {
                               backgroundColor: Colors.grey[100],
                               radius: 30.0,
                               backgroundImage: AssetImage(
-                                'assets/images/elbatol.png',
+                                'assets/images/logo.jpeg',
                               ),
                             ),
                           ),

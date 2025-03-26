@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/constants.dart';
+import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/navigation.dart';
+import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/common/styles/styles.dart';
 import 'package:mkr/core/common/toast/toast.dart';
+import 'package:mkr/core/common/widgets/dialogerror.dart';
 import 'package:mkr/core/common/widgets/error.dart';
 import 'package:mkr/core/common/widgets/headerwidget.dart';
 import 'package:mkr/core/common/widgets/loading.dart';
@@ -13,11 +19,14 @@ import 'package:mkr/core/common/widgets/showdialogerror.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/features/componentstore/presentation/view/components/addcomponent.dart';
+import 'package:mkr/features/componentstore/presentation/view/components/widgets/alertcomponentsearch.dart';
 import 'package:mkr/features/componentstore/presentation/view/components/widgets/componentitem.dart';
+import 'package:mkr/features/componentstore/presentation/view/components/widgets/componentpdf.dart';
 import 'package:mkr/features/componentstore/presentation/view/components/widgets/customtabletimeritem.dart';
 import 'package:mkr/features/componentstore/presentation/view/components/widgets/editdialod.dart';
 import 'package:mkr/features/componentstore/presentation/view/componentsmoves/componentmoves.dart';
 import 'package:mkr/features/componentstore/presentation/viewmodel/componentcuibt/component_cubit.dart';
+import 'package:mkr/features/fullprodstore/presentation/view/fullprodmoves/widgets/pdf/fullprodpdf.dart';
 
 class component extends StatefulWidget {
   @override
@@ -38,6 +47,8 @@ class _componentState extends State<component> {
   ];
 
   getdata() async {
+    BlocProvider.of<ComponentCubit>(context).queryparms = null;
+
     await BlocProvider.of<ComponentCubit>(context).getcomponents();
   }
 
@@ -51,35 +62,82 @@ class _componentState extends State<component> {
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-            floatingActionButton: FloatingActionButton(
-                backgroundColor: appcolors.primarycolor,
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
+            floatingActionButton: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                    heroTag: "bb",
+                    backgroundColor: appcolors.primarycolor,
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (!cashhelper
+                          .getdata(key: "permessions")
+                          .contains('addcomponent')) {
+                        showdialogerror(
+                            error: "ليس لديك الصلاحيه", context: context);
+                      } else
+                        navigateto(context: context, page: addcomponent());
+                    }),
+                SizedBox(
+                  width: 10,
                 ),
-                onPressed: () {
-                  navigateto(context: context, page: addcomponent());
-                }),
+                FloatingActionButton(
+                    heroTag: "aa",
+                    backgroundColor: appcolors.primarycolor,
+                    child: Icon(
+                      Icons.picture_as_pdf,
+                      color: Colors.white,
+                    ),
+                    onPressed: () async {
+                      if (!cashhelper
+                          .getdata(key: "permessions")
+                          .contains('componentpdf')) {
+                        showdialogerror(
+                            error: "ليس لديك الصلاحيه", context: context);
+                      } else {
+                        final img =
+                            await rootBundle.load('assets/images/logo.jpeg');
+                        final imageBytes = img.buffer.asUint8List();
+                        File file = await Componentpdf.generatepdf(
+                            imageBytes: imageBytes,
+                            categories: BlocProvider.of<ComponentCubit>(context)
+                                .components);
+                        await Componentpdf.openfile(file);
+                      }
+                    }),
+              ],
+            ),
             appBar: AppBar(
               leading: BackButton(
                 color: Colors.white,
               ),
               actions: [
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      BlocProvider.of<ComponentCubit>(context).queryparms =
+                          null;
+                      await BlocProvider.of<ComponentCubit>(context)
+                          .getcomponents();
+                    },
                     icon: Icon(
                       Icons.refresh,
                       color: Colors.white,
                     )),
                 IconButton(
                     onPressed: () {
-                      /*     showDialog(
+                      BlocProvider.of<DateCubit>(context).cleardates();
+
+                      showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0)),
                               title: Container(
-                                height: 20,
                                 alignment: Alignment.topLeft,
                                 child: IconButton(
                                     onPressed: () {
@@ -93,9 +151,9 @@ class _componentState extends State<component> {
                               contentPadding: EdgeInsets.all(10),
                               backgroundColor: Colors.white,
                               insetPadding: EdgeInsets.all(35),
-                              content: Alertmoldcontent(),
+                              content: Alertcomponentsearch(),
                             );
-                          });*/
+                          });
                     },
                     icon: Icon(
                       Icons.search,
@@ -175,24 +233,32 @@ class _componentState extends State<component> {
                                     });
                               },
                               onTap: () {
-                                navigateto(
-                                    context: context,
-                                    page: Componentmoves(
-                                        componentid:
-                                            BlocProvider.of<ComponentCubit>(
-                                                    context)
-                                                .components[i]
-                                                .id!,
-                                        componentname:
-                                            BlocProvider.of<ComponentCubit>(
-                                                    context)
-                                                .components[i]
-                                                .name!,
-                                        packtype:
-                                            BlocProvider.of<ComponentCubit>(
-                                                    context)
-                                                .components[i]
-                                                .packagingType!));
+                                if (!cashhelper
+                                    .getdata(key: "permessions")
+                                    .contains('showcomponentmove')) {
+                                  showdialogerror(
+                                      error: "ليس لديك الصلاحيه",
+                                      context: context);
+                                } else {
+                                  navigateto(
+                                      context: context,
+                                      page: Componentmoves(
+                                          componentid:
+                                              BlocProvider.of<ComponentCubit>(
+                                                      context)
+                                                  .components[i]
+                                                  .id!,
+                                          componentname:
+                                              BlocProvider.of<ComponentCubit>(
+                                                      context)
+                                                  .components[i]
+                                                  .name!,
+                                          packtype:
+                                              BlocProvider.of<ComponentCubit>(
+                                                      context)
+                                                  .components[i]
+                                                  .packagingType!));
+                                }
                               },
                               child: Customtablecomponentitem(
                                   alarm:
@@ -224,138 +290,159 @@ class _componentState extends State<component> {
                                           ? Colors.white
                                           : const Color.fromARGB(255, 9, 62, 88),
                                       onPressed: () {
-                                        showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Container(
-                                                  height: 20,
-                                                  alignment: Alignment.topLeft,
-                                                  child: IconButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.close,
-                                                        color:
-                                                            appcolors.maincolor,
-                                                      )),
-                                                ),
-                                                contentPadding:
-                                                    EdgeInsets.all(10),
-                                                backgroundColor: Colors.white,
-                                                insetPadding:
-                                                    EdgeInsets.all(35),
-                                                content: editcomponentdialog(
-                                                    componentname:
-                                                        TextEditingController(
-                                                            text: BlocProvider.of<ComponentCubit>(context)
-                                                                .components[i]
-                                                                .name),
-                                                    quantity:
-                                                        BlocProvider.of<ComponentCubit>(context)
-                                                            .components[i]
-                                                            .qty!
-                                                            .toString(),
-                                                    packtype: TextEditingController(
-                                                        text: BlocProvider.of<ComponentCubit>(context)
-                                                            .components[i]
-                                                            .packagingType),
-                                                    qtyinpack: TextEditingController(
-                                                        text: BlocProvider.of<ComponentCubit>(context)
-                                                            .components[i]
-                                                            .unitsPerPackaging
-                                                            .toString()),
-                                                    alarm: TextEditingController(
-                                                        text:
-                                                            BlocProvider.of<ComponentCubit>(context)
-                                                                .components[i]
-                                                                .warningQty
-                                                                .toString()),
-                                                    id: BlocProvider.of<ComponentCubit>(context)
-                                                        .components[i]
-                                                        .id!),
-                                              );
-                                            });
+                                        if (!cashhelper
+                                            .getdata(key: "permessions")
+                                            .contains('editcomponent')) {
+                                          showdialogerror(
+                                              error: "ليس لديك الصلاحيه",
+                                              context: context);
+                                        } else {
+                                          showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Container(
+                                                    height: 20,
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.close,
+                                                          color: appcolors
+                                                              .maincolor,
+                                                        )),
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.all(10),
+                                                  backgroundColor: Colors.white,
+                                                  insetPadding:
+                                                      EdgeInsets.all(35),
+                                                  content: editcomponentdialog(
+                                                      componentname:
+                                                          TextEditingController(
+                                                              text: BlocProvider.of<ComponentCubit>(context)
+                                                                  .components[i]
+                                                                  .name),
+                                                      quantity:
+                                                          BlocProvider.of<ComponentCubit>(context)
+                                                              .components[i]
+                                                              .qty!
+                                                              .toString(),
+                                                      packtype: TextEditingController(
+                                                          text: BlocProvider.of<ComponentCubit>(context)
+                                                              .components[i]
+                                                              .packagingType),
+                                                      qtyinpack: TextEditingController(
+                                                          text: BlocProvider.of<ComponentCubit>(context)
+                                                              .components[i]
+                                                              .unitsPerPackaging
+                                                              .toString()),
+                                                      alarm: TextEditingController(
+                                                          text:
+                                                              BlocProvider.of<ComponentCubit>(context)
+                                                                  .components[i]
+                                                                  .warningQty
+                                                                  .toString()),
+                                                      id: BlocProvider.of<ComponentCubit>(context)
+                                                          .components[i]
+                                                          .id!),
+                                                );
+                                              });
+                                        }
                                       },
                                       icon: Icon(editeicon)),
                                   quantity: BlocProvider.of<ComponentCubit>(context).components[i].qty!.toString(),
                                   packtype: BlocProvider.of<ComponentCubit>(context).components[i].packagingType ?? "",
                                   delete: IconButton(
                                       onPressed: () {
-                                        awsomdialogerror(
-                                            context: context,
-                                            mywidget: BlocConsumer<
-                                                ComponentCubit, ComponentState>(
-                                              listener: (context, state) {
-                                                if (state
-                                                    is deletecomponentsuccess) {
-                                                  Navigator.pop(context);
+                                        if (!cashhelper
+                                            .getdata(key: "permessions")
+                                            .contains('deletecomponent')) {
+                                          showdialogerror(
+                                              error: "ليس لديك الصلاحيه",
+                                              context: context);
+                                        } else {
+                                          awsomdialogerror(
+                                              context: context,
+                                              mywidget: BlocConsumer<
+                                                  ComponentCubit,
+                                                  ComponentState>(
+                                                listener: (context, state) {
+                                                  if (state
+                                                      is deletecomponentsuccess) {
+                                                    Navigator.pop(context);
 
-                                                  showtoast(
-                                                      message:
-                                                          state.successmessage,
-                                                      toaststate:
-                                                          Toaststate.succes,
-                                                      context: context);
-                                                }
-                                                if (state
-                                                    is deletecomponentfailure) {
-                                                  Navigator.pop(context);
+                                                    showtoast(
+                                                        message: state
+                                                            .successmessage,
+                                                        toaststate:
+                                                            Toaststate.succes,
+                                                        context: context);
+                                                  }
+                                                  if (state
+                                                      is deletecomponentfailure) {
+                                                    Navigator.pop(context);
 
-                                                  showtoast(
-                                                      message:
-                                                          state.errormessage,
-                                                      toaststate:
-                                                          Toaststate.error,
-                                                      context: context);
-                                                }
-                                              },
-                                              builder: (context, state) {
-                                                if (state
-                                                    is deletecomponentloading)
-                                                  return deleteloading();
-                                                return SizedBox(
-                                                  height: 50,
-                                                  width: 100,
-                                                  child: ElevatedButton(
-                                                      style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll(
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    37,
-                                                                    163,
-                                                                    42)),
-                                                      ),
-                                                      onPressed: () async {
-                                                        await BlocProvider.of<
-                                                                    ComponentCubit>(
-                                                                context)
-                                                            .deletecomponent(
-                                                                componentid: BlocProvider.of<
-                                                                            ComponentCubit>(
-                                                                        context)
-                                                                    .components[
-                                                                        i]
-                                                                    .id!);
-                                                      },
-                                                      child: const Text(
-                                                        "تاكيد",
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontFamily: "cairo",
-                                                            color:
-                                                                Colors.white),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                );
-                                              },
-                                            ),
-                                            tittle: "هل تريد الحذف ؟");
+                                                    showtoast(
+                                                        message:
+                                                            state.errormessage,
+                                                        toaststate:
+                                                            Toaststate.error,
+                                                        context: context);
+                                                  }
+                                                },
+                                                builder: (context, state) {
+                                                  if (state
+                                                      is deletecomponentloading)
+                                                    return deleteloading();
+                                                  return SizedBox(
+                                                    height: 50,
+                                                    width: 100,
+                                                    child: ElevatedButton(
+                                                        style:
+                                                            const ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStatePropertyAll(
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          37,
+                                                                          163,
+                                                                          42)),
+                                                        ),
+                                                        onPressed: () async {
+                                                          await BlocProvider.of<
+                                                                      ComponentCubit>(
+                                                                  context)
+                                                              .deletecomponent(
+                                                                  componentid: BlocProvider.of<
+                                                                              ComponentCubit>(
+                                                                          context)
+                                                                      .components[
+                                                                          i]
+                                                                      .id!);
+                                                        },
+                                                        child: const Text(
+                                                          "تاكيد",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  "cairo",
+                                                              color:
+                                                                  Colors.white),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        )),
+                                                  );
+                                                },
+                                              ),
+                                              tittle: "هل تريد الحذف ؟");
+                                        }
                                       },
                                       icon: Icon(
                                         deleteicon,

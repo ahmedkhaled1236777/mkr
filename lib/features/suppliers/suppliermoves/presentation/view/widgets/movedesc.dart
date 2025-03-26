@@ -75,7 +75,7 @@ class suppliermoveitem extends StatelessWidget {
                           fontFamily: "cairo",
                           fontSize: 12.5,
                           color: appcolors.maincolor)),
-                  Text(suppliermove.stockId.toString() ?? "لا يوجد",
+                  Text(suppliermove.stock_name ?? "لا يوجد",
                       style: TextStyle(
                           fontFamily: "cairo",
                           fontSize: 12.5,
@@ -107,7 +107,7 @@ class suppliermoveitem extends StatelessWidget {
                           fontFamily: "cairo",
                           fontSize: 12.5,
                           color: appcolors.maincolor)),
-                  Text("${suppliermove.qty} ${suppliermove.stockId.toString()}",
+                  Text("${suppliermove.qty} ${suppliermove.packagetype ?? ""}",
                       style: TextStyle(
                           fontFamily: "cairo",
                           fontSize: 12.5,
@@ -129,7 +129,7 @@ class suppliermoveitem extends StatelessWidget {
                   border: Border.all(color: appcolors.primarycolor)),
               child: Row(
                 children: [
-                  Text("الكميه داخل ${""}",
+                  Text("الكميه داخل ${suppliermove.packagetype ?? ""}",
                       style: TextStyle(
                           fontFamily: "cairo",
                           fontSize: 12.5,

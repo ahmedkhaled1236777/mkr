@@ -81,10 +81,13 @@ class fullprodrepoimp extends fullprodrepo {
   }
 
   @override
-  Future<Either<failure, Fullprodmodel>> getfullprods() async {
+  Future<Either<failure, Fullprodmodel>> getfullprods(
+      {Map<String, dynamic>? queryparams}) async {
     try {
       Response response = await Getdata.getdata(
-          token: cashhelper.getdata(key: "token"), path: urls.fullprod);
+          queryParameters: queryparams,
+          token: cashhelper.getdata(key: "token"),
+          path: urls.fullprod);
       if (response.statusCode == 200 && response.data["status"] == true) {
         return right(Fullprodmodel.fromJson(response.data));
       } else {
@@ -148,12 +151,19 @@ class fullprodrepoimp extends fullprodrepo {
 
   @override
   Future<Either<failure, Fullprodmovemodel>> getfullprodsmoves(
-      {required int compid, required int page}) async {
+      {required int compid,
+      required int page,
+      String? name_of_client,
+      String? datefrom,
+      String? dateto}) async {
     try {
       Response response = await Getdata.getdata(
           token: cashhelper.getdata(key: "token"),
           path: urls.fullprodmoves,
           queryParameters: {
+            if (name_of_client != null) "name_of_client": name_of_client,
+            if (datefrom != null) "date_from": datefrom,
+            if (dateto != null) "date_to": dateto,
             "warehouse_id": compid,
             "page": page,
           });

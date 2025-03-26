@@ -72,7 +72,7 @@ class emplyeerepoimplementaion extends employeerepo {
           path: "delete-user",
           queryParameters: {"user_id": employeenumber},
           token: cashhelper.getdata(key: "token"));
-      if (response.statusCode == 200 && response.data["success"] == true)
+      if (response.statusCode == 200 && response.data["status"] == true)
         return right("تم حذف البيانات بنجاح");
       else {
         if (response.data["errors"] != null) {

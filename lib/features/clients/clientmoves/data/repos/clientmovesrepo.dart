@@ -12,7 +12,10 @@ abstract class clientmovesrepo {
   Future<Either<failure, String>> deletclientmove({required int moveid});
   // Future<Either<failure, String>> deletecompmove({required int compmoveid});
   Future<Either<failure, Clientmovemodel>> getclientsmoves(
-      {required int clientid, required int page});
+      {required int clientid,
+      required int page,
+      String? datefrom,
+      String? dateto});
   /* Future<Either<failure, clientmovemoddel>> getclientsmoves(
       {required int compid, required int page});*/
 }

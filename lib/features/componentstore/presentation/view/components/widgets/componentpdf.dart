@@ -8,12 +8,12 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
-class clientpdf {
+import '../../../../data/models/componentmodel/datum.dart';
+
+class Componentpdf {
   static Future<File> generatepdf({
     required Uint8List imageBytes,
-    required String maden,
-    required String daen,
-    required List categories,
+    required List<Datum> categories,
   }) async {
     final pdf = pw.Document();
     final theme = pw.ThemeData.withFont(
@@ -24,15 +24,8 @@ class clientpdf {
     );
     final data = categories.map((item) {
       return [
-        double.parse(item.totalPaid!) > double.parse(item.totalProcess!)
-            ? (double.parse(item.totalPaid!) - double.parse(item.totalProcess!))
-                .toStringAsFixed(1)
-            : "0",
-        double.parse(item.totalProcess!) > double.parse(item.totalPaid!)
-            ? (double.parse(item.totalProcess!) - double.parse(item.totalPaid!))
-                .toStringAsFixed(1)
-            : "0",
-        item.phone,
+        item.packagingType,
+        item.qty,
         item.name,
       ];
     }).toList();
@@ -64,7 +57,7 @@ class clientpdf {
             child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
                 children: [
-                  pw.Text("العملاء",
+                  pw.Text("مخزن المكونات",
                       style: pw.TextStyle(
                           fontSize: 20,
                           color: PdfColors.blue900,
@@ -93,76 +86,15 @@ class clientpdf {
                 fontBold: pw.Font.courierBold(),
                 fontSize: 14),
             headers: [
-              "دائن",
-              "مدين",
-              "رقم الهاتف",
-              "اسم العميل",
+              "نوع التعبئه",
+              "الكميه بالمخزن",
+              "اسم المنتج",
             ],
             data: data),
-        pw.Container(
-            padding: pw.EdgeInsets.symmetric(vertical: 5),
-            width: PdfPageFormat.cm * 50,
-            child: pw.Text("اجمالي الرصيد والحركه",
-                textAlign: pw.TextAlign.center,
-                style: pw.TextStyle(color: PdfColors.white)),
-            decoration: pw.BoxDecoration(
-                color: PdfColors.blue800,
-                border: pw.Border(
-                    bottom: pw.BorderSide(color: PdfColors.black),
-                    top: pw.BorderSide(color: PdfColors.black),
-                    right: pw.BorderSide(color: PdfColors.black),
-                    left: pw.BorderSide(color: PdfColors.black)))),
-        pw.Container(
-            width: PdfPageFormat.cm * 50,
-            child: pw.Row(children: [
-              pw.Container(
-                  width: PdfPageFormat.cm * 4,
-                  padding: pw.EdgeInsets.symmetric(horizontal: 20),
-                  child: pw.Text("اجمالى المدين",
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(color: PdfColors.blue800)),
-                  decoration: pw.BoxDecoration(
-                      border: pw.Border(
-                          left: pw.BorderSide(color: PdfColors.black)))),
-              pw.Expanded(
-                child: pw.Text(maden.toString(),
-                    textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(color: PdfColors.blue800)),
-              )
-            ]),
-            decoration: pw.BoxDecoration(
-                border: pw.Border(
-                    bottom: pw.BorderSide(color: PdfColors.black),
-                    top: pw.BorderSide(color: PdfColors.black),
-                    right: pw.BorderSide(color: PdfColors.black),
-                    left: pw.BorderSide(color: PdfColors.black)))),
-        pw.Container(
-            width: PdfPageFormat.cm * 50,
-            child: pw.Row(children: [
-              pw.Container(
-                  width: PdfPageFormat.cm * 4,
-                  child: pw.Text("اجمالي الدائن",
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(color: PdfColors.blue800)),
-                  decoration: pw.BoxDecoration(
-                      border: pw.Border(
-                          left: pw.BorderSide(color: PdfColors.black)))),
-              pw.Expanded(
-                child: pw.Text(daen.toString(),
-                    textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(color: PdfColors.blue800)),
-              )
-            ]),
-            decoration: pw.BoxDecoration(
-                border: pw.Border(
-                    bottom: pw.BorderSide(color: PdfColors.black),
-                    top: pw.BorderSide(color: PdfColors.black),
-                    right: pw.BorderSide(color: PdfColors.black),
-                    left: pw.BorderSide(color: PdfColors.black)))),
       ],
     ));
 
-    return await savepdf("العملاء", pdf);
+    return await savepdf("المكونات", pdf);
   }
 
   static Future<File> savepdf(String filename, pw.Document pdf) async {
@@ -321,7 +253,7 @@ item.worker
 
   static buildbasic(String date) {
     return pw.Row(children: [
-      pw.Text("العملاء",
+      pw.Text("المكونات",
           style: pw.TextStyle(
               decoration: pw.TextDecoration.underline, fontSize: 17)),
       pw.Spacer(),

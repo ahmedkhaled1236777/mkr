@@ -2,15 +2,16 @@ import 'package:equatable/equatable.dart';
 
 class datummoves extends Equatable {
   final int? id;
+  final int? type;
   final int? status;
-  final dynamic discountPercentage;
+  final String? discountPercentage;
   final int? clientId;
   final String? date;
   final int? warehouseId;
   final int? qty;
   final String? price;
-  final String? notes;
-  final dynamic packagingType;
+  final dynamic notes;
+  final String? packagingType;
   final int? unitsPerPackaging;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -18,6 +19,7 @@ class datummoves extends Equatable {
 
   const datummoves({
     this.id,
+    this.type,
     this.status,
     this.discountPercentage,
     this.clientId,
@@ -35,15 +37,16 @@ class datummoves extends Equatable {
 
   factory datummoves.fromJson(Map<String, dynamic> json) => datummoves(
         id: json['id'] as int?,
+        type: json['type'] as int?,
         status: json['status'] as int?,
-        discountPercentage: json['discount_percentage'] as dynamic,
+        discountPercentage: json['discount_percentage'] as String?,
         clientId: json['client_id'] as int?,
         date: json['date'] as String?,
         warehouseId: json['warehouse_id'] as int?,
         qty: json['qty'] as int?,
         price: json['price'] as String?,
-        notes: json['notes'] as String?,
-        packagingType: json['packaging_type'] as dynamic,
+        notes: json['notes'] as dynamic,
+        packagingType: json['packaging_type'] as String?,
         unitsPerPackaging: json['units_per_packaging'] as int?,
         createdAt: json['created_at'] == null
             ? null
@@ -56,6 +59,7 @@ class datummoves extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'type': type,
         'status': status,
         'discount_percentage': discountPercentage,
         'client_id': clientId,
@@ -75,6 +79,7 @@ class datummoves extends Equatable {
   List<Object?> get props {
     return [
       id,
+      type,
       status,
       discountPercentage,
       clientId,

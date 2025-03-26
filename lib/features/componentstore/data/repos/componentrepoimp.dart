@@ -7,7 +7,7 @@ import 'package:mkr/core/common/urls.dart';
 import 'package:mkr/core/services/apiservice.dart';
 import 'package:mkr/features/componentstore/data/models/componentmodel/componentmodel.dart';
 import 'package:mkr/features/componentstore/data/models/componentmodelrequest.dart';
-import 'package:mkr/features/componentstore/data/models/componentmovemoddel/componentmovemoddel.dart';
+import 'package:mkr/features/componentstore/data/models/componentmovemoddel/componentmovemodel.dart';
 import 'package:mkr/features/componentstore/data/models/componentmoverequest.dart';
 import 'package:mkr/features/componentstore/data/repos/componentrepo.dart';
 
@@ -81,10 +81,13 @@ class Componentrepoimp extends Componentrepo {
   }
 
   @override
-  Future<Either<failure, Componentmodel>> getcomponents() async {
+  Future<Either<failure, Componentmodel>> getcomponents(
+      {Map<String, dynamic>? queryparms}) async {
     try {
       Response response = await Getdata.getdata(
-          token: cashhelper.getdata(key: "token"), path: urls.addcomponent);
+          queryParameters: queryparms,
+          token: cashhelper.getdata(key: "token"),
+          path: urls.addcomponent);
       if (response.statusCode == 200 && response.data["status"] == true) {
         return right(Componentmodel.fromJson(response.data));
       } else {
@@ -148,12 +151,19 @@ class Componentrepoimp extends Componentrepo {
 
   @override
   Future<Either<failure, Componentmovemoddel>> getcomponentsmoves(
-      {required int compid, required int page}) async {
+      {required int compid,
+      required int page,
+      String? name_of_supplier,
+      String? datefrom,
+      String? dateto}) async {
     try {
       Response response = await Getdata.getdata(
           token: cashhelper.getdata(key: "token"),
           path: urls.componentmoves,
           queryParameters: {
+            if (name_of_supplier != null) "name_of_supplier": name_of_supplier,
+            if (datefrom != null) "date_from": datefrom,
+            if (dateto != null) "date_to": dateto,
             "stock_id": compid,
             "page": page,
           });

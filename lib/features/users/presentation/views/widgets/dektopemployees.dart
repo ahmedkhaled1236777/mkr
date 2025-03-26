@@ -1,5 +1,7 @@
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/navigation.dart';
+import 'package:mkr/core/common/sharedpref/cashhelper.dart';
+import 'package:mkr/core/common/widgets/dialogerror.dart';
 import 'package:mkr/features/users/presentation/viewmodel/showemployeecuibt/employeecuibt.dart';
 import 'package:mkr/features/users/presentation/views/widgets/addemployeewithscafold.dart';
 import 'package:mkr/features/users/presentation/views/widgets/customtableemployees.dart';
@@ -22,7 +24,13 @@ class desktopemployees extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                navigateto(context: context, page: addemployeewithscafold());
+                if (!cashhelper
+                    .getdata(key: "permessions")
+                    .contains('addusers')) {
+                  showdialogerror(error: "ليس لديك الصلاحيه", context: context);
+                } else {
+                  navigateto(context: context, page: addemployeewithscafold());
+                }
               }),
           appBar: AppBar(
             leading: BackButton(
@@ -31,6 +39,7 @@ class desktopemployees extends StatelessWidget {
             title: Text(
               'المستخدمين',
               style: TextStyle(
+                  fontFamily: "cairo",
                   color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),

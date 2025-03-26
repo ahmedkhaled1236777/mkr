@@ -37,58 +37,15 @@ class AddemployeeCubit extends Cubit<AddemployeeState> {
     "تعديل",
     "حذف"
   ];
-  Map permessions = {
-    'الحقن': "injections",
-    'اوردرات الحقن': "injections_order",
-    'تصنيع الاسطمبات': "stamp_manufacturing",
-    'الموظفين': "employees",
-    'المستخدمين': "users",
-    'العملاء': "customers",
-    'الموردين': "suppliers",
-    'مخزن الخامات': "material_store",
-    'مخزن الاكسسوارات': "accessories_store",
-    "مخزن المكونات": "components_store",
-    "المحافظ الالكترونيه": "wallets",
-    "الخزينه": "save",
-    'مخزن ادوات المصنع': "warehouse",
-    'الاعدادات': "settings",
-  };
-  Map showpermessions = {
-    "injections": 'الحقن',
-    "injections_order": 'اوردرات الحقن',
-    "stamp_manufacturing": 'تصنيع الاسطمبات',
-    "employees": 'الموظفين',
-    "users": "المستخدمين",
-    "customers": 'العملاء',
-    "suppliers": 'الموردين',
-    "material_store": 'مخزن الخامات',
-    "accessories_store": 'مخزن الاكسسوارات',
-    "components_store": "مخزن المكونات",
-    "wallets": "المحافظ الالكترونيه",
-    "save": "الخزينه",
-    "warehouse": 'مخزن ادوات المصنع',
-    "settings": 'الاعدادات',
-  };
+
   List<String> selecteditems = [];
   getselecteditems() {
     List<String> employeepermession = [];
     employeepermession.add("settings");
     for (int i = 0; i < selecteditems.length; i++) {
-      if (selecteditems[i] == "الاشعارات" || selecteditems[i] == "الاعدادات") {
-        continue;
-      }
-      employeepermession.add(permessions[selecteditems[i]]);
+      employeepermession.add(selecteditems[i]);
     }
     return employeepermession;
-  }
-
-  showselecteditems(List<dynamic> permessions) {
-    selecteditems = [];
-    for (int i = 0; i < permessions.length; i++) {
-      if (showpermessions[permessions[i]] != null &&
-          !selecteditems.contains(permessions[i]))
-        selecteditems.add(showpermessions[permessions[i]]);
-    }
   }
 
   addemployee(

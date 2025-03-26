@@ -2,19 +2,21 @@ import 'package:equatable/equatable.dart';
 
 class datummoves extends Equatable {
   final int? id;
-  final String? discountPercentage;
+  final int? type;
+  final dynamic discountPercentage;
   final int? warehouseId;
   final bool? status;
   final String? date;
-  final int? qty;
+  final num? qty;
   final String? price;
   final String? nameOfClient;
-  final String? notes;
+  final dynamic notes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   const datummoves({
     this.id,
+    this.type,
     this.discountPercentage,
     this.warehouseId,
     this.status,
@@ -29,14 +31,15 @@ class datummoves extends Equatable {
 
   factory datummoves.fromJson(Map<String, dynamic> json) => datummoves(
         id: json['id'] as int?,
-        discountPercentage: json['discount_percentage'] as String?,
+        type: json['type'] as int?,
+        discountPercentage: json['discount_percentage'] as dynamic,
         warehouseId: json['warehouse_id'] as int?,
         status: json['status'] as bool?,
         date: json['date'] as String?,
-        qty: json['qty'] as int?,
+        qty: json['qty'] as num?,
         price: json['price'] as String?,
         nameOfClient: json['name_of_client'] as String?,
-        notes: json['notes'] as String?,
+        notes: json['notes'] as dynamic,
         createdAt: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at'] as String),
@@ -47,6 +50,7 @@ class datummoves extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'type': type,
         'discount_percentage': discountPercentage,
         'warehouse_id': warehouseId,
         'status': status,
@@ -63,6 +67,7 @@ class datummoves extends Equatable {
   List<Object?> get props {
     return [
       id,
+      type,
       discountPercentage,
       warehouseId,
       status,
