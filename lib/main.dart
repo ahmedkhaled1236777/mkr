@@ -7,8 +7,9 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/services/apiservice.dart';
+import 'package:mkr/features/workers/data/repos/workerrepoimp.dart';
+import 'package:mkr/features/workers/presentation/viewmodel/cubit/workers_cubit.dart';
 import 'package:mkr/features/auth/login/data/repos/authrepoimp.dart';
-import 'package:mkr/features/auth/login/presentation/view/login.dart';
 import 'package:mkr/features/auth/login/presentation/viewmodel/cubit/auth_cubit.dart';
 import 'package:mkr/features/clients/clieents/data/repos/clientrepoimp.dart';
 import 'package:mkr/features/clients/clieents/presentation/viewmodel/client/client_cubit.dart';
@@ -18,7 +19,7 @@ import 'package:mkr/features/componentstore/data/repos/componentrepoimp.dart';
 import 'package:mkr/features/componentstore/presentation/viewmodel/componentcuibt/component_cubit.dart';
 import 'package:mkr/features/fullprodstore/data/repos/fullprodtrpoimp.dart';
 import 'package:mkr/features/fullprodstore/presentation/viewmodel/fullprodcuibt/fullprod_cubit.dart';
-import 'package:mkr/features/home/presentation/view/home2.dart';
+import 'package:mkr/features/splash/splash.dart';
 import 'package:mkr/features/suppliers/supplier/data/repos/supplierrepoimp.dart';
 import 'package:mkr/features/suppliers/supplier/presentation/viewmodel/supplier/supplier_cubit.dart';
 import 'package:mkr/features/suppliers/suppliermoves/data/repos/suppliermoverepoimp.dart';
@@ -66,11 +67,14 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) =>
-                AddemployeeCubit(addemployeerepo: emplyeerepoimplementaion()),
+                AddemployeeCubit(addemployeerepo: userrepoimp()),
+          ),
+          BlocProvider(
+            create: (context) => WorkersCubit(workerrepoimp: Workerrepoimp()),
           ),
           BlocProvider(
             create: (context) =>
-                showemployeescuibt(employeerepo: emplyeerepoimplementaion()),
+                showemployeescuibt(employeerepo: userrepoimp()),
           ),
           BlocProvider(
             create: (context) => suppliermovesCubit(suppliermoverepoimp()),
@@ -108,7 +112,6 @@ class MyApp extends StatelessWidget {
                 home: child,
               );
             },
-            child:
-                cashhelper.getdata(key: "token") == null ? Login() : home2()));
+            child: LogoAnimationScreen()));
   }
 }

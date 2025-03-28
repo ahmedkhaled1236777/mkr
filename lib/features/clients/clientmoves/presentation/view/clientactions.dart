@@ -27,6 +27,7 @@ import 'package:mkr/features/clients/clientmoves/presentation/view/widgets/clien
 import 'package:mkr/features/clients/clientmoves/presentation/view/widgets/clientmovepdf.dart';
 import 'package:mkr/features/clients/clientmoves/presentation/view/widgets/movedesc.dart';
 import 'package:mkr/features/clients/clientmoves/presentation/viewmodel/cubit/clientmoves_cubit.dart';
+import 'package:share_plus/share_plus.dart';
 
 class clientmoves extends StatefulWidget {
   ScrollController nscrollController = ScrollController();
@@ -463,7 +464,86 @@ class _clientmovesState extends State<clientmoves> {
                       width: 7,
                     ),
                     InkWell(
-                        onTap: () async {},
+                        onTap: () async {
+                          if (!cashhelper
+                              .getdata(key: "permessions")
+                              .contains('clientsmovepdf')) {
+                            showdialogerror(
+                                error: "ليس لديك الصلاحيه", context: context);
+                          } else {
+                            List<datummoves> clientfatora = [];
+                            double totalprocess = 0;
+                            double totalpay = 0;
+                            for (int i = 0;
+                                i <
+                                    BlocProvider.of<ClientmovesCubit>(context)
+                                        .checks
+                                        .length;
+                                i++) {
+                              if (BlocProvider.of<ClientmovesCubit>(context)
+                                      .checks[i] ==
+                                  true) {
+                                if (BlocProvider.of<ClientmovesCubit>(context)
+                                        .datamoves[i]
+                                        .status ==
+                                    0) {
+                                  totalprocess = totalprocess +
+                                      (BlocProvider.of<ClientmovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .qty! *
+                                          BlocProvider.of<ClientmovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .unitsPerPackaging! *
+                                          double.parse(
+                                              BlocProvider.of<ClientmovesCubit>(
+                                                      context)
+                                                  .datamoves[i]
+                                                  .price!) *
+                                          ((100 -
+                                                  double.parse(BlocProvider.of<
+                                                              ClientmovesCubit>(
+                                                          context)
+                                                      .datamoves[i]
+                                                      .discountPercentage
+                                                      .toString())) /
+                                              100));
+                                }
+                                if (BlocProvider.of<ClientmovesCubit>(context)
+                                        .datamoves[i]
+                                        .status ==
+                                    1) {
+                                  totalpay = totalpay +
+                                      double.parse(
+                                          BlocProvider.of<ClientmovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .price!);
+                                }
+                                clientfatora.add(
+                                    BlocProvider.of<ClientmovesCubit>(context)
+                                        .datamoves[i]);
+                              }
+                            }
+                            final img = await rootBundle
+                                .load('assets/images/logo.jpeg');
+                            final imageBytes = img.buffer.asUint8List();
+                            File file = await Clientmovepdf.generatepdf(
+                              clientname: widget.clientname,
+                              categories: clientfatora,
+                              maden: totalprocess >= totalpay
+                                  ? (totalprocess - totalpay).toStringAsFixed(1)
+                                  : "0",
+                              daen: totalpay >= totalprocess
+                                  ? (totalpay - totalprocess).toStringAsFixed(1)
+                                  : "0",
+                              imageBytes: imageBytes,
+                            );
+
+                            Share.shareXFiles([XFile(file.path)]);
+                          }
+                        },
                         child: Container(
                           height: 45,
                           width: 45,

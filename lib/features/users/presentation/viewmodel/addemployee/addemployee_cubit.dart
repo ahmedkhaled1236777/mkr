@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 part 'addemployee_state.dart';
 
 class AddemployeeCubit extends Cubit<AddemployeeState> {
-  final emplyeerepoimplementaion addemployeerepo;
+  final userrepoimp addemployeerepo;
   AddemployeeCubit({required this.addemployeerepo})
       : super(AddemployeeInitial());
   File? image;

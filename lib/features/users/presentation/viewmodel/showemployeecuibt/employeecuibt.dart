@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/employeemodel/datum.dart';
 
 class showemployeescuibt extends Cubit<showemployeesstates> {
-  final emplyeerepoimplementaion employeerepo;
+  final userrepoimp employeerepo;
   showemployeescuibt({required this.employeerepo})
       : super(showemployeesintial());
   List<Datum> employeesdata = [];

@@ -3,7 +3,7 @@ import 'package:mkr/features/users/data/models/addemployeerequest.dart';
 import 'package:mkr/features/users/data/models/employeemodel/employeemodel.dart';
 import 'package:dartz/dartz.dart';
 
-abstract class employeerepo {
+abstract class userrepo {
   Future<Either<failure, String>> addemployee(
       {required String token, required addemployeemodel employee});
   Future<Either<failure, Employeemodel>> getemployees({required String token});

@@ -5,19 +5,19 @@ import 'package:mkr/core/common/errors/handlingerror.dart';
 import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/common/urls.dart';
 import 'package:mkr/core/services/apiservice.dart';
-import 'package:mkr/features/clients/clientmoves/data/models/clientmovemodel/clientmovemodel.dart';
-import 'package:mkr/features/clients/clientmoves/data/models/clientmoverequest.dart';
-import 'package:mkr/features/clients/clientmoves/data/repos/clientmovesrepo.dart';
+import 'package:mkr/features/workers/data/models/workermodel/workermodel.dart';
+import 'package:mkr/features/workers/data/models/workermodelrequest.dart';
+import 'package:mkr/features/workers/data/repos/workerrepo.dart';
 
-class Clientmoverepoimp extends clientmovesrepo {
+class Workerrepoimp extends Workerrepo {
   @override
-  Future<Either<failure, String>> addclientmove(
-      {required Clientmoverequest clientmove}) async {
+  Future<Either<failure, String>> addworker(
+      {required Workermodelrequest worker}) async {
     try {
       Response response = await Postdata.postdata(
           token: cashhelper.getdata(key: "token"),
-          path: urls.clientprocesses,
-          queryParameters: clientmove.tojson());
+          path: urls.employers,
+          queryParameters: worker.tojson());
       if (response.statusCode == 200 && response.data["success"] == true) {
         return right("تم الانشاء بنجاح");
       } else {
@@ -34,11 +34,11 @@ class Clientmoverepoimp extends clientmovesrepo {
   }
 
   @override
-  Future<Either<failure, String>> deletclientmove({required int moveid}) async {
+  Future<Either<failure, String>> deletworker({required int workerid}) async {
     try {
       Response response = await Deletedata.deletedata(
         token: cashhelper.getdata(key: "token"),
-        path: "client-processes/${moveid}",
+        path: "employers/${workerid}",
       );
       if (response.statusCode == 200 && response.data["success"] == true) {
         return right("تم الحذف بنجاح");
@@ -56,23 +56,38 @@ class Clientmoverepoimp extends clientmovesrepo {
   }
 
   @override
-  Future<Either<failure, Clientmovemodel>> getclientsmoves(
-      {required int clientid,
-      required int page,
-      String? datefrom,
-      String? dateto}) async {
+  Future<Either<failure, String>> editworker(
+      {required Workermodelrequest worker, required int id}) async {
+    try {
+      Response response = await Putdata.putdata(
+          token: cashhelper.getdata(key: "token"),
+          path: "employers/${id}",
+          queryParameters: worker.tojson());
+      if (response.statusCode == 200 && response.data["success"] == true) {
+        return right("تم التعديل بنجاح");
+      } else {
+        if (response.data["errors"] != null) {
+          return left(
+              requestfailure(error_message: response.data["errors"][0]));
+        } else
+          return left(requestfailure(error_message: response.data["message"]));
+      }
+    } catch (e) {
+      if (e is DioException) return left(requestfailure.fromdioexception(e));
+      return left(requestfailure(error_message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<failure, Workermodel>> getworkers(
+      {Map<String, dynamic>? queryparma}) async {
     try {
       Response response = await Getdata.getdata(
+          queryParameters: queryparma,
           token: cashhelper.getdata(key: "token"),
-          path: urls.clientprocesses,
-          queryParameters: {
-            if (datefrom != null) "date_from": datefrom,
-            if (dateto != null) "date_to": dateto,
-            "page": page,
-            "client_id": clientid,
-          });
-      if (response.statusCode == 200 && response.data["success"] == true) {
-        return right(Clientmovemodel.fromJson(response.data));
+          path: urls.employers);
+      if (response.statusCode == 200 && response.data["status"] == true) {
+        return right(Workermodel.fromJson(response.data));
       } else {
         if (response.data["errors"] != null) {
           return left(

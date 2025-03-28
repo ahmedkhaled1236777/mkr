@@ -50,16 +50,11 @@ class EmployessPowersState extends State<EmployessPowers> {
     "fullprodpdf",
     "fullprodmovepdf",
     "users",
-    "editusers",
+    "editworker",
     "addusers",
-    "deleteusers",
-    "employees",
-    "addemployees",
-    "editemployees",
-    "deleteemployees",
-    "addemployeesmove",
-    "deleteemployeesmove",
-    "showemployeesmove"
+    "deleteworker",
+    "workers",
+    "addworker",
   ];
 
   @override

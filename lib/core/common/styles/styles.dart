@@ -47,7 +47,7 @@ abstract class Styles {
             ? Styles.textStyle12b
                 .copyWith(fontSize: 6.sp, fontWeight: FontWeight.bold)
             : Styles.textStyle12b
-                .copyWith(fontSize: 11.sp, fontWeight: FontWeight.bold);
+                .copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold);
   }
 
   static getheadertextstyle({required BuildContext context}) {
@@ -57,8 +57,7 @@ abstract class Styles {
                 MediaQuery.of(context).size.width > 600
             ? Styles.textStyle13wd
                 .copyWith(fontSize: 5.sp, fontWeight: FontWeight.bold)
-            : Styles.textStyle13wd
-                .copyWith(fontSize: 12.5.sp, fontWeight: FontWeight.bold);
+            : Styles.textStyle13wd.copyWith(fontSize: 12.sp);
   }
 
   static const TextStyle appbarstyle = TextStyle(

@@ -9,7 +9,7 @@ import 'package:mkr/features/users/data/repos/addemployeerepo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-class emplyeerepoimplementaion extends employeerepo {
+class userrepoimp extends userrepo {
   @override
   Future<Either<failure, String>> addemployee(
       {required String token, required addemployeemodel employee}) async {

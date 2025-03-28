@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mkr/core/common/navigation.dart';
+import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/features/auth/login/presentation/view/login.dart';
+import 'package:mkr/features/home/presentation/view/home2.dart';
 
 class LogoAnimationScreen extends StatefulWidget {
   const LogoAnimationScreen();
@@ -39,7 +41,9 @@ class LogoAnimationScreenState extends State<LogoAnimationScreen> {
           ),
           AnimatedOpacity(
             onEnd: () async {
-              navigateto(context: context, page: Login());
+              cashhelper.getdata(key: "token") == null
+                  ? navigateandfinish(context: context, page: Login())
+                  : navigateandfinish(context: context, page: home2());
             },
             opacity: showtext ? 1.0 : 0.0,
             duration: const Duration(seconds: 1),

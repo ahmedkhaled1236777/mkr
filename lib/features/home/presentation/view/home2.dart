@@ -24,6 +24,7 @@ import 'package:mkr/features/wallets/presentation/view/wallets.dart';
 import 'package:badges/badges.dart' as badges;*/
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:mkr/features/workers/presentation/views/workers.dart';
 
 class home2 extends StatelessWidget {
   List<dynamic> categories = cashhelper.getdata(key: "permessions");
@@ -54,9 +55,15 @@ class home2 extends StatelessWidget {
     },
     {
       "name": "الموظفين",
-      "name-en": "fullprodصص",
+      "name-en": "workers",
       "image": "assets/images/division.png",
-      "page": Login()
+      "page": worker()
+    },
+    {
+      "name": "الحضور والانصراف",
+      "name-en": "settings",
+      "image": "assets/images/fingerprint.png",
+      "page": profile()
     },
     {
       "name": "المستخدمين",
@@ -80,13 +87,13 @@ class home2 extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 10,
+                height: 30,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 25,
+                    width: 10,
                   ),
                   cashhelper.getdata(key: "image") == null
                       ? Material(
@@ -134,9 +141,6 @@ class home2 extends StatelessWidget {
                     width: 10,
                   ),
                 ],
-              ),
-              SizedBox(
-                height: 15,
               ),
               Expanded(
                 child: GridView.count(

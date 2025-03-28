@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/constants.dart';
@@ -16,11 +19,14 @@ import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/core/common/widgets/showdialogerror.dart';
 import 'package:mkr/features/suppliers/supplier/presentation/viewmodel/supplier/supplier_cubit.dart';
+import 'package:mkr/features/suppliers/suppliermoves/data/models/suppliermovemodel/datum.dart';
 import 'package:mkr/features/suppliers/suppliermoves/presentation/view/addaction.dart';
 import 'package:mkr/features/suppliers/suppliermoves/presentation/view/widgets/alertcontent.dart';
 import 'package:mkr/features/suppliers/suppliermoves/presentation/view/widgets/supplieraction.dart';
 import 'package:mkr/features/suppliers/suppliermoves/presentation/view/widgets/movedesc.dart';
+import 'package:mkr/features/suppliers/suppliermoves/presentation/view/widgets/suppliermovepdf.dart';
 import 'package:mkr/features/suppliers/suppliermoves/presentation/viewmodel/supplier/suppliermoves_cubit.dart';
+import 'package:share_plus/share_plus.dart';
 
 class suppliermoves extends StatefulWidget {
   ScrollController nscrollController = ScrollController();
@@ -366,13 +372,75 @@ class _suppliermovesState extends State<suppliermoves> {
                       width: 15,
                     ),
                     InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (!cashhelper
                               .getdata(key: "permessions")
                               .contains('suppliermovepdf')) {
                             showdialogerror(
                                 error: "ليس لديك الصلاحيه", context: context);
-                          } else {}
+                          } else {
+                            List<datummoves> supplierfatora = [];
+                            double totalprocess = 0;
+                            double totalpay = 0;
+                            for (int i = 0;
+                                i <
+                                    BlocProvider.of<suppliermovesCubit>(context)
+                                        .checks
+                                        .length;
+                                i++) {
+                              if (BlocProvider.of<suppliermovesCubit>(context)
+                                      .checks[i] ==
+                                  true) {
+                                if (BlocProvider.of<suppliermovesCubit>(context)
+                                        .datamoves[i]
+                                        .status ==
+                                    0) {
+                                  totalprocess = totalprocess +
+                                      (BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .qty! *
+                                          BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .unitsPerPackaging! *
+                                          double.parse(BlocProvider.of<
+                                                  suppliermovesCubit>(context)
+                                              .datamoves[i]
+                                              .price!));
+                                }
+                                if (BlocProvider.of<suppliermovesCubit>(context)
+                                        .datamoves[i]
+                                        .status ==
+                                    1) {
+                                  totalpay = totalpay +
+                                      double.parse(
+                                          BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .price!);
+                                }
+                                supplierfatora.add(
+                                    BlocProvider.of<suppliermovesCubit>(context)
+                                        .datamoves[i]);
+                              }
+                            }
+                            final img = await rootBundle
+                                .load('assets/images/logo.jpeg');
+                            final imageBytes = img.buffer.asUint8List();
+                            File file = await Suppliermovepdf.generatepdf(
+                              clientname: widget.suppliername,
+                              categories: supplierfatora,
+                              daen: totalprocess >= totalpay
+                                  ? (totalprocess - totalpay).toStringAsFixed(1)
+                                  : "0",
+                              maden: totalpay >= totalprocess
+                                  ? (totalpay - totalprocess).toStringAsFixed(1)
+                                  : "0",
+                              imageBytes: imageBytes,
+                            );
+                            Suppliermovepdf.openfile(file);
+                          }
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -395,7 +463,70 @@ class _suppliermovesState extends State<suppliermoves> {
                               .contains('suppliermovepdf')) {
                             showdialogerror(
                                 error: "ليس لديك الصلاحيه", context: context);
-                          } else {}
+                          } else {
+                            List<datummoves> supplierfatora = [];
+                            double totalprocess = 0;
+                            double totalpay = 0;
+                            for (int i = 0;
+                                i <
+                                    BlocProvider.of<suppliermovesCubit>(context)
+                                        .checks
+                                        .length;
+                                i++) {
+                              if (BlocProvider.of<suppliermovesCubit>(context)
+                                      .checks[i] ==
+                                  true) {
+                                if (BlocProvider.of<suppliermovesCubit>(context)
+                                        .datamoves[i]
+                                        .status ==
+                                    0) {
+                                  totalprocess = totalprocess +
+                                      (BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .qty! *
+                                          BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .unitsPerPackaging! *
+                                          double.parse(BlocProvider.of<
+                                                  suppliermovesCubit>(context)
+                                              .datamoves[i]
+                                              .price!));
+                                }
+                                if (BlocProvider.of<suppliermovesCubit>(context)
+                                        .datamoves[i]
+                                        .status ==
+                                    1) {
+                                  totalpay = totalpay +
+                                      double.parse(
+                                          BlocProvider.of<suppliermovesCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .price!);
+                                }
+                                supplierfatora.add(
+                                    BlocProvider.of<suppliermovesCubit>(context)
+                                        .datamoves[i]);
+                              }
+                            }
+                            final img = await rootBundle
+                                .load('assets/images/logo.jpeg');
+                            final imageBytes = img.buffer.asUint8List();
+                            File file = await Suppliermovepdf.generatepdf(
+                              clientname: widget.suppliername,
+                              categories: supplierfatora,
+                              daen: totalprocess >= totalpay
+                                  ? (totalprocess - totalpay).toStringAsFixed(1)
+                                  : "0",
+                              maden: totalpay >= totalprocess
+                                  ? (totalpay - totalprocess).toStringAsFixed(1)
+                                  : "0",
+                              imageBytes: imageBytes,
+                            );
+
+                            Share.shareXFiles([XFile(file.path)]);
+                          }
                         },
                         child: Container(
                           height: 45,

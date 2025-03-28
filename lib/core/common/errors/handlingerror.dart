@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:mkr/core/common/errors/failure.dart';
 import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:dio/dio.dart';
+import 'package:mkr/features/auth/login/presentation/view/login.dart';
 
 // ignore: camel_case_type
 class requestfailure extends failure {
@@ -8,10 +11,10 @@ class requestfailure extends failure {
   requestfailure({required super.error_message}) {
     if (super.error_message == "تم تسجيل الخروج من التطبيق") {
       cashhelper.cleardata();
-      /*   Get.offAll(Login(),
+      Get.offAll(Login(),
           transition: Transition.rightToLeft,
           duration: Duration(seconds: 1),
-          curve: Curves.easeInOut);*/
+          curve: Curves.easeInOut);
     }
   }
   factory requestfailure.fromdioexception(DioException dioException) {
