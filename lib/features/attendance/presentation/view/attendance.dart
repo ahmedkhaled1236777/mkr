@@ -1,13 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/core/colors/colors.dart';
 import 'package:mkr/core/common/navigation.dart';
 import 'package:mkr/core/common/styles/styles.dart';
+import 'package:mkr/core/common/widgets/error.dart';
 import 'package:mkr/core/common/widgets/headerwidget.dart';
 import 'package:flutter/material.dart';
+import 'package:mkr/core/common/widgets/nodata.dart';
+import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/features/attendance/presentation/view/addattendance.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/customtableattendanceitem.dart';
+import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancecuibt.dart';
+import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancestate.dart';
 
 class attendance extends StatefulWidget {
   @override
@@ -20,15 +26,20 @@ class _attendanceState extends State<attendance> {
   TextEditingController notes = TextEditingController(text: "لا يوجد");
 
   final attendanceheader = [
-    "اسم الموظف",
-    "ايام الحضور",
-    "ايام الغياب",
-    "ايام الاجازه",
-    "ساعات الاذن",
+    "اسم\nالموظف",
+    "ايام\nالحضور",
+    "ايام\nالغياب",
+    "ايام\nالاجازه",
+    "ساعات\nالاذن",
     "الراتب",
   ];
 
-  getdata() async {}
+  getdata() async {
+    await BlocProvider.of<Attendancecuibt>(context).getaattendance(queryparma: {
+      "month": DateTime.now().month,
+      "year": DateTime.now().year
+    });
+  }
 
   @override
   void initState() {
@@ -79,34 +90,65 @@ class _attendanceState extends State<attendance> {
                               textStyle:
                                   Styles.getheadertextstyle(context: context),
                               title: e,
-                              flex: e == "ايام الحضور" ||
-                                      e == "ايام الغياب" ||
-                                      e == "ايام الاجازه" ||
-                                      e == "ساعات الاذن"
+                              flex: e == "ايام\nالحضور" ||
+                                      e == "ايام\nالغياب" ||
+                                      e == "ايام\nالاجازه" ||
+                                      e == "ساعات\nالاذن"
                                   ? 2
                                   : 3,
                             ))
                         .toList()),
               ),
-              Expanded(
-                  child: ListView.separated(
-                      itemBuilder: (context, i) => InkWell(
-                            onDoubleTap: () {},
-                            onTap: () {},
-                            child: Customtableattendanceitem(
-                                employeename: "محمد احمد",
-                                attendancedays: "25",
-                                weekenddays: "4",
-                                notattendacedays: "1",
-                                permessionhours: "0",
-                                salary: "1000",
-                                textStyle:
-                                    Styles.gettabletextstyle(context: context)),
-                          ),
-                      separatorBuilder: (context, i) => Divider(
-                            color: Colors.grey,
-                          ),
-                      itemCount: 5)),
+              Expanded(child: BlocBuilder<Attendancecuibt, Attendancestate>(
+                builder: (context, state) {
+                  if (state is attendanceloading) return loadingshimmer();
+                  if (state is attendancefailure)
+                    return errorfailure(errormessage: state.errormessage);
+                  return BlocProvider.of<Attendancecuibt>(context)
+                          .attendances
+                          .isEmpty
+                      ? nodata()
+                      : ListView.separated(
+                          itemBuilder: (context, i) => InkWell(
+                                child: Customtableattendanceitem(
+                                    employeename:
+                                        BlocProvider.of<Attendancecuibt>(context)
+                                            .attendances[i]
+                                            .name!,
+                                    attendancedays:
+                                        BlocProvider.of<Attendancecuibt>(context)
+                                            .attendances[i]
+                                            .totalAttendance
+                                            .toString(),
+                                    weekenddays:
+                                        BlocProvider.of<Attendancecuibt>(context)
+                                            .attendances[i]
+                                            .totalVacation
+                                            .toString(),
+                                    notattendacedays:
+                                        BlocProvider.of<Attendancecuibt>(context)
+                                            .attendances[i]
+                                            .totalAbsence
+                                            .toString(),
+                                    permessionhours:
+                                        BlocProvider.of<Attendancecuibt>(context)
+                                            .attendances[i]
+                                            .totalPermissions
+                                            .toString(),
+                                    salary: BlocProvider.of<Attendancecuibt>(context)
+                                        .getsalary(
+                                            BlocProvider.of<Attendancecuibt>(context)
+                                                .attendances[i]),
+                                    textStyle: Styles.gettabletextstyle(context: context)),
+                              ),
+                          separatorBuilder: (context, i) => Divider(
+                                color: Colors.grey,
+                              ),
+                          itemCount: BlocProvider.of<Attendancecuibt>(context)
+                              .attendances
+                              .length);
+                },
+              )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

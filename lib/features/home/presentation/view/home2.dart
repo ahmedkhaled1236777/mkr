@@ -2,6 +2,7 @@ import 'package:mkr/core/common/navigation.dart';
 import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/common/widgets/cashedimage.dart';
 import 'package:mkr/core/common/widgets/dialogerror.dart';
+import 'package:mkr/features/attendance/presentation/view/attendance.dart';
 //import 'package:mkr/features/accessories/presentation/views/accessories.dart';
 import 'package:mkr/features/auth/login/presentation/view/login.dart';
 import 'package:mkr/features/auth/profile/profile.dart';
@@ -63,7 +64,7 @@ class home2 extends StatelessWidget {
       "name": "الحضور والانصراف",
       "name-en": "settings",
       "image": "assets/images/fingerprint.png",
-      "page": profile()
+      "page": attendance()
     },
     {
       "name": "المستخدمين",

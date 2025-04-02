@@ -23,6 +23,7 @@ import 'package:mkr/features/workers/presentation/views/addworker.dart';
 import 'package:mkr/features/workers/presentation/views/widgets/alertsearch.dart';
 import 'package:mkr/features/workers/presentation/views/widgets/customworkertimeritem.dart';
 import 'package:mkr/features/workers/presentation/views/widgets/editworker.dart';
+import 'package:mkr/features/workers/presentation/views/widgets/workeritem.dart';
 
 class worker extends StatefulWidget {
   @override
@@ -149,18 +150,44 @@ class _workerState extends State<worker> {
                     return ListView.separated(
                         itemBuilder: (context, i) => InkWell(
                               onDoubleTap: () {},
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                          title: Container(
+                                            alignment: Alignment.topLeft,
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  color: appcolors.maincolor,
+                                                )),
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(0)),
+                                          content: Workeritem(
+                                              componentitem:
+                                                  BlocProvider.of<WorkersCubit>(
+                                                          context)
+                                                      .workers[i]));
+                                    });
+                              },
                               child: Customworkeritem(
                                   job: BlocProvider.of<WorkersCubit>(context)
                                       .workers[i]
-                                      .name!,
+                                      .jobTitle!,
                                   salary: BlocProvider.of<WorkersCubit>(context)
                                       .workers[i]
-                                      .name!,
+                                      .salary!,
                                   workerphone:
                                       BlocProvider.of<WorkersCubit>(context)
-                                          .workers[i]
-                                          .name!,
+                                              .workers[i]
+                                              .phone ??
+                                          "",
                                   workername:
                                       BlocProvider.of<WorkersCubit>(context)
                                           .workers[i]
@@ -178,6 +205,13 @@ class _workerState extends State<worker> {
                                               error: "ليس لديك الصلاحيه",
                                               context: context);
                                         } else {
+                                          BlocProvider.of<DateCubit>(context)
+                                                  .date2 =
+                                              BlocProvider.of<WorkersCubit>(
+                                                      context)
+                                                  .workers[i]
+                                                  .employmentDate!;
+
                                           showDialog(
                                               barrierDismissible: false,
                                               context: context,
@@ -214,21 +248,21 @@ class _workerState extends State<worker> {
                                                       jop: TextEditingController(
                                                           text: BlocProvider.of<WorkersCubit>(context)
                                                               .workers[i]
-                                                              .name),
+                                                              .jobTitle),
                                                       workhours:
                                                           TextEditingController(
                                                               text: BlocProvider.of<WorkersCubit>(context)
                                                                   .workers[i]
-                                                                  .name),
+                                                                  .workedHours),
                                                       salary: TextEditingController(
                                                           text: BlocProvider.of<WorkersCubit>(context)
                                                               .workers[i]
-                                                              .name),
+                                                              .salary),
                                                       phone: TextEditingController(
                                                           text:
                                                               BlocProvider.of<WorkersCubit>(context)
                                                                   .workers[i]
-                                                                  .name),
+                                                                  .phone),
                                                       id: BlocProvider.of<WorkersCubit>(context)
                                                           .workers[i]
                                                           .id!),
@@ -352,8 +386,8 @@ class _workerState extends State<worker> {
                               .contains('addworker')) {
                             showdialogerror(
                                 error: "ليس لديك الصلاحيه", context: context);
-                          }
-                          navigateto(context: context, page: Addworker());
+                          } else
+                            navigateto(context: context, page: Addworker());
                         },
                         icon: Icon(
                           color: Colors.white,

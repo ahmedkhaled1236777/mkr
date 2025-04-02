@@ -163,6 +163,9 @@ class Addworker extends StatelessWidget {
                                           jop.clear();
                                           salary.clear();
                                           workhours.clear();
+                                          phone.clear();
+                                          BlocProvider.of<WorkersCubit>(context)
+                                              .getworkers();
                                           BlocProvider.of<DateCubit>(context)
                                               .cleardates();
                                           showtoast(

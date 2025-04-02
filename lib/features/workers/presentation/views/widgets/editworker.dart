@@ -55,15 +55,21 @@ class editworkerdialog extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              BlocBuilder<DateCubit, DateState>(
-                builder: (context, state) {
-                  return choosedate(
-                    date: BlocProvider.of<DateCubit>(context).date2,
-                    onPressed: () {
-                      BlocProvider.of<DateCubit>(context).changedate2(context);
-                    },
-                  );
-                },
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width > 950
+                    ? MediaQuery.sizeOf(context).width * 0.25
+                    : MediaQuery.sizeOf(context).width * 1,
+                child: BlocBuilder<DateCubit, DateState>(
+                  builder: (context, state) {
+                    return choosedate(
+                      date: BlocProvider.of<DateCubit>(context).date2,
+                      onPressed: () {
+                        BlocProvider.of<DateCubit>(context)
+                            .changedate2(context);
+                      },
+                    );
+                  },
+                ),
               ),
               SizedBox(
                 height: 7,

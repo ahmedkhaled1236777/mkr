@@ -218,6 +218,10 @@ class _supplierState extends State<supplier> {
                                               context: context,
                                               builder: (context) {
                                                 return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              0)),
                                                   title: Container(
                                                     height: 20,
                                                     alignment:

@@ -7,10 +7,9 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/services/apiservice.dart';
+import 'package:mkr/features/attendance/data/repos/attendancerepoimp.dart';
 import 'package:mkr/features/attendance/presentation/view/attendance.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancecuibt.dart';
-import 'package:mkr/features/auth/login/presentation/view/login.dart';
-import 'package:mkr/features/home/presentation/view/home2.dart';
 import 'package:mkr/features/workers/data/repos/workerrepoimp.dart';
 import 'package:mkr/features/workers/presentation/viewmodel/cubit/workers_cubit.dart';
 import 'package:mkr/features/auth/login/data/repos/authrepoimp.dart';
@@ -74,7 +73,7 @@ class MyApp extends StatelessWidget {
                 AddemployeeCubit(addemployeerepo: userrepoimp()),
           ),
           BlocProvider(
-            create: (context) => Attendancecuibt(),
+            create: (context) => Attendancecuibt(attendancerepoimp()),
           ),
           BlocProvider(
             create: (context) => WorkersCubit(workerrepoimp: Workerrepoimp()),
@@ -119,6 +118,6 @@ class MyApp extends StatelessWidget {
                 home: child,
               );
             },
-            child: Login()));
+            child: LogoAnimationScreen()));
   }
 }

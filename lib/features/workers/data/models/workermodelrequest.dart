@@ -21,7 +21,6 @@ class Workermodelrequest {
         "job_title": job_title,
         "salary": salary,
         "phone": phone,
-        "hourly_rate": hourprice,
         "worked_hours": workhours
       };
 }
