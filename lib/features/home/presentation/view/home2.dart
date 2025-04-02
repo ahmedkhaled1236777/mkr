@@ -142,6 +142,9 @@ class home2 extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 10,
+              ),
               Expanded(
                 child: GridView.count(
                   childAspectRatio: 1 / 0.8,
