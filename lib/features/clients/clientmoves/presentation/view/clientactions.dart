@@ -19,7 +19,6 @@ import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/core/common/widgets/showdialogerror.dart';
 import 'package:mkr/features/clients/clieents/presentation/viewmodel/client/client_cubit.dart';
-import 'package:mkr/features/clients/clientmoves/data/models/clientmovemodel/clientmovemodel.dart';
 import 'package:mkr/features/clients/clientmoves/data/models/clientmovemodel/datum.dart';
 import 'package:mkr/features/clients/clientmoves/presentation/view/addaction.dart';
 import 'package:mkr/features/clients/clientmoves/presentation/view/widgets/alertcontent.dart';
@@ -219,7 +218,7 @@ class _clientmovesState extends State<clientmoves> {
                                       context: context),
                                   date:
                                       "${BlocProvider.of<ClientmovesCubit>(context).datamoves[i].date!}",
-                                  price: BlocProvider.of<ClientmovesCubit>(context).datamoves[i].status == 0
+                                  price: BlocProvider.of<ClientmovesCubit>(context).datamoves[i].status != 1
                                       ? (BlocProvider.of<ClientmovesCubit>(context)
                                                   .datamoves[i]
                                                   .unitsPerPackaging! *
@@ -248,7 +247,13 @@ class _clientmovesState extends State<clientmoves> {
                                                   .status ==
                                               0
                                           ? "عمليه"
-                                          : "دفع مبلغ",
+                                          : BlocProvider.of<ClientmovesCubit>(
+                                                          context)
+                                                      .datamoves[i]
+                                                      .status ==
+                                                  1
+                                              ? "دفع مبلغ"
+                                              : "مرتجع",
                                   delte: IconButton(
                                       onPressed: () {
                                         if (!cashhelper
@@ -391,8 +396,8 @@ class _clientmovesState extends State<clientmoves> {
                                   true) {
                                 if (BlocProvider.of<ClientmovesCubit>(context)
                                         .datamoves[i]
-                                        .status ==
-                                    0) {
+                                        .status !=
+                                    1) {
                                   totalprocess = totalprocess +
                                       (BlocProvider.of<ClientmovesCubit>(
                                                   context)
@@ -485,8 +490,8 @@ class _clientmovesState extends State<clientmoves> {
                                   true) {
                                 if (BlocProvider.of<ClientmovesCubit>(context)
                                         .datamoves[i]
-                                        .status ==
-                                    0) {
+                                        .status !=
+                                    1) {
                                   totalprocess = totalprocess +
                                       (BlocProvider.of<ClientmovesCubit>(
                                                   context)

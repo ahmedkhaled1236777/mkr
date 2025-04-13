@@ -46,6 +46,20 @@ class getworkerfailure extends WorkersState {
   getworkerfailure({required this.errormessage});
 }
 
+class getworkermovesloading extends WorkersState {}
+
+class getworkermovessuccess extends WorkersState {
+  final String successmessage;
+
+  getworkermovessuccess({required this.successmessage});
+}
+
+class getworkermovesfailure extends WorkersState {
+  final String errormessage;
+
+  getworkermovesfailure({required this.errormessage});
+}
+
 class editworkerloading extends WorkersState {}
 
 class editworkersuccess extends WorkersState {

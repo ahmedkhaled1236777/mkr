@@ -72,7 +72,12 @@ class Componentmoveitem extends StatelessWidget {
                         fontFamily: "cairo",
                         fontSize: 12.5,
                         color: appcolors.maincolor)),
-                Text(componentitem.status == true ? "اضافه" : "سحب",
+                Text(
+                    componentitem.status == 0
+                        ? "سحب"
+                        : componentitem.status == 1
+                            ? "اضافه"
+                            : "مرتجع",
                     style: TextStyle(
                         fontFamily: "cairo",
                         fontSize: 12.5,
@@ -80,11 +85,11 @@ class Componentmoveitem extends StatelessWidget {
               ],
             ),
           ),
-          if (componentitem.status == true)
+          if (componentitem.status != 0)
             SizedBox(
               height: 7,
             ),
-          if (componentitem.status == true)
+          if (componentitem.status != 0)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -112,11 +117,11 @@ class Componentmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (componentitem.status == true)
+          if (componentitem.status != 0)
             SizedBox(
               height: 7,
             ),
-          if (componentitem.status == true)
+          if (componentitem.status != 0)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,

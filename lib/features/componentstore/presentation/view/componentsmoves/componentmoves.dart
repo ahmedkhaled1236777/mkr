@@ -210,13 +210,18 @@ class _ComponentmovesState extends State<Componentmoves> {
                                       .datamoves[i]
                                       .qty!
                                       .toString(),
-                                  status:
-                                      BlocProvider.of<ComponentCubit>(context)
+                                  status: BlocProvider.of<ComponentCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .status ==
+                                          1
+                                      ? "اضافه"
+                                      : BlocProvider.of<ComponentCubit>(context)
                                                   .datamoves[i]
                                                   .status ==
-                                              true
-                                          ? "اضافه"
-                                          : "سحب",
+                                              0
+                                          ? "سحب"
+                                          : "مرتجع",
                                   delete: IconButton(
                                       onPressed: () {
                                         if (!cashhelper

@@ -7,6 +7,7 @@ import 'package:mkr/core/common/urls.dart';
 import 'package:mkr/core/services/apiservice.dart';
 import 'package:mkr/features/workers/data/models/workermodel/workermodel.dart';
 import 'package:mkr/features/workers/data/models/workermodelrequest.dart';
+import 'package:mkr/features/workers/data/models/workermovemodel/workermovemodel.dart';
 import 'package:mkr/features/workers/data/repos/workerrepo.dart';
 
 class Workerrepoimp extends Workerrepo {
@@ -88,6 +89,32 @@ class Workerrepoimp extends Workerrepo {
           path: urls.employers);
       if (response.statusCode == 200 && response.data["status"] == true) {
         return right(Workermodel.fromJson(response.data));
+      } else {
+        if (response.data["errors"] != null) {
+          return left(
+              requestfailure(error_message: response.data["errors"][0]));
+        } else
+          return left(requestfailure(error_message: response.data["message"]));
+      }
+    } catch (e) {
+      if (e is DioException) return left(requestfailure.fromdioexception(e));
+      return left(requestfailure(error_message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<failure, Workermovemodel>> getworkersmoves(
+      {required int workerid,
+      required String month,
+      required String year}) async {
+    try {
+      Response response = await Getdata.getdata(queryParameters: {
+        "employer_id": workerid,
+        "month": month,
+        "year": year
+      }, token: cashhelper.getdata(key: "token"), path: urls.employermoves);
+      if (response.statusCode == 200 && response.data["status"] == true) {
+        return right(Workermovemodel.fromJson(response.data));
       } else {
         if (response.data["errors"] != null) {
           return left(

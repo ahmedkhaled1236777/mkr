@@ -224,8 +224,8 @@ class _suppliermovesState extends State<suppliermoves> {
                                       "${BlocProvider.of<suppliermovesCubit>(context).datamoves[i].date!}",
                                   price: BlocProvider.of<suppliermovesCubit>(context)
                                               .datamoves[i]
-                                              .status ==
-                                          0
+                                              .status !=
+                                          1
                                       ? (BlocProvider.of<suppliermovesCubit>(context)
                                                   .datamoves[i]
                                                   .unitsPerPackaging! *
@@ -250,7 +250,13 @@ class _suppliermovesState extends State<suppliermoves> {
                                               .status ==
                                           0
                                       ? "توريد"
-                                      : "دفع مبلغ",
+                                      : BlocProvider.of<suppliermovesCubit>(
+                                                      context)
+                                                  .datamoves[i]
+                                                  .status ==
+                                              1
+                                          ? "دفع مبلغ"
+                                          : "مرتجع",
                                   delte: IconButton(
                                       onPressed: () {
                                         if (!cashhelper
@@ -392,9 +398,13 @@ class _suppliermovesState extends State<suppliermoves> {
                                       .checks[i] ==
                                   true) {
                                 if (BlocProvider.of<suppliermovesCubit>(context)
-                                        .datamoves[i]
-                                        .status ==
-                                    0) {
+                                            .datamoves[i]
+                                            .status ==
+                                        0 ||
+                                    BlocProvider.of<suppliermovesCubit>(context)
+                                            .datamoves[i]
+                                            .status ==
+                                        2) {
                                   totalprocess = totalprocess +
                                       (BlocProvider.of<suppliermovesCubit>(
                                                   context)
@@ -477,9 +487,13 @@ class _suppliermovesState extends State<suppliermoves> {
                                       .checks[i] ==
                                   true) {
                                 if (BlocProvider.of<suppliermovesCubit>(context)
-                                        .datamoves[i]
-                                        .status ==
-                                    0) {
+                                            .datamoves[i]
+                                            .status ==
+                                        0 ||
+                                    BlocProvider.of<suppliermovesCubit>(context)
+                                            .datamoves[i]
+                                            .status ==
+                                        2) {
                                   totalprocess = totalprocess +
                                       (BlocProvider.of<suppliermovesCubit>(
                                                   context)

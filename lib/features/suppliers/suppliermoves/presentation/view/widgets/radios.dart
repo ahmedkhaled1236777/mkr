@@ -7,12 +7,16 @@ import 'package:mkr/features/componentstore/presentation/viewmodel/componentcuib
 class suppliermovesradio extends StatelessWidget {
   final String firstradio;
   final String secondradio;
+  final String thirdradio;
   final String firstradiotitle;
   final String secondradiotitle;
+  final String thirdradiotitle;
   suppliermovesradio(
       {super.key,
       required this.firstradio,
       required this.secondradio,
+      required this.thirdradio,
+      required this.thirdradiotitle,
       required this.firstradiotitle,
       required this.secondradiotitle});
   @override
@@ -38,9 +42,6 @@ class suppliermovesradio extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          SizedBox(
-            width: 0,
-          ),
           Radio(
               activeColor: appcolors.primarycolor,
               value: secondradio,
@@ -50,6 +51,19 @@ class suppliermovesradio extends StatelessWidget {
               }),
           Text(
             secondradiotitle,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Radio(
+              activeColor: appcolors.primarycolor,
+              value: thirdradio,
+              groupValue: actionbloc.type,
+              onChanged: (val) {
+                actionbloc.changetype(value: val!);
+              }),
+          Text(
+            thirdradiotitle,
           ),
         ],
       ),

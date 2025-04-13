@@ -7,8 +7,9 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/sharedpref/cashhelper.dart';
 import 'package:mkr/core/services/apiservice.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:mkr/features/attendance/data/repos/attendancerepoimp.dart';
-import 'package:mkr/features/attendance/presentation/view/attendance.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancecuibt.dart';
 import 'package:mkr/features/workers/data/repos/workerrepoimp.dart';
 import 'package:mkr/features/workers/presentation/viewmodel/cubit/workers_cubit.dart';
@@ -105,7 +106,6 @@ class MyApp extends StatelessWidget {
             // Use builder only if you need to use library outside ScreenUtilInit context
             builder: (_, child) {
               return GetMaterialApp(
-                localizationsDelegates: context.localizationDelegates,
                 supportedLocales: context.supportedLocales,
                 locale: context.locale,
                 debugShowCheckedModeBanner: false,
@@ -115,6 +115,11 @@ class MyApp extends StatelessWidget {
                       ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                   useMaterial3: true,
                 ),
+                localizationsDelegates: const [
+                  GlobalCupertinoLocalizations.delegate, // Here !
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                ],
                 home: child,
               );
             },

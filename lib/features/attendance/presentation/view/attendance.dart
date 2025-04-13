@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/core/colors/colors.dart';
+import 'package:mkr/core/common/date/date_cubit.dart';
 import 'package:mkr/core/common/navigation.dart';
 import 'package:mkr/core/common/styles/styles.dart';
 import 'package:mkr/core/common/widgets/error.dart';
@@ -11,9 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/features/attendance/presentation/view/addattendance.dart';
+import 'package:mkr/features/attendance/presentation/view/widgets/alertswarch.dart';
+import 'package:mkr/features/attendance/presentation/view/widgets/attendancepdf.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/customtableattendanceitem.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancecuibt.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancestate.dart';
+import 'package:mkr/features/workers/presentation/views/widgets/workersmoves.dart';
 
 class attendance extends StatefulWidget {
   @override
@@ -35,9 +39,14 @@ class _attendanceState extends State<attendance> {
   ];
 
   getdata() async {
+    BlocProvider.of<Attendancecuibt>(context).month =
+        DateTime.now().month.toString();
+    BlocProvider.of<Attendancecuibt>(context).year =
+        DateTime.now().year.toString();
+
     await BlocProvider.of<Attendancecuibt>(context).getaattendance(queryparma: {
-      "month": DateTime.now().month,
-      "year": DateTime.now().year
+      "month": BlocProvider.of<Attendancecuibt>(context).month,
+      "year": BlocProvider.of<Attendancecuibt>(context).year
     });
   }
 
@@ -57,13 +66,47 @@ class _attendanceState extends State<attendance> {
               ),
               actions: [
                 IconButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      BlocProvider.of<Attendancecuibt>(context).month =
+                          DateTime.now().month.toString();
+                      BlocProvider.of<Attendancecuibt>(context).year =
+                          DateTime.now().year.toString();
+                      await BlocProvider.of<Attendancecuibt>(context)
+                          .getaattendance(queryparma: {
+                        "month":
+                            BlocProvider.of<Attendancecuibt>(context).month,
+                        "year": BlocProvider.of<Attendancecuibt>(context).year
+                      });
+                    },
                     icon: Icon(
                       Icons.refresh,
                       color: Colors.white,
                     )),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+
+                        barrierDismissible: false, // user must tap button!
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0)),
+                              title: Container(
+                                alignment: Alignment.topLeft,
+                                child: IconButton(
+                                    onPressed: () {
+                                      BlocProvider.of<DateCubit>(context)
+                                          .cleardates();
+
+                                      Navigator.of(context).pop();
+                                    },
+                                    icon: Icon(Icons.close)),
+                              ),
+                              content: diagramsearch());
+                        },
+                      );
+                    },
                     icon: Icon(
                       Icons.search,
                       color: Colors.white,
@@ -110,6 +153,26 @@ class _attendanceState extends State<attendance> {
                       ? nodata()
                       : ListView.separated(
                           itemBuilder: (context, i) => InkWell(
+                                onTap: () {
+                                  navigateto(
+                                      context: context,
+                                      page: Workersmoves(
+                                        year:
+                                            "${BlocProvider.of<Attendancecuibt>(context).year}",
+                                        workerid:
+                                            BlocProvider.of<Attendancecuibt>(
+                                                    context)
+                                                .attendances[i]
+                                                .id!,
+                                        workername:
+                                            BlocProvider.of<Attendancecuibt>(
+                                                    context)
+                                                .attendances[i]
+                                                .name!,
+                                        month:
+                                            "${BlocProvider.of<Attendancecuibt>(context).month}",
+                                      ));
+                                },
                                 child: Customtableattendanceitem(
                                     employeename:
                                         BlocProvider.of<Attendancecuibt>(context)
@@ -165,6 +228,35 @@ class _attendanceState extends State<attendance> {
                         icon: Icon(
                           color: Colors.white,
                           Icons.add,
+                        )),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                        color: appcolors.primarycolor,
+                        borderRadius: BorderRadius.circular(7)),
+                    child: IconButton(
+                        onPressed: () async {
+                          final img =
+                              await rootBundle.load('assets/images/logo.jpeg');
+                          final imageBytes = img.buffer.asUint8List();
+                          File file = await Attendancepdf.generatepdf(
+                              context: context,
+                              imageBytes: imageBytes,
+                              date:
+                                  "${BlocProvider.of<Attendancecuibt>(context).month}-${BlocProvider.of<Attendancecuibt>(context).year}",
+                              categories:
+                                  BlocProvider.of<Attendancecuibt>(context)
+                                      .attendances);
+                          Attendancepdf.openfile(file);
+                        },
+                        icon: Icon(
+                          color: Colors.white,
+                          Icons.picture_as_pdf,
                         )),
                   ),
                   SizedBox(

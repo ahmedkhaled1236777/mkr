@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/features/attendance/data/models/attendancemodelrequest.dart';
+import 'package:mkr/features/attendance/data/models/attendancemovemodel/datum.dart';
+import 'package:mkr/features/attendance/data/models/attendancepermessionrequest.dart';
 import 'package:mkr/features/attendance/data/repos/attendancerepoimp.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancestate.dart';
 
@@ -9,11 +11,19 @@ class Attendancecuibt extends Cubit<Attendancestate> {
   Attendancecuibt(this.attendancerepo) : super(attendanceintial());
   final attendancerepoimp attendancerepo;
   List<Datum> attendances = [];
+  List<datamoves> employeeattendances = [];
   List<String> status = [];
   List<String> workersnames = [];
-  bool firstloading = true;
+  String? month;
+  String? year;
+  String? attendancestatus;
   changeattendancestatus({required String value, required int index}) {
     status[index] = value;
+    emit(changestatus());
+  }
+
+  editchangeattendancestatus({required String value}) {
+    attendancestatus = value;
     emit(changestatus());
   }
 
@@ -27,8 +37,32 @@ class Attendancecuibt extends Cubit<Attendancestate> {
     });
   }
 
+  editattendance({required String status, required int id}) async {
+    emit(editattendanceloading());
+    var result =
+        await attendancerepo.editattendancemove(status: status, id: id);
+    result.fold((failure) {
+      emit(editattendancefailure(errormessage: failure.error_message));
+    }, (success) {
+      emit(editattendencesuccess(successmessage: success));
+    });
+  }
+
+  editpermession(
+      {required Attendancepermessionrequest attendance,
+      required int id}) async {
+    emit(editattendanceloading());
+    var result =
+        await attendancerepo.editpermession(attendance: attendance, id: id);
+    result.fold((failure) {
+      emit(editattendancefailure(errormessage: failure.error_message));
+    }, (success) {
+      emit(editattendencesuccess(successmessage: success));
+    });
+  }
+
   getaattendance({required Map<String, dynamic> queryparma}) async {
-    if (firstloading) emit(attendanceloading());
+    emit(attendanceloading());
     var result = await attendancerepo.getattendances(queryparma: queryparma);
     result.fold((failure) {
       emit(attendancefailure(errormessage: failure.error_message));
@@ -41,8 +75,20 @@ class Attendancecuibt extends Cubit<Attendancestate> {
         workersnames.add(e.name!);
         status.add("حضور");
       });
-      firstloading = false;
       emit(attendancesuccess(successmessage: "تم الحصول علي البيانات بنجاح"));
+    });
+  }
+
+  getaattendanceemployermoves(
+      {required Map<String, dynamic> queryparma}) async {
+    emit(getattendancemoveloading());
+    var result =
+        await attendancerepo.getattendancesemoves(queryparma: queryparma);
+    result.fold((failure) {
+      emit(getattendancemovefailure(errormessage: failure.error_message));
+    }, (Success) {
+      emit(getattendancemovesuccess(
+          successmessage: "تم الحصول علي البيانات بنجاح"));
     });
   }
 
@@ -66,5 +112,16 @@ class Attendancecuibt extends Cubit<Attendancestate> {
           .ceil()
           .toString();
     }
+  }
+
+  editatttendancemove({required String status, required int id}) async {
+    emit(editattendanceloading());
+    var result =
+        await attendancerepo.editattendancemove(status: status, id: id);
+    result.fold((failure) {
+      emit(editattendancefailure(errormessage: failure.error_message));
+    }, (success) {
+      emit(editattendencesuccess(successmessage: success));
+    });
   }
 }

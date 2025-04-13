@@ -211,13 +211,18 @@ class _fullprodmovesState extends State<fullprodmoves> {
                                       .datamoves[i]
                                       .qty!
                                       .toString(),
-                                  status:
-                                      BlocProvider.of<fullprodCubit>(context)
+                                  status: BlocProvider.of<fullprodCubit>(
+                                                  context)
+                                              .datamoves[i]
+                                              .status ==
+                                          0
+                                      ? "سحب"
+                                      : BlocProvider.of<fullprodCubit>(context)
                                                   .datamoves[i]
                                                   .status ==
-                                              true
+                                              1
                                           ? "اضافه"
-                                          : "سحب",
+                                          : "مرتجع",
                                   delete: IconButton(
                                       onPressed: () {
                                         if (!cashhelper

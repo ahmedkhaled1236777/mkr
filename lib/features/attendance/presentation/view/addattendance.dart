@@ -21,12 +21,7 @@ class Addattendance extends StatefulWidget {
 }
 
 class _AddattendanceState extends State<Addattendance> {
-  getdata() async {
-    await BlocProvider.of<Attendancecuibt>(context).getaattendance(queryparma: {
-      "month": DateTime.now().month,
-      "year": DateTime.now().year
-    });
-  }
+  getdata() async {}
 
   @override
   void initState() {}
@@ -145,6 +140,10 @@ class _AddattendanceState extends State<Addattendance> {
                                       toaststate: Toaststate.error,
                                       context: context);
                                 if (state is addattendancesuccess) {
+                                  showtoast(
+                                      message: state.successmessage,
+                                      toaststate: Toaststate.succes,
+                                      context: context);
                                   await BlocProvider.of<Attendancecuibt>(
                                           context)
                                       .getaattendance(queryparma: {

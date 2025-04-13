@@ -43,7 +43,12 @@ class suppliermoveitem extends StatelessWidget {
                         fontFamily: "cairo",
                         fontSize: 12.5,
                         color: appcolors.maincolor)),
-                Text(suppliermove.status == 0 ? "عمليه" : "دفع مبلغ",
+                Text(
+                    suppliermove.status == 0
+                        ? "عمليه"
+                        : suppliermove.status == 1
+                            ? "دفع مبلغ"
+                            : "مرتجع",
                     style: TextStyle(
                         fontFamily: "cairo",
                         fontSize: 12.5,
@@ -54,7 +59,7 @@ class suppliermoveitem extends StatelessWidget {
           SizedBox(
             height: 7,
           ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 0)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -83,11 +88,11 @@ class suppliermoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 0)
             SizedBox(
               height: 7,
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -115,11 +120,11 @@ class suppliermoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -147,11 +152,11 @@ class suppliermoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -179,11 +184,11 @@ class suppliermoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (suppliermove.status == 0)
+          if (suppliermove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,

@@ -29,12 +29,16 @@ class Suppliermovepdf {
             ? item.price
             : (item.qty! * item.unitsPerPackaging! * double.parse(item.price!))
                 .toStringAsFixed(1),
-        item.status == 0 ? item.price : "",
-        item.status == 0
+        item.status != 1 ? item.price : "",
+        item.status != 1
             ? (item.qty! * item.unitsPerPackaging!).toStringAsFixed(1)
             : "",
-        item.status == 0 ? item.stock_name : "",
-        item.status == 0 ? "عمليه" : "دفعه",
+        item.status != 0 ? item.stock_name : "",
+        item.status == 0
+            ? "عمليه"
+            : item.status == 1
+                ? "دفعه"
+                : "مرتجع",
         item.date,
       ];
     }).toList();

@@ -29,11 +29,11 @@ class fullprodmoveitem extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -101,11 +101,11 @@ class fullprodmoveitem extends StatelessWidget {
               ],
             ),
           ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -133,11 +133,11 @@ class fullprodmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -165,11 +165,11 @@ class fullprodmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (fullproditem.status == false)
+          if (fullproditem.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -220,7 +220,12 @@ class fullprodmoveitem extends StatelessWidget {
                         fontFamily: "cairo",
                         fontSize: 12.5,
                         color: appcolors.maincolor)),
-                Text(fullproditem.status == true ? "اضافه" : "سحب",
+                Text(
+                    fullproditem.status == 1
+                        ? "اضافه"
+                        : fullproditem.status == 0
+                            ? "سحب"
+                            : "اضافه",
                     style: TextStyle(
                         fontFamily: "cairo",
                         fontSize: 12.5,

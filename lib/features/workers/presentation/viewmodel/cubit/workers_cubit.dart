@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:mkr/features/workers/data/models/workermodel/datum.dart';
 import 'package:mkr/features/workers/data/models/workermodelrequest.dart';
 import 'package:mkr/features/workers/data/repos/workerrepoimp.dart';
+
+import '../../../data/models/workermovemodel/datum.dart';
 
 part 'workers_state.dart';
 
@@ -10,6 +11,7 @@ class WorkersCubit extends Cubit<WorkersState> {
   WorkersCubit({required this.workerrepoimp}) : super(WorkersInitial());
   final Workerrepoimp workerrepoimp;
   List<Datum> workers = [];
+  List<datamoves> workersmoves = [];
   addworker({required Workermodelrequest worker}) async {
     emit(addworkerloading());
     var result = await workerrepoimp.addworker(worker: worker);
@@ -51,6 +53,22 @@ class WorkersCubit extends Cubit<WorkersState> {
     }, (Success) {
       workers = Success.data!;
       emit(getworkersuccess(successmessage: "تم الحصول علي البيانات بنجاح"));
+    });
+  }
+
+  getworkersmoves(
+      {required int workerid,
+      required String month,
+      required String year}) async {
+    emit(getworkermovesloading());
+    var result = await workerrepoimp.getworkersmoves(
+        workerid: workerid, month: month, year: year);
+    result.fold((failure) {
+      emit(getworkermovesfailure(errormessage: failure.error_message));
+    }, (Success) {
+      workersmoves = Success.data!;
+      emit(getworkermovessuccess(
+          successmessage: "تم الحصول علي البيانات بنجاح"));
     });
   }
 }

@@ -138,16 +138,19 @@ class _AddfullprodmoveState extends State<Addfullprodmove> {
                               val: "برجاء ادخال الكميه",
                             ),
                             SizedBox(height: 10),
-                            custommytextform(
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9-.]")),
-                              ],
-                              keyboardType: TextInputType.number,
-                              controller: discount_percentage,
-                              hintText: "نسبة الخصم %",
-                              val: "برجاء ادخال نسبة الخصم",
-                            ),
+                            if (BlocProvider.of<fullprodCubit>(context)
+                                    .materialstatus ==
+                                "0")
+                              custommytextform(
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp("[0-9-.]")),
+                                ],
+                                keyboardType: TextInputType.number,
+                                controller: discount_percentage,
+                                hintText: "نسبة الخصم %",
+                                val: "برجاء ادخال نسبة الخصم",
+                              ),
                             SizedBox(height: 10),
                             custommytextform(
                               controller: notes,

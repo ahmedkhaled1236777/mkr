@@ -94,9 +94,11 @@ class _addsuppliermoveState extends State<addsuppliermove> {
                               builder: (context, state) {
                                 return suppliermovesradio(
                                   firstradio: "0",
+                                  thirdradio: "2",
                                   secondradio: "1",
                                   firstradiotitle: "توريد",
                                   secondradiotitle: "دفع",
+                                  thirdradiotitle: "مرتجع",
                                 );
                               },
                             ),
@@ -126,8 +128,8 @@ class _addsuppliermoveState extends State<addsuppliermove> {
                                   return Text(state.errormessage);
                                 return Column(children: [
                                   if (BlocProvider.of<ComponentCubit>(context)
-                                          .type ==
-                                      "0")
+                                          .type !=
+                                      "1")
                                     Container(
                                       color: Color(0xff535C91),
                                       child: Center(
@@ -199,8 +201,8 @@ class _addsuppliermoveState extends State<addsuppliermove> {
                                 return Column(
                                   children: [
                                     if (BlocProvider.of<ComponentCubit>(context)
-                                            .type ==
-                                        "0")
+                                            .type !=
+                                        "1")
                                       custommytextform(
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.allow(
@@ -213,8 +215,8 @@ class _addsuppliermoveState extends State<addsuppliermove> {
                                         val: "برجاء ادخال الكميه",
                                       ),
                                     if (BlocProvider.of<ComponentCubit>(context)
-                                            .type ==
-                                        "0")
+                                            .type !=
+                                        "1")
                                       SizedBox(height: 10),
                                     custommytextform(
                                       inputFormatters: <TextInputFormatter>[
@@ -287,8 +289,8 @@ class _addsuppliermoveState extends State<addsuppliermove> {
                                   button_name: "تسجيل",
                                   onPressed: () async {
                                     if (BlocProvider.of<ComponentCubit>(context)
-                                            .type ==
-                                        "0") {
+                                            .type !=
+                                        "1") {
                                       if (BlocProvider.of<ComponentCubit>(
                                                   context)
                                               .productname ==

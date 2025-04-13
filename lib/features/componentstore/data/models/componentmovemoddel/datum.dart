@@ -5,7 +5,7 @@ class datummoves extends Equatable {
   final int? type;
   final int? stockId;
   final dynamic discountPercentage;
-  final bool? status;
+  final int? status;
   final String? date;
   final num? qty;
   final String? price;
@@ -34,7 +34,7 @@ class datummoves extends Equatable {
         type: json['type'] as int?,
         stockId: json['stock_id'] as int?,
         discountPercentage: json['discount_percentage'] as dynamic,
-        status: json['status'] as bool?,
+        status: json['status'] as int?,
         date: json['date'] as String?,
         qty: json['qty'] as num?,
         price: json['price'] as String?,

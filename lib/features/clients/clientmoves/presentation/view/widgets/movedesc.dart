@@ -43,7 +43,12 @@ class clientmoveitem extends StatelessWidget {
                         fontFamily: "cairo",
                         fontSize: 12.5,
                         color: appcolors.maincolor)),
-                Text(clientmove.status == 0 ? "عمليه" : "دفع مبلغ",
+                Text(
+                    clientmove.status == 0
+                        ? "عمليه"
+                        : clientmove.status == 0
+                            ? "دفع مبلغ"
+                            : "مرتجع",
                     style: TextStyle(
                         fontFamily: "cairo",
                         fontSize: 12.5,
@@ -54,7 +59,7 @@ class clientmoveitem extends StatelessWidget {
           SizedBox(
             height: 7,
           ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -64,7 +69,7 @@ class clientmoveitem extends StatelessWidget {
                   border: Border.all(color: appcolors.primarycolor)),
               child: Row(
                 children: [
-                  if (clientmove.status == 0)
+                  if (clientmove.status != 1)
                     Text("اسم المنتج",
                         style: TextStyle(
                             fontFamily: "cairo",
@@ -83,11 +88,11 @@ class clientmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -115,11 +120,11 @@ class clientmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -147,11 +152,11 @@ class clientmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -179,11 +184,11 @@ class clientmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,
@@ -211,11 +216,11 @@ class clientmoveitem extends StatelessWidget {
                 ],
               ),
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             SizedBox(
               height: 7,
             ),
-          if (clientmove.status == 0)
+          if (clientmove.status != 1)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               width: double.infinity,

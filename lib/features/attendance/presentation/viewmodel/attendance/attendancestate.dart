@@ -2,7 +2,35 @@ abstract class Attendancestate {}
 
 class attendanceintial extends Attendancestate {}
 
+class editattendanceloading extends Attendancestate {}
+
+class editattendencesuccess extends Attendancestate {
+  final String successmessage;
+
+  editattendencesuccess({required this.successmessage});
+}
+
+class editattendancefailure extends Attendancestate {
+  final String errormessage;
+
+  editattendancefailure({required this.errormessage});
+}
+
 class changestatus extends Attendancestate {}
+
+class getattendancemoveloading extends Attendancestate {}
+
+class getattendancemovesuccess extends Attendancestate {
+  final String successmessage;
+
+  getattendancemovesuccess({required this.successmessage});
+}
+
+class getattendancemovefailure extends Attendancestate {
+  final String errormessage;
+
+  getattendancemovefailure({required this.errormessage});
+}
 
 class addattendanceloading extends Attendancestate {}
 

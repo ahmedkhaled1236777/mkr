@@ -2,18 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/core/colors/colors.dart';
-import 'package:mkr/features/clients/clientmoves/presentation/viewmodel/cubit/clientmoves_cubit.dart';
 import 'package:mkr/features/fullprodstore/presentation/viewmodel/fullprodcuibt/fullprod_cubit.dart';
 
 class movesradio extends StatelessWidget {
   final String firstradio;
   final String secondradio;
+  final String thirdradio;
   final String firstradiotitle;
   final String secondradiotitle;
+  final String thirdradiotittle;
   movesradio(
       {super.key,
       required this.firstradio,
       required this.secondradio,
+      required this.thirdradio,
+      required this.thirdradiotittle,
       required this.firstradiotitle,
       required this.secondradiotitle});
   @override
@@ -39,9 +42,6 @@ class movesradio extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          SizedBox(
-            width: 0,
-          ),
           Radio(
               activeColor: appcolors.primarycolor,
               value: secondradio,
@@ -51,6 +51,19 @@ class movesradio extends StatelessWidget {
               }),
           Text(
             secondradiotitle,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Radio(
+              activeColor: appcolors.primarycolor,
+              value: thirdradio,
+              groupValue: actionbloc.type,
+              onChanged: (val) {
+                actionbloc.changetype(value: val!);
+              }),
+          Text(
+            thirdradiotittle,
           ),
         ],
       ),

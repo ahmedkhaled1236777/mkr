@@ -92,10 +92,12 @@ class _addclientmoveState extends State<addclientmove> {
                             BlocBuilder<fullprodCubit, fullprodState>(
                               builder: (context, state) {
                                 return movesradio(
+                                  thirdradio: "2",
                                   firstradio: "0",
                                   secondradio: "1",
                                   firstradiotitle: "عمليه",
                                   secondradiotitle: "دفع",
+                                  thirdradiotittle: "مرتجع",
                                 );
                               },
                             ),
@@ -125,8 +127,8 @@ class _addclientmoveState extends State<addclientmove> {
                                   return Text(state.errormessage);
                                 return Column(children: [
                                   if (BlocProvider.of<fullprodCubit>(context)
-                                          .type ==
-                                      "0")
+                                          .type !=
+                                      "1")
                                     Container(
                                       color: Color(0xff535C91),
                                       child: Center(
@@ -198,8 +200,8 @@ class _addclientmoveState extends State<addclientmove> {
                                 return Column(
                                   children: [
                                     if (BlocProvider.of<fullprodCubit>(context)
-                                            .type ==
-                                        "0")
+                                            .type !=
+                                        "1")
                                       custommytextform(
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.allow(
@@ -212,12 +214,12 @@ class _addclientmoveState extends State<addclientmove> {
                                         val: "برجاء ادخال الكميه",
                                       ),
                                     if (BlocProvider.of<fullprodCubit>(context)
-                                            .type ==
-                                        "0")
+                                            .type !=
+                                        "1")
                                       SizedBox(height: 10),
                                     if (BlocProvider.of<fullprodCubit>(context)
-                                            .type ==
-                                        "0")
+                                            .type !=
+                                        "1")
                                       custommytextform(
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.allow(
@@ -292,8 +294,8 @@ class _addclientmoveState extends State<addclientmove> {
                                   button_name: "تسجيل",
                                   onPressed: () async {
                                     if (BlocProvider.of<fullprodCubit>(context)
-                                            .type ==
-                                        "0") {
+                                            .type !=
+                                        "1") {
                                       if (BlocProvider.of<fullprodCubit>(
                                                   context)
                                               .productname ==
