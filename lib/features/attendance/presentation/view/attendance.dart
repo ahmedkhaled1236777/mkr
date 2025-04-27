@@ -35,6 +35,7 @@ class _attendanceState extends State<attendance> {
     "ايام\nالغياب",
     "ايام\nالاجازه",
     "ساعات\nالاذن",
+    "ساعات\nالاضافى",
     "الراتب",
   ];
 
@@ -134,6 +135,7 @@ class _attendanceState extends State<attendance> {
                                   Styles.getheadertextstyle(context: context),
                               title: e,
                               flex: e == "ايام\nالحضور" ||
+                                      e == "ساعات\nالاضافى" ||
                                       e == "ايام\nالغياب" ||
                                       e == "ايام\nالاجازه" ||
                                       e == "ساعات\nالاذن"
@@ -174,6 +176,10 @@ class _attendanceState extends State<attendance> {
                                       ));
                                 },
                                 child: Customtableattendanceitem(
+                                    addhours: BlocProvider.of<Attendancecuibt>(context)
+                                        .attendances[i]
+                                        .totalExtraTime!
+                                        .toString(),
                                     employeename:
                                         BlocProvider.of<Attendancecuibt>(context)
                                             .attendances[i]
@@ -196,12 +202,11 @@ class _attendanceState extends State<attendance> {
                                     permessionhours:
                                         BlocProvider.of<Attendancecuibt>(context)
                                             .attendances[i]
-                                            .totalPermissions
+                                            .totalPermissions!
                                             .toString(),
                                     salary: BlocProvider.of<Attendancecuibt>(context)
                                         .getsalary(
-                                            BlocProvider.of<Attendancecuibt>(context)
-                                                .attendances[i]),
+                                            BlocProvider.of<Attendancecuibt>(context).attendances[i]),
                                     textStyle: Styles.gettabletextstyle(context: context)),
                               ),
                           separatorBuilder: (context, i) => Divider(

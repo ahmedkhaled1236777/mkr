@@ -57,6 +57,7 @@ class EmployessPowersState extends State<EmployessPowers> {
     "deleteworker",
     "addworker",
     "attendance",
+    "permessions"
   ];
 
   @override

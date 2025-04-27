@@ -14,8 +14,8 @@ class Datum extends Equatable {
   final int? totalAbsence;
   final int? totalVacation;
   final int? totalAttendance;
-  final int? totalPermissions;
-  final int? totalExtraTime;
+  final num? totalPermissions;
+  final num? totalExtraTime;
 
   const Datum({
     this.id,
@@ -53,8 +53,8 @@ class Datum extends Equatable {
         totalAbsence: json['total_absence'] as int?,
         totalVacation: json['total_vacation'] as int?,
         totalAttendance: json['total_attendance'] as int?,
-        totalPermissions: json['total_permissions'] as int?,
-        totalExtraTime: json['total_extra_time'] as int?,
+        totalPermissions: json['total_permissions'] as num?,
+        totalExtraTime: json['total_extra_time'] as num?,
       );
 
   Map<String, dynamic> toJson() => {

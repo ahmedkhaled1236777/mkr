@@ -18,6 +18,7 @@ import 'package:mkr/core/common/widgets/loading.dart';
 import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/core/common/widgets/showdialogerror.dart';
+import 'package:mkr/core/common/widgets/thousand.dart';
 import 'package:mkr/features/clients/clieents/presentation/viewmodel/client/client_cubit.dart';
 import 'package:mkr/features/clients/clientmoves/data/models/clientmovemodel/datum.dart';
 import 'package:mkr/features/clients/clientmoves/presentation/view/addaction.dart';
@@ -218,29 +219,29 @@ class _clientmovesState extends State<clientmoves> {
                                       context: context),
                                   date:
                                       "${BlocProvider.of<ClientmovesCubit>(context).datamoves[i].date!}",
-                                  price: BlocProvider.of<ClientmovesCubit>(context).datamoves[i].status != 1
-                                      ? (BlocProvider.of<ClientmovesCubit>(context)
+                                  price: gettext(
+                                      value: BlocProvider.of<ClientmovesCubit>(context)
                                                   .datamoves[i]
-                                                  .unitsPerPackaging! *
-                                              double.parse(
-                                                  BlocProvider.of<ClientmovesCubit>(context)
+                                                  .status !=
+                                              1
+                                          ? (BlocProvider.of<ClientmovesCubit>(context)
                                                       .datamoves[i]
-                                                      .qty
-                                                      .toString()) *
-                                              ((100 -
-                                                      double.parse(
-                                                          BlocProvider.of<ClientmovesCubit>(context)
-                                                              .datamoves[i]
-                                                              .discountPercentage!)) /
-                                                  100) *
-                                              double.parse(
-                                                  BlocProvider.of<ClientmovesCubit>(context)
-                                                      .datamoves[i]
-                                                      .price!))
-                                          .toStringAsFixed(1)
-                                      : BlocProvider.of<ClientmovesCubit>(context)
-                                          .datamoves[i]
-                                          .price!,
+                                                      .unitsPerPackaging! *
+                                                  double.parse(
+                                                      BlocProvider.of<ClientmovesCubit>(context)
+                                                          .datamoves[i]
+                                                          .qty
+                                                          .toString()) *
+                                                  ((100 - double.parse(BlocProvider.of<ClientmovesCubit>(context).datamoves[i].discountPercentage!)) /
+                                                      100) *
+                                                  double.parse(
+                                                      BlocProvider.of<ClientmovesCubit>(context)
+                                                          .datamoves[i]
+                                                          .price!))
+                                              .toStringAsFixed(1)
+                                          : BlocProvider.of<ClientmovesCubit>(context)
+                                              .datamoves[i]
+                                              .price!),
                                   status:
                                       BlocProvider.of<ClientmovesCubit>(context)
                                                   .datamoves[i]

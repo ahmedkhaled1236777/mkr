@@ -344,7 +344,9 @@ class _addclientmoveState extends State<addclientmove> {
                                                             DateCubit>(context)
                                                         .date1,
                                                     qty: null,
-                                                    price: price.text,
+                                                    price: double.tryParse(
+                                                            price.text)
+                                                        .toString(),
                                                     discount_percentage: null,
                                                     notes: notes.text,
                                                     status: BlocProvider.of<

@@ -17,6 +17,12 @@ class Attendancecuibt extends Cubit<Attendancestate> {
   String? month;
   String? year;
   String? attendancestatus;
+  String permessionstatus = "0";
+  changepermessiontype(String value) {
+    permessionstatus = value;
+    emit(changepermessionstatus());
+  }
+
   changeattendancestatus({required String value, required int index}) {
     status[index] = value;
     emit(changestatus());
@@ -34,6 +40,16 @@ class Attendancecuibt extends Cubit<Attendancestate> {
       emit(addattendancefailure(errormessage: failure.error_message));
     }, (success) {
       emit(addattendancesuccess(successmessage: success));
+    });
+  }
+
+  addpermession({required Attendancepermessionrequest permession}) async {
+    emit(addpermessionloading());
+    var result = await attendancerepo.addpermession(permession: permession);
+    result.fold((failure) {
+      emit(addpermessionfailure(errormessage: failure.error_message));
+    }, (success) {
+      emit(addpermessionsuccess(successmessage: success));
     });
   }
 
@@ -108,7 +124,10 @@ class Attendancecuibt extends Cubit<Attendancestate> {
                   (totalabsense * (double.parse(data.salary!) / 30))) -
               (((double.parse(data.salary!) / 30) /
                       double.parse(data.workedHours!)) *
-                  data.totalPermissions!))
+                  data.totalPermissions!) +
+              (((double.parse(data.salary!) / 30) /
+                      double.parse(data.workedHours!)) *
+                  data.totalExtraTime!))
           .ceil()
           .toString();
     }

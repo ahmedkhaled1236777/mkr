@@ -8,6 +8,8 @@ import 'package:mkr/features/workers/data/models/workermodel/workermodel.dart';
 abstract class attendancerepo {
   Future<Either<failure, String>> addattendance(
       {required Attendancemodelrequest attendance});
+  Future<Either<failure, String>> addpermession(
+      {required Attendancepermessionrequest permession});
   Future<Either<failure, String>> editattendancemove(
       {required String status, required int id});
   Future<Either<failure, String>> editpermession(

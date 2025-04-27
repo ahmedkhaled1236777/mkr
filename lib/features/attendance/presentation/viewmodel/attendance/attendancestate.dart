@@ -2,6 +2,22 @@ abstract class Attendancestate {}
 
 class attendanceintial extends Attendancestate {}
 
+class addpermessionloading extends Attendancestate {}
+
+class changepermessionstatus extends Attendancestate {}
+
+class addpermessionsuccess extends Attendancestate {
+  final String successmessage;
+
+  addpermessionsuccess({required this.successmessage});
+}
+
+class addpermessionfailure extends Attendancestate {
+  final String errormessage;
+
+  addpermessionfailure({required this.errormessage});
+}
+
 class editattendanceloading extends Attendancestate {}
 
 class editattendencesuccess extends Attendancestate {

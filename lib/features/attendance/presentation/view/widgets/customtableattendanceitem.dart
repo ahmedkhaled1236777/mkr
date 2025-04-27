@@ -6,6 +6,7 @@ class Customtableattendanceitem extends StatelessWidget {
   final String weekenddays;
   final String notattendacedays;
   final String permessionhours;
+  final String addhours;
   final String salary;
 
   final TextStyle textStyle;
@@ -15,6 +16,7 @@ class Customtableattendanceitem extends StatelessWidget {
       required this.employeename,
       required this.attendancedays,
       required this.weekenddays,
+      required this.addhours,
       required this.notattendacedays,
       required this.permessionhours,
       required this.salary,
@@ -76,6 +78,16 @@ class Customtableattendanceitem extends StatelessWidget {
               flex: 2,
               child: Text(
                 permessionhours,
+                style: textStyle,
+                textAlign: TextAlign.center,
+              )),
+          const SizedBox(
+            width: 3,
+          ),
+          Expanded(
+              flex: 2,
+              child: Text(
+                addhours,
                 style: textStyle,
                 textAlign: TextAlign.center,
               )),

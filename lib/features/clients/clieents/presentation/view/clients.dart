@@ -18,6 +18,7 @@ import 'package:mkr/core/common/widgets/showdialogerror.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mkr/core/common/widgets/thousand.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/addclient.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/pdf/pdf.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/widgets/alertsearch.dart';
@@ -178,21 +179,22 @@ class _clientState extends State<client> {
                                 }
                               },
                               child: Customclientitem(
-                                  maden: double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!) >
-                                          double.parse(BlocProvider.of<ClientCubit>(context)
-                                              .clients[i]
-                                              .totalPaid!)
-                                      ? (double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!) - double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!))
-                                          .toStringAsFixed(1)
-                                      : "0",
-                                  daen: double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!) >
-                                          double.parse(BlocProvider.of<ClientCubit>(context)
-                                              .clients[i]
-                                              .totalProcess!)
-                                      ? (double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!) -
-                                              double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!))
-                                          .toStringAsFixed(1)
-                                      : "0",
+                                  maden: gettext(
+                                      value: double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!) > double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!)
+                                          ? (double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!) - double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!))
+                                              .toStringAsFixed(1)
+                                          : "0"),
+                                  daen: gettext(
+                                      value: double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!) >
+                                              double.parse(
+                                                  BlocProvider.of<ClientCubit>(context)
+                                                      .clients[i]
+                                                      .totalProcess!)
+                                          ? (double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!) -
+                                                  double.parse(
+                                                      BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!))
+                                              .toStringAsFixed(1)
+                                          : "0"),
                                   clientphone: BlocProvider.of<ClientCubit>(context).clients[i].phone!,
                                   clientname: BlocProvider.of<ClientCubit>(context).clients[i].name!,
                                   textStyle: Styles.gettabletextstyle(context: context),

@@ -18,6 +18,7 @@ import 'package:mkr/core/common/widgets/loading.dart';
 import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/core/common/widgets/showdialogerror.dart';
+import 'package:mkr/core/common/widgets/thousand.dart';
 import 'package:mkr/features/suppliers/supplier/presentation/viewmodel/supplier/supplier_cubit.dart';
 import 'package:mkr/features/suppliers/suppliermoves/data/models/suppliermovemodel/datum.dart';
 import 'package:mkr/features/suppliers/suppliermoves/presentation/view/addaction.dart';
@@ -222,28 +223,28 @@ class _suppliermovesState extends State<suppliermoves> {
                                       context: context),
                                   date:
                                       "${BlocProvider.of<suppliermovesCubit>(context).datamoves[i].date!}",
-                                  price: BlocProvider.of<suppliermovesCubit>(context)
-                                              .datamoves[i]
-                                              .status !=
-                                          1
-                                      ? (BlocProvider.of<suppliermovesCubit>(context)
+                                  price: gettext(
+                                      value: BlocProvider.of<suppliermovesCubit>(context)
                                                   .datamoves[i]
-                                                  .unitsPerPackaging! *
-                                              double.parse(BlocProvider.of<
-                                                          suppliermovesCubit>(
-                                                      context)
-                                                  .datamoves[i]
-                                                  .qty
-                                                  .toString()) *
-                                              double.parse(
-                                                  BlocProvider.of<suppliermovesCubit>(
+                                                  .status !=
+                                              1
+                                          ? (BlocProvider.of<suppliermovesCubit>(context)
+                                                      .datamoves[i]
+                                                      .unitsPerPackaging! *
+                                                  double.parse(BlocProvider.of<
+                                                              suppliermovesCubit>(
                                                           context)
                                                       .datamoves[i]
-                                                      .price!))
-                                          .toStringAsFixed(1)
-                                      : BlocProvider.of<suppliermovesCubit>(context)
-                                          .datamoves[i]
-                                          .price!,
+                                                      .qty
+                                                      .toString()) *
+                                                  double.parse(
+                                                      BlocProvider.of<suppliermovesCubit>(context)
+                                                          .datamoves[i]
+                                                          .price!))
+                                              .toStringAsFixed(1)
+                                          : BlocProvider.of<suppliermovesCubit>(context)
+                                              .datamoves[i]
+                                              .price!),
                                   status: BlocProvider.of<suppliermovesCubit>(
                                                   context)
                                               .datamoves[i]

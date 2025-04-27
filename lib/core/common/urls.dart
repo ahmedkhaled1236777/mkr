@@ -1,12 +1,12 @@
 abstract class urls {
-  static const String baseurl =
-      "https://warehousepk.store/employrs/public/api/";
+  static const String baseurl = "https://moaz.pw/employrs/public/api/";
   static const String addaccessorie = "accessories";
 
   static const String login = "login";
   static const String addcomponent = "stocks";
   static const String employers = "employers";
   static const String employermoves = "employer-moves";
+  static const String permits = "permits";
   static const String fullprod = "warehouses";
   static const String supplierprocesses = "supplier-processes";
   static const String fullprodmoves = "warehouse-moves";
@@ -39,6 +39,5 @@ abstract class urls {
   static const String updateprofile = "profile";
   static const String machines = "machines";
   static const String materials = "materials";
-  static const String imageurl =
-      "https://warehousepk.store/employrs/public/storage/";
+  static const String imageurl = "https://moaz.pw/employrs/public/storage//";
 }

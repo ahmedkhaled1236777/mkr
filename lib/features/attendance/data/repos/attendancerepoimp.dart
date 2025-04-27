@@ -172,4 +172,27 @@ class attendancerepoimp extends attendancerepo {
       return left(requestfailure(error_message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<failure, String>> addpermession(
+      {required Attendancepermessionrequest permession}) async {
+    try {
+      Response response = await Postdata.postdata(
+          token: cashhelper.getdata(key: "token"),
+          path: urls.permits,
+          queryParameters: permession.tojson());
+      if (response.statusCode == 200 && response.data["success"] == true) {
+        return right("تم الانشاء بنجاح");
+      } else {
+        if (response.data["errors"] != null) {
+          return left(
+              requestfailure(error_message: response.data["errors"][0]));
+        } else
+          return left(requestfailure(error_message: response.data["message"]));
+      }
+    } catch (e) {
+      if (e is DioException) return left(requestfailure.fromdioexception(e));
+      return left(requestfailure(error_message: e.toString()));
+    }
+  }
 }

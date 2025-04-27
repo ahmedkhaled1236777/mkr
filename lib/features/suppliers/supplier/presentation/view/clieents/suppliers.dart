@@ -18,6 +18,7 @@ import 'package:mkr/core/common/widgets/showdialogerror.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mkr/core/common/widgets/thousand.dart';
 import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/addsupplier.dart';
 import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/widgets/alertsuppliersearch.dart';
 import 'package:mkr/features/suppliers/supplier/presentation/view/clieents/widgets/customsupplieritem.dart';
@@ -180,26 +181,28 @@ class _supplierState extends State<supplier> {
                                       ));
                               },
                               child: Customsupplieritem(
-                                  maden: BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid! >
-                                          BlocProvider.of<supplierCubit>(context)
-                                              .suppliers[i]
-                                              .totalProcess!
-                                      ? (BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid! -
+                                  maden: gettext(
+                                      value: BlocProvider.of<supplierCubit>(context)
+                                                  .suppliers[i]
+                                                  .totalPaid! >
                                               BlocProvider.of<supplierCubit>(context)
                                                   .suppliers[i]
-                                                  .totalProcess!)
-                                          .toStringAsFixed(1)
-                                      : "0",
-                                  daen: BlocProvider.of<supplierCubit>(context).suppliers[i].totalProcess! >
-                                          BlocProvider.of<supplierCubit>(context)
-                                              .suppliers[i]
-                                              .totalPaid!
-                                      ? (BlocProvider.of<supplierCubit>(context)
+                                                  .totalProcess!
+                                          ? (BlocProvider.of<supplierCubit>(context)
+                                                      .suppliers[i]
+                                                      .totalPaid! -
+                                                  BlocProvider.of<supplierCubit>(context)
+                                                      .suppliers[i]
+                                                      .totalProcess!)
+                                              .toStringAsFixed(1)
+                                          : "0"),
+                                  daen: gettext(
+                                      value: BlocProvider.of<supplierCubit>(context)
                                                   .suppliers[i]
-                                                  .totalProcess! -
-                                              BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid!)
-                                          .toStringAsFixed(1)
-                                      : "0",
+                                                  .totalProcess! >
+                                              BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid!
+                                          ? (BlocProvider.of<supplierCubit>(context).suppliers[i].totalProcess! - BlocProvider.of<supplierCubit>(context).suppliers[i].totalPaid!).toStringAsFixed(1)
+                                          : "0"),
                                   supplierphone: BlocProvider.of<supplierCubit>(context).suppliers[i].phone!,
                                   suppliername: BlocProvider.of<supplierCubit>(context).suppliers[i].name!,
                                   textStyle: Styles.gettabletextstyle(context: context),

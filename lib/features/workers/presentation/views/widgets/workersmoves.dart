@@ -12,6 +12,7 @@ import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mkr/features/attendance/presentation/view/widgets/addpermession.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/editattendancedialog.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancecuibt.dart';
 import 'package:mkr/features/workers/presentation/viewmodel/cubit/workers_cubit.dart';
@@ -154,19 +155,13 @@ class _WorkersmovesState extends State<Workersmoves> {
                                       .workersmoves[i]
                                       .date ??
                                   "",
-                              type: BlocProvider.of<WorkersCubit>(context)
-                                              .workersmoves[i]
-                                              .status ==
-                                          1 &&
+                              type: BlocProvider.of<WorkersCubit>(context).workersmoves[i].status == 1 &&
                                       BlocProvider.of<WorkersCubit>(context)
                                               .workersmoves[i]
                                               .type ==
                                           "move"
                                   ? "حضور"
-                                  : BlocProvider.of<WorkersCubit>(context)
-                                                  .workersmoves[i]
-                                                  .status ==
-                                              2 &&
+                                  : BlocProvider.of<WorkersCubit>(context).workersmoves[i].status == 2 &&
                                           BlocProvider.of<WorkersCubit>(context)
                                                   .workersmoves[i]
                                                   .type ==
@@ -176,13 +171,21 @@ class _WorkersmovesState extends State<Workersmoves> {
                                                       .workersmoves[i]
                                                       .status ==
                                                   0 &&
-                                              BlocProvider.of<WorkersCubit>(
-                                                          context)
+                                              BlocProvider.of<WorkersCubit>(context)
                                                       .workersmoves[i]
                                                       .type ==
                                                   "move"
                                           ? "اجازه"
-                                          : "اذن",
+                                          : BlocProvider.of<WorkersCubit>(context)
+                                                          .workersmoves[i]
+                                                          .status ==
+                                                      0 &&
+                                                  BlocProvider.of<WorkersCubit>(context)
+                                                          .workersmoves[i]
+                                                          .type ==
+                                                      "permission"
+                                              ? "اذن"
+                                              : "اضافي",
                               textStyle:
                                   Styles.gettabletextstyle(context: context),
                               edit: IconButton(
@@ -312,11 +315,15 @@ class _WorkersmovesState extends State<Workersmoves> {
                         onPressed: () async {
                           if (!cashhelper
                               .getdata(key: "permessions")
-                              .contains('addworker')) {
+                              .contains('permessions')) {
                             showdialogerror(
                                 error: "ليس لديك الصلاحيه", context: context);
                           } else
-                            navigateto(context: context, page: Addworker());
+                            navigateto(
+                                context: context,
+                                page: Addpermession(
+                                  employerid: widget.workerid,
+                                ));
                         },
                         icon: Icon(
                           color: Colors.white,
