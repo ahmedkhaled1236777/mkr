@@ -68,7 +68,7 @@ class Supplierpdf {
             child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
                 children: [
-                  pw.Text("العملاء",
+                  pw.Text("الموردين",
                       style: pw.TextStyle(
                           fontSize: 20,
                           color: PdfColors.blue900,

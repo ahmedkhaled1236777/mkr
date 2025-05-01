@@ -22,9 +22,11 @@ import 'package:mkr/core/common/widgets/thousand.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/addclient.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/pdf/pdf.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/widgets/alertsearch.dart';
+import 'package:mkr/features/clients/clieents/presentation/view/widgets/clientitem.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/widgets/customclienttimeritem.dart';
 import 'package:mkr/features/clients/clieents/presentation/view/widgets/editclient.dart';
 import 'package:mkr/features/clients/clieents/presentation/viewmodel/client/client_cubit.dart';
+import 'package:mkr/features/clients/clientmoves/presentation/view/addaction.dart';
 import 'package:mkr/features/clients/clientmoves/presentation/view/clientactions.dart';
 
 class client extends StatefulWidget {
@@ -39,9 +41,7 @@ class _clientState extends State<client> {
 
   final clientheader = [
     "اسم العميل",
-    "رقم الهاتف",
-    "مدين",
-    "دائن",
+    "الجهه",
     "تعديل",
     "حذف",
   ];
@@ -154,7 +154,38 @@ class _clientState extends State<client> {
                   else {
                     return ListView.separated(
                         itemBuilder: (context, i) => InkWell(
-                              onDoubleTap: () {},
+                              onDoubleTap: () {
+                                if (!cashhelper
+                                    .getdata(key: "permessions")
+                                    .contains('showclientinformation')) {
+                                  showdialogerror(
+                                      error: "ليس لديك الصلاحيه",
+                                      context: context);
+                                } else
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            title: Container(
+                                              alignment: Alignment.topLeft,
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.close,
+                                                    color: appcolors.maincolor,
+                                                  )),
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(0)),
+                                            content: clientitem(
+                                                client: BlocProvider.of<
+                                                        ClientCubit>(context)
+                                                    .clients[i]));
+                                      });
+                              },
                               onTap: () {
                                 if (!cashhelper
                                     .getdata(key: "permessions")
@@ -179,27 +210,19 @@ class _clientState extends State<client> {
                                 }
                               },
                               child: Customclientitem(
-                                  maden: gettext(
-                                      value: double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!) > double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!)
-                                          ? (double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!) - double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!))
-                                              .toStringAsFixed(1)
-                                          : "0"),
-                                  daen: gettext(
-                                      value: double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!) >
-                                              double.parse(
-                                                  BlocProvider.of<ClientCubit>(context)
-                                                      .clients[i]
-                                                      .totalProcess!)
-                                          ? (double.parse(BlocProvider.of<ClientCubit>(context).clients[i].totalPaid!) -
-                                                  double.parse(
-                                                      BlocProvider.of<ClientCubit>(context).clients[i].totalProcess!))
-                                              .toStringAsFixed(1)
-                                          : "0"),
-                                  clientphone: BlocProvider.of<ClientCubit>(context).clients[i].phone!,
-                                  clientname: BlocProvider.of<ClientCubit>(context).clients[i].name!,
-                                  textStyle: Styles.gettabletextstyle(context: context),
+                                  place: BlocProvider.of<ClientCubit>(context)
+                                          .clients[i]
+                                          .destination ??
+                                      "",
+                                  clientname:
+                                      BlocProvider.of<ClientCubit>(context)
+                                          .clients[i]
+                                          .name!,
+                                  textStyle: Styles.gettabletextstyle(
+                                      context: context),
                                   edit: IconButton(
-                                      color: const Color.fromARGB(255, 9, 62, 88),
+                                      color:
+                                          const Color.fromARGB(255, 9, 62, 88),
                                       onPressed: () {
                                         if (!cashhelper
                                             .getdata(key: "permessions")
@@ -234,21 +257,23 @@ class _clientState extends State<client> {
                                                   insetPadding:
                                                       EdgeInsets.all(35),
                                                   content: editclientdialog(
+                                                      place: TextEditingController(
+                                                          text: BlocProvider.of<ClientCubit>(
+                                                                  context)
+                                                              .clients[i]
+                                                              .destination),
                                                       clientname:
                                                           TextEditingController(
-                                                              text: BlocProvider
-                                                                      .of<ClientCubit>(
-                                                                          context)
+                                                              text: BlocProvider.of<ClientCubit>(
+                                                                      context)
                                                                   .clients[i]
                                                                   .name),
                                                       phone: TextEditingController(
-                                                          text: BlocProvider.of<
-                                                                      ClientCubit>(
+                                                          text: BlocProvider.of<ClientCubit>(
                                                                   context)
                                                               .clients[i]
                                                               .phone),
-                                                      id: BlocProvider.of<
-                                                                  ClientCubit>(
+                                                      id: BlocProvider.of<ClientCubit>(
                                                               context)
                                                           .clients[i]
                                                           .id!),
@@ -359,6 +384,30 @@ class _clientState extends State<client> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  InkWell(
+                      onTap: () {
+                        if (!cashhelper
+                            .getdata(key: "permessions")
+                            .contains('addclientmove')) {
+                          showdialogerror(
+                              error: "ليس لديك الصلاحيه", context: context);
+                        } else
+                          navigateto(context: context, page: addclientmove());
+                      },
+                      child: Container(
+                        height: 45,
+                        width: 45,
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        decoration: BoxDecoration(
+                            color: appcolors.primarycolor,
+                            borderRadius: BorderRadius.circular(7)),
+                      )),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Container(
                     height: 45,
                     width: 45,
@@ -382,15 +431,13 @@ class _clientState extends State<client> {
                                         .length;
                                 i++) {
                               totalprocess = totalprocess +
-                                  double.parse(
-                                      BlocProvider.of<ClientCubit>(context)
-                                          .clients[i]
-                                          .totalProcess!);
+                                  BlocProvider.of<ClientCubit>(context)
+                                      .clients[i]
+                                      .totalProcess!;
                               totalpay = totalpay +
-                                  double.parse(
-                                      BlocProvider.of<ClientCubit>(context)
-                                          .clients[i]
-                                          .totalPaid!);
+                                  BlocProvider.of<ClientCubit>(context)
+                                      .clients[i]
+                                      .totalPaid!;
                             }
                             final img = await rootBundle
                                 .load('assets/images/logo.jpeg');
@@ -430,12 +477,12 @@ class _clientState extends State<client> {
                               .contains('addclient')) {
                             showdialogerror(
                                 error: "ليس لديك الصلاحيه", context: context);
-                          }
-                          navigateto(context: context, page: addclient());
+                          } else
+                            navigateto(context: context, page: addclient());
                         },
                         icon: Icon(
                           color: Colors.white,
-                          Icons.add,
+                          Icons.person,
                         )),
                   ),
                   SizedBox(

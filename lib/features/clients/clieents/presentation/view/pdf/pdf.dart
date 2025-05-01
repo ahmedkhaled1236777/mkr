@@ -24,13 +24,11 @@ class clientpdf {
     );
     final data = categories.map((item) {
       return [
-        double.parse(item.totalPaid!) > double.parse(item.totalProcess!)
-            ? (double.parse(item.totalPaid!) - double.parse(item.totalProcess!))
-                .toStringAsFixed(1)
+        item.totalPaid! > item.totalProcess!
+            ? (item.totalPaid! - item.totalProcess!).toStringAsFixed(1)
             : "0",
-        double.parse(item.totalProcess!) > double.parse(item.totalPaid!)
-            ? (double.parse(item.totalProcess!) - double.parse(item.totalPaid!))
-                .toStringAsFixed(1)
+        item.totalProcess! > item.totalPaid!
+            ? (item.totalProcess! - item.totalPaid!).toStringAsFixed(1)
             : "0",
         item.phone,
         item.name,
@@ -167,7 +165,7 @@ class clientpdf {
 
   static Future<File> savepdf(String filename, pw.Document pdf) async {
     final bytes = await pdf.save();
-    //var dir = await getApplicationDocumentsDirectory();
+    // var dir = await getApplicationDocumentsDirectory();
     var dir = await getExternalStorageDirectory();
     final file = File(
         '${dir!.path}/$filename${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-${DateTime.now().hour}-${DateTime.now().minute}.pdf');

@@ -564,31 +564,6 @@ class _clientmovesState extends State<clientmoves> {
                     SizedBox(
                       width: 7,
                     ),
-                    InkWell(
-                        onTap: () {
-                          if (!cashhelper
-                              .getdata(key: "permessions")
-                              .contains('addclientmove')) {
-                            showdialogerror(
-                                error: "ليس لديك الصلاحيه", context: context);
-                          } else
-                            navigateto(
-                                context: context,
-                                page: addclientmove(
-                                    clientid: widget.clientid,
-                                    clientname: widget.clientname));
-                        },
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          ),
-                          decoration: BoxDecoration(
-                              color: appcolors.primarycolor,
-                              borderRadius: BorderRadius.circular(7)),
-                        )),
                     SizedBox(
                       width: 7,
                     ),

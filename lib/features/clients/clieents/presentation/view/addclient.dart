@@ -20,6 +20,9 @@ class _addclientState extends State<addclient> {
 
   TextEditingController clientname = TextEditingController();
   TextEditingController phone = TextEditingController();
+  TextEditingController maden = TextEditingController();
+  TextEditingController daen = TextEditingController();
+  TextEditingController place = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +90,32 @@ class _addclientState extends State<addclient> {
                               val: "برجاء ادخال رقم هاتف العميل",
                             ),
                             const SizedBox(
+                              height: 10,
+                            ),
+                            custommytextform(
+                              keyboardType: TextInputType.number,
+                              controller: maden,
+                              hintText: "مدين",
+                              val: "برجاء ادخال قيمه المدين",
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            custommytextform(
+                              keyboardType: TextInputType.number,
+                              controller: daen,
+                              hintText: "دائن",
+                              val: "برجاء ادخال قيمة الدائن",
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            custommytextform(
+                              controller: place,
+                              hintText: "الجهه",
+                              val: "برجاء ادخال الجهه",
+                            ),
+                            const SizedBox(
                               height: 20,
                             ),
                             BlocConsumer<ClientCubit, clientState>(
@@ -100,6 +129,9 @@ class _addclientState extends State<addclient> {
                                 if (state is addclientsuccess) {
                                   phone.clear();
                                   clientname.clear();
+                                  daen.clear();
+                                  maden.clear();
+                                  place.clear();
 
                                   BlocProvider.of<ClientCubit>(context)
                                       .getclients();
@@ -118,6 +150,9 @@ class _addclientState extends State<addclient> {
                                       BlocProvider.of<ClientCubit>(context)
                                           .addcoponent(
                                               client: Clientrequest(
+                                        place: place.text,
+                                        maden: maden.text,
+                                        daen: daen.text,
                                         name: clientname.text,
                                         phone: phone.text,
                                       ));

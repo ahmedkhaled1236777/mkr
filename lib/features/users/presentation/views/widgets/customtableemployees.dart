@@ -88,90 +88,103 @@ class _customtableemployeeesState extends State<customtableemployees> {
                             child: customtableemployeeitem(
                                 delete: IconButton(
                                     onPressed: () {
-                                      if (!cashhelper
-                                          .getdata(key: "permessions")
-                                          .contains('deleteusers')) {
+                                      if (BlocProvider.of<showemployeescuibt>(
+                                                  context)
+                                              .employeesdata[index]
+                                              .roleId ==
+                                          1) {
                                         showdialogerror(
-                                            error: "ليس لديك الصلاحيه",
+                                            error: "الادمن ممنوع المسح",
                                             context: context);
                                       } else {
-                                        awsomdialogerror(
-                                            context: context,
-                                            mywidget: BlocConsumer<
-                                                showemployeescuibt,
-                                                showemployeesstates>(
-                                              listener: (context, state) {
-                                                if (state
-                                                    is deleteemployeesuccess) {
-                                                  BlocProvider.of<
-                                                              showemployeescuibt>(
-                                                          context)
-                                                      .getallemployees();
-                                                  Navigator.pop(context);
+                                        if (!cashhelper
+                                            .getdata(key: "permessions")
+                                            .contains('deleteusers')) {
+                                          showdialogerror(
+                                              error: "ليس لديك الصلاحيه",
+                                              context: context);
+                                        } else {
+                                          awsomdialogerror(
+                                              context: context,
+                                              mywidget: BlocConsumer<
+                                                  showemployeescuibt,
+                                                  showemployeesstates>(
+                                                listener: (context, state) {
+                                                  if (state
+                                                      is deleteemployeesuccess) {
+                                                    BlocProvider.of<
+                                                                showemployeescuibt>(
+                                                            context)
+                                                        .getallemployees();
+                                                    Navigator.pop(context);
 
-                                                  showtoast(
-                                                      message:
-                                                          state.succes_message,
-                                                      toaststate:
-                                                          Toaststate.succes,
-                                                      context: context);
-                                                }
-                                                if (state
-                                                    is deleteemployeefailure) {
-                                                  Navigator.pop(context);
+                                                    showtoast(
+                                                        message: state
+                                                            .succes_message,
+                                                        toaststate:
+                                                            Toaststate.succes,
+                                                        context: context);
+                                                  }
+                                                  if (state
+                                                      is deleteemployeefailure) {
+                                                    Navigator.pop(context);
 
-                                                  showtoast(
-                                                      message:
-                                                          state.errormessage,
-                                                      toaststate:
-                                                          Toaststate.error,
-                                                      context: context);
-                                                }
-                                              },
-                                              builder: (context, state) {
-                                                if (state
-                                                    is deleteemployeeloading)
-                                                  return deleteloading();
-                                                return SizedBox(
-                                                  height: 50,
-                                                  width: 100,
-                                                  child: ElevatedButton(
-                                                      style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll(
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    37,
-                                                                    163,
-                                                                    42)),
-                                                      ),
-                                                      onPressed: () async {
-                                                        await BlocProvider.of<
-                                                                    showemployeescuibt>(
-                                                                context)
-                                                            .deleteemployee(
-                                                                employeenumber: BlocProvider.of<
-                                                                            showemployeescuibt>(
-                                                                        context)
-                                                                    .employeesdata[
-                                                                        index]
-                                                                    .id!);
-                                                      },
-                                                      child: const Text(
-                                                        "تاكيد",
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontFamily: "cairo",
-                                                            color:
-                                                                Colors.white),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                );
-                                              },
-                                            ),
-                                            tittle:
-                                                "هل تريد حذف  ${BlocProvider.of<showemployeescuibt>(context).employeesdata[index].name}");
+                                                    showtoast(
+                                                        message:
+                                                            state.errormessage,
+                                                        toaststate:
+                                                            Toaststate.error,
+                                                        context: context);
+                                                  }
+                                                },
+                                                builder: (context, state) {
+                                                  if (state
+                                                      is deleteemployeeloading)
+                                                    return deleteloading();
+                                                  return SizedBox(
+                                                    height: 50,
+                                                    width: 100,
+                                                    child: ElevatedButton(
+                                                        style:
+                                                            const ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStatePropertyAll(
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          37,
+                                                                          163,
+                                                                          42)),
+                                                        ),
+                                                        onPressed: () async {
+                                                          await BlocProvider.of<
+                                                                      showemployeescuibt>(
+                                                                  context)
+                                                              .deleteemployee(
+                                                                  employeenumber: BlocProvider.of<
+                                                                              showemployeescuibt>(
+                                                                          context)
+                                                                      .employeesdata[
+                                                                          index]
+                                                                      .id!);
+                                                        },
+                                                        child: const Text(
+                                                          "تاكيد",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  "cairo",
+                                                              color:
+                                                                  Colors.white),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        )),
+                                                  );
+                                                },
+                                              ),
+                                              tittle:
+                                                  "هل تريد حذف  ${BlocProvider.of<showemployeescuibt>(context).employeesdata[index].name}");
+                                        }
                                       }
                                     },
                                     icon: Icon(
@@ -208,126 +221,146 @@ class _customtableemployeeesState extends State<customtableemployees> {
                                     size: 29,
                                   ),
                                   onPressed: () {
-                                    if (!cashhelper
-                                        .getdata(key: "permessions")
-                                        .contains('editusers')) {
+                                    if (BlocProvider.of<showemployeescuibt>(
+                                                context)
+                                            .employeesdata[index]
+                                            .roleId ==
+                                        1) {
                                       showdialogerror(
-                                          error: "ليس لديك الصلاحيه",
+                                          error: "الادمن ممنوع التعديل",
                                           context: context);
                                     } else {
-                                      BlocProvider.of<AddemployeeCubit>(context)
-                                              .is_active =
-                                          BlocProvider.of<showemployeescuibt>(
-                                                  context)
-                                              .employeesdata[index]
-                                              .isActive
-                                              .toString();
-                                      BlocProvider.of<AddemployeeCubit>(context)
-                                              .manager =
-                                          BlocProvider.of<showemployeescuibt>(
-                                                  context)
-                                              .employeesdata[index]
-                                              .roleId
-                                              .toString();
-                                      BlocProvider.of<AddemployeeCubit>(context)
-                                              .selecteditems =
-                                          BlocProvider.of<showemployeescuibt>(
-                                                  context)
-                                              .employeesdata[index]
-                                              .permissions!;
-                                      //صلاحيات الموظف مش راجعه مع المستخدمين
-                                      showDialog(
-                                          barrierDismissible: false,
-                                          // user must tap button!
-                                          context: context,
-                                          builder: (_) {
-                                            return AlertDialog(
-                                                title: Container(
-                                                  alignment: Alignment.topLeft,
-                                                  child: IconButton(
-                                                      onPressed: () {
-                                                        BlocProvider.of<
-                                                                    AddemployeeCubit>(
-                                                                context)
-                                                            .resetdata();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      icon: const Icon(
-                                                          Icons.close)),
-                                                ),
-                                                surfaceTintColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            0)),
-                                                content: editemployeedialog(
-                                                  isactive: BlocProvider.of<
-                                                              showemployeescuibt>(
-                                                          context)
-                                                      .employeesdata[index]
-                                                      .isActive
-                                                      .toString(),
-                                                  userid: BlocProvider.of<
-                                                              showemployeescuibt>(
-                                                          context)
-                                                      .employeesdata[index]
-                                                      .id
-                                                      .toString(),
-                                                  width:
-                                                      MediaQuery.sizeOf(context)
-                                                                  .width >
-                                                              950
-                                                          ? MediaQuery.sizeOf(
-                                                                      context)
-                                                                  .width *
-                                                              0.25
-                                                          : MediaQuery.sizeOf(
-                                                                      context)
-                                                                  .width *
-                                                              1,
-                                                  height:
-                                                      MediaQuery.sizeOf(context)
-                                                              .height *
-                                                          0.85,
-                                                  role: BlocProvider.of<
-                                                              showemployeescuibt>(
-                                                          context)
-                                                      .employeesdata[index]
-                                                      .roleId
-                                                      .toString(),
-                                                  employeename:
-                                                      TextEditingController(
-                                                          text: BlocProvider.of<
-                                                                      showemployeescuibt>(
+                                      if (!cashhelper
+                                          .getdata(key: "permessions")
+                                          .contains('editusers')) {
+                                        showdialogerror(
+                                            error: "ليس لديك الصلاحيه",
+                                            context: context);
+                                      } else {
+                                        BlocProvider.of<AddemployeeCubit>(
+                                                    context)
+                                                .is_active =
+                                            BlocProvider.of<showemployeescuibt>(
+                                                    context)
+                                                .employeesdata[index]
+                                                .isActive
+                                                .toString();
+                                        BlocProvider.of<AddemployeeCubit>(
+                                                    context)
+                                                .manager =
+                                            BlocProvider.of<showemployeescuibt>(
+                                                    context)
+                                                .employeesdata[index]
+                                                .roleId
+                                                .toString();
+                                        BlocProvider.of<AddemployeeCubit>(
+                                                    context)
+                                                .selecteditems =
+                                            BlocProvider.of<showemployeescuibt>(
+                                                    context)
+                                                .employeesdata[index]
+                                                .permissions!;
+                                        //صلاحيات الموظف مش راجعه مع المستخدمين
+                                        showDialog(
+                                            barrierDismissible: false,
+                                            // user must tap button!
+                                            context: context,
+                                            builder: (_) {
+                                              return AlertDialog(
+                                                  title: Container(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          BlocProvider.of<
+                                                                      AddemployeeCubit>(
                                                                   context)
-                                                              .employeesdata[
-                                                                  index]
-                                                              .name
-                                                              .toString()),
-                                                  email: TextEditingController(
-                                                      text: BlocProvider.of<
-                                                                  showemployeescuibt>(
-                                                              context)
-                                                          .employeesdata[index]
-                                                          .email
-                                                          .toString()),
-                                                  phone: TextEditingController(
-                                                      text: BlocProvider.of<
-                                                                  showemployeescuibt>(
-                                                              context)
-                                                          .employeesdata[index]
-                                                          .phone
-                                                          .toString()),
-                                                  jobtittle: TextEditingController(
-                                                      text: BlocProvider.of<
-                                                                  showemployeescuibt>(
-                                                              context)
-                                                          .employeesdata[index]
-                                                          .jobTitle
-                                                          .toString()),
-                                                ));
-                                          });
+                                                              .resetdata();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.close)),
+                                                  ),
+                                                  surfaceTintColor:
+                                                      Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              0)),
+                                                  content: editemployeedialog(
+                                                    isactive: BlocProvider.of<
+                                                                showemployeescuibt>(
+                                                            context)
+                                                        .employeesdata[index]
+                                                        .isActive
+                                                        .toString(),
+                                                    userid: BlocProvider.of<
+                                                                showemployeescuibt>(
+                                                            context)
+                                                        .employeesdata[index]
+                                                        .id
+                                                        .toString(),
+                                                    width:
+                                                        MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width >
+                                                                950
+                                                            ? MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width *
+                                                                0.25
+                                                            : MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width *
+                                                                1,
+                                                    height: MediaQuery.sizeOf(
+                                                                context)
+                                                            .height *
+                                                        0.85,
+                                                    role: BlocProvider.of<
+                                                                showemployeescuibt>(
+                                                            context)
+                                                        .employeesdata[index]
+                                                        .roleId
+                                                        .toString(),
+                                                    employeename:
+                                                        TextEditingController(
+                                                            text: BlocProvider
+                                                                    .of<showemployeescuibt>(
+                                                                        context)
+                                                                .employeesdata[
+                                                                    index]
+                                                                .name
+                                                                .toString()),
+                                                    email: TextEditingController(
+                                                        text: BlocProvider.of<
+                                                                    showemployeescuibt>(
+                                                                context)
+                                                            .employeesdata[
+                                                                index]
+                                                            .email
+                                                            .toString()),
+                                                    phone: TextEditingController(
+                                                        text: BlocProvider.of<
+                                                                    showemployeescuibt>(
+                                                                context)
+                                                            .employeesdata[
+                                                                index]
+                                                            .phone
+                                                            .toString()),
+                                                    jobtittle:
+                                                        TextEditingController(
+                                                            text: BlocProvider
+                                                                    .of<showemployeescuibt>(
+                                                                        context)
+                                                                .employeesdata[
+                                                                    index]
+                                                                .jobTitle
+                                                                .toString()),
+                                                  ));
+                                            });
+                                      }
                                     }
                                   },
                                 )),

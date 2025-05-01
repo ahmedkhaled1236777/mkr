@@ -39,5 +39,5 @@ abstract class urls {
   static const String updateprofile = "profile";
   static const String machines = "machines";
   static const String materials = "materials";
-  static const String imageurl = "https://moaz.pw/employrs/public/storage//";
+  static const String imageurl = "https://moaz.pw/employrs/public/storage/";
 }

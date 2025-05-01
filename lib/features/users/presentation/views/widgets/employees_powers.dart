@@ -14,6 +14,7 @@ class EmployessPowers extends StatefulWidget {
 class EmployessPowersState extends State<EmployessPowers> {
   final List<String> items = [
     "client",
+    "showclientinformation",
     "addclient",
     "editclient",
     "deleteclient",
@@ -23,6 +24,7 @@ class EmployessPowersState extends State<EmployessPowers> {
     "showclientmove",
     "deleteclientmove",
     "supplier",
+    "supplierspdf",
     "addsupplier",
     "editsupplier",
     "deletesupplier",

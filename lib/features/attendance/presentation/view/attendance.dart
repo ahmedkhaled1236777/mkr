@@ -34,9 +34,8 @@ class _attendanceState extends State<attendance> {
     "ايام\nالحضور",
     "ايام\nالغياب",
     "ايام\nالاجازه",
-    "ساعات\nالاذن",
-    "ساعات\nالاضافى",
     "الراتب",
+    "عرض",
   ];
 
   getdata() async {
@@ -115,13 +114,17 @@ class _attendanceState extends State<attendance> {
               ],
               backgroundColor: appcolors.maincolor,
               centerTitle: true,
-              title: Text(
-                "حضور وانصراف الموظفين لشهر  ${DateTime.now().month}",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: "cairo",
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+              title: BlocBuilder<Attendancecuibt, Attendancestate>(
+                builder: (context, state) {
+                  return Text(
+                    "حضور وانصراف الموظفين \nلشهر ${BlocProvider.of<Attendancecuibt>(context).month}-${BlocProvider.of<Attendancecuibt>(context).year}",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "cairo",
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  );
+                },
               ),
             ),
             body: Column(children: [
@@ -138,6 +141,7 @@ class _attendanceState extends State<attendance> {
                                       e == "ساعات\nالاضافى" ||
                                       e == "ايام\nالغياب" ||
                                       e == "ايام\nالاجازه" ||
+                                      e == "عرض" ||
                                       e == "ساعات\nالاذن"
                                   ? 2
                                   : 3,
@@ -176,10 +180,30 @@ class _attendanceState extends State<attendance> {
                                       ));
                                 },
                                 child: Customtableattendanceitem(
-                                    addhours: BlocProvider.of<Attendancecuibt>(context)
-                                        .attendances[i]
-                                        .totalExtraTime!
-                                        .toString(),
+                                    pdf: IconButton(
+                                        onPressed: () async {
+                                          final img = await rootBundle
+                                              .load('assets/images/logo.jpeg');
+                                          final imageBytes =
+                                              img.buffer.asUint8List();
+                                          File file =
+                                              await Attendancepdf.generatepdf(
+                                                  context: context,
+                                                  imageBytes: imageBytes,
+                                                  date:
+                                                      "${BlocProvider.of<Attendancecuibt>(context).month}-${BlocProvider.of<Attendancecuibt>(context).year}",
+                                                  categories: [
+                                                BlocProvider.of<
+                                                            Attendancecuibt>(
+                                                        context)
+                                                    .attendances[i]
+                                              ]);
+                                          Attendancepdf.openfile(file);
+                                        },
+                                        icon: Icon(
+                                          color: appcolors.primarycolor,
+                                          Icons.picture_as_pdf,
+                                        )),
                                     employeename:
                                         BlocProvider.of<Attendancecuibt>(context)
                                             .attendances[i]
@@ -199,15 +223,14 @@ class _attendanceState extends State<attendance> {
                                             .attendances[i]
                                             .totalAbsence
                                             .toString(),
-                                    permessionhours:
+                                    salary:
                                         BlocProvider.of<Attendancecuibt>(context)
-                                            .attendances[i]
-                                            .totalPermissions!
-                                            .toString(),
-                                    salary: BlocProvider.of<Attendancecuibt>(context)
-                                        .getsalary(
-                                            BlocProvider.of<Attendancecuibt>(context).attendances[i]),
-                                    textStyle: Styles.gettabletextstyle(context: context)),
+                                            .getsalary(
+                                                BlocProvider.of<Attendancecuibt>(
+                                                        context)
+                                                    .attendances[i]),
+                                    textStyle:
+                                        Styles.gettabletextstyle(context: context)),
                               ),
                           separatorBuilder: (context, i) => Divider(
                                 color: Colors.grey,

@@ -5,10 +5,8 @@ class Customtableattendanceitem extends StatelessWidget {
   final String attendancedays;
   final String weekenddays;
   final String notattendacedays;
-  final String permessionhours;
-  final String addhours;
   final String salary;
-
+  final Widget pdf;
   final TextStyle textStyle;
 
   const Customtableattendanceitem(
@@ -16,10 +14,9 @@ class Customtableattendanceitem extends StatelessWidget {
       required this.employeename,
       required this.attendancedays,
       required this.weekenddays,
-      required this.addhours,
       required this.notattendacedays,
-      required this.permessionhours,
       required this.salary,
+      required this.pdf,
       required this.textStyle});
 
   // ignore: non_constant_identifier_names
@@ -75,32 +72,13 @@ class Customtableattendanceitem extends StatelessWidget {
             width: 3,
           ),
           Expanded(
-              flex: 2,
-              child: Text(
-                permessionhours,
-                style: textStyle,
-                textAlign: TextAlign.center,
-              )),
-          const SizedBox(
-            width: 3,
-          ),
-          Expanded(
-              flex: 2,
-              child: Text(
-                addhours,
-                style: textStyle,
-                textAlign: TextAlign.center,
-              )),
-          const SizedBox(
-            width: 3,
-          ),
-          Expanded(
               flex: 3,
               child: Text(
                 salary,
                 style: textStyle,
                 textAlign: TextAlign.center,
               )),
+          Expanded(flex: 2, child: pdf),
         ],
       ),
     );

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class Customclientitem extends StatelessWidget {
   final String clientname;
-  final String clientphone;
-  final String maden;
-  final String daen;
+
+  final String place;
   final Widget edit;
   final Widget delete;
 
@@ -13,9 +12,7 @@ class Customclientitem extends StatelessWidget {
   const Customclientitem(
       {super.key,
       required this.clientname,
-      required this.clientphone,
-      required this.maden,
-      required this.daen,
+      required this.place,
       required this.edit,
       required this.delete,
       required this.textStyle});
@@ -44,31 +41,11 @@ class Customclientitem extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              clientphone,
+              place,
               style: textStyle,
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(
-            width: 3,
-          ),
-          Expanded(
-              flex: 3,
-              child: Text(
-                maden,
-                style: textStyle,
-                textAlign: TextAlign.center,
-              )),
-          const SizedBox(
-            width: 3,
-          ),
-          Expanded(
-              flex: 3,
-              child: Text(
-                daen,
-                style: textStyle,
-                textAlign: TextAlign.center,
-              )),
           const SizedBox(
             width: 3,
           ),

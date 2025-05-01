@@ -19,14 +19,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:mkr/features/fullprodstore/presentation/viewmodel/fullprodcuibt/fullprod_state.dart';
 
 class addclientmove extends StatefulWidget {
-  final String clientname;
-  final int clientid;
-
-  addclientmove({
-    super.key,
-    required this.clientid,
-    required this.clientname,
-  });
   @override
   State<addclientmove> createState() => _addclientmoveState();
 }
@@ -43,6 +35,8 @@ class _addclientmoveState extends State<addclientmove> {
   void initState() {
     if (BlocProvider.of<fullprodCubit>(context).products.isEmpty)
       BlocProvider.of<fullprodCubit>(context).getfullprods();
+    if (BlocProvider.of<ClientCubit>(context).clientname.isEmpty)
+      BlocProvider.of<ClientCubit>(context).getclients();
   }
 
   @override
@@ -57,7 +51,7 @@ class _addclientmoveState extends State<addclientmove> {
               backgroundColor: appcolors.maincolor,
               centerTitle: true,
               title: Text(
-                " اضافة حركة للعميل ${widget.clientname}",
+                " اضافة حركة العملاء",
                 style: Styles.appbarstyle,
               ),
             ),
@@ -114,6 +108,78 @@ class _addclientmoveState extends State<addclientmove> {
                                         .changedate(context);
                                   },
                                 );
+                              },
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            BlocBuilder<ClientCubit, clientState>(
+                              builder: (context, state) {
+                                if (state is getclientloading) return loading();
+                                if (state is getclientfailure)
+                                  return Text(state.errormessage);
+                                return Column(children: [
+                                  Container(
+                                    color: Color(0xff535C91),
+                                    child: Center(
+                                      child:
+                                          BlocBuilder<ClientCubit, clientState>(
+                                        builder: (context, state) {
+                                          return DropdownSearch<String>(
+                                            dropdownButtonProps:
+                                                DropdownButtonProps(
+                                                    color: Colors.white),
+                                            popupProps: PopupProps.menu(
+                                                showSelectedItems: true,
+                                                showSearchBox: true,
+                                                searchFieldProps:
+                                                    TextFieldProps()),
+                                            selectedItem:
+                                                BlocProvider.of<ClientCubit>(
+                                                        context)
+                                                    .clientname,
+                                            items: BlocProvider.of<ClientCubit>(
+                                                    context)
+                                                .clientsnames,
+                                            onChanged: (value) {
+                                              BlocProvider.of<ClientCubit>(
+                                                      context)
+                                                  .changeclientname(value!);
+                                            },
+                                            dropdownDecoratorProps:
+                                                DropDownDecoratorProps(
+                                                    baseStyle: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: "cairo"),
+                                                    textAlign: TextAlign.center,
+                                                    dropdownSearchDecoration:
+                                                        InputDecoration(
+                                                      enabled: true,
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Color(
+                                                                0xff535C91)),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Color(
+                                                                0xff535C91)),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                    )),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ]);
                               },
                             ),
                             SizedBox(
@@ -274,12 +340,9 @@ class _addclientmoveState extends State<addclientmove> {
                                       .cleardates();
                                   BlocProvider.of<fullprodCubit>(context)
                                       .resetprodname();
+                                  BlocProvider.of<ClientCubit>(context)
+                                      .changeclientname("اختر العميل");
 
-                                  await BlocProvider.of<ClientmovesCubit>(
-                                          context)
-                                      .getclientmoves(clienid: widget.clientid);
-                                  await BlocProvider.of<ClientCubit>(context)
-                                      .getclients();
                                   showtoast(
                                       message: state.successmessage,
                                       toaststate: Toaststate.succes,
@@ -293,66 +356,77 @@ class _addclientmoveState extends State<addclientmove> {
                                 return custommaterialbutton(
                                   button_name: "تسجيل",
                                   onPressed: () async {
-                                    if (BlocProvider.of<fullprodCubit>(context)
-                                            .type !=
-                                        "1") {
+                                    if (BlocProvider.of<ClientCubit>(context)
+                                            .clientname ==
+                                        "اختر العميل") {
+                                      showdialogerror(
+                                          error: "لابد من اختيار اسم العميل",
+                                          context: context);
+                                    } else {
                                       if (BlocProvider.of<fullprodCubit>(
                                                   context)
-                                              .productname ==
-                                          "اختر المنتج") {
-                                        showdialogerror(
-                                            error: "لابد من اختيار المنتج",
-                                            context: context);
-                                      } else if (discount_perc.text.isEmpty ||
-                                          qty.text.isEmpty ||
-                                          notes.text.isEmpty) {
-                                        showdialogerror(
-                                            error: "لابد من مليء جميع الحقول",
-                                            context: context);
+                                              .type !=
+                                          "1") {
+                                        if (BlocProvider.of<fullprodCubit>(
+                                                    context)
+                                                .productname ==
+                                            "اختر المنتج") {
+                                          showdialogerror(
+                                              error: "لابد من اختيار المنتج",
+                                              context: context);
+                                        } else if (discount_perc.text.isEmpty ||
+                                            qty.text.isEmpty ||
+                                            notes.text.isEmpty) {
+                                          showdialogerror(
+                                              error: "لابد من مليء جميع الحقول",
+                                              context: context);
+                                        } else {
+                                          BlocProvider.of<ClientmovesCubit>(context).addclientmovemove(
+                                              clientmove: Clientmoverequest(
+                                                  fullprodid:
+                                                      BlocProvider.of<fullprodCubit>(context)
+                                                              .productid[
+                                                          BlocProvider.of<fullprodCubit>(context)
+                                                              .productname],
+                                                  clientid: BlocProvider.of<ClientCubit>(context)
+                                                          .clientid[
+                                                      BlocProvider.of<ClientCubit>(context)
+                                                          .clientname]!,
+                                                  date:
+                                                      BlocProvider.of<DateCubit>(context)
+                                                          .date1,
+                                                  qty: qty.text,
+                                                  price: null,
+                                                  discount_percentage:
+                                                      discount_perc.text,
+                                                  notes: notes.text,
+                                                  status: BlocProvider.of<fullprodCubit>(context).type));
+                                        }
                                       } else {
-                                        BlocProvider.of<ClientmovesCubit>(context).addclientmovemove(
-                                            clientmove: Clientmoverequest(
-                                                fullprodid: BlocProvider.of<
-                                                        fullprodCubit>(context)
-                                                    .productid[BlocProvider.of<
-                                                        fullprodCubit>(context)
-                                                    .productname],
-                                                clientid: widget.clientid,
-                                                date: BlocProvider.of<DateCubit>(context)
-                                                    .date1,
-                                                qty: qty.text,
-                                                price: null,
-                                                discount_percentage:
-                                                    discount_perc.text,
-                                                notes: notes.text,
-                                                status: BlocProvider.of<fullprodCubit>(context)
-                                                    .type));
-                                      }
-                                    } else {
-                                      if (notes.text.isEmpty ||
-                                          price.text.isEmpty) {
-                                        showdialogerror(
-                                            error: "لابد من ملىء جميع الحقول",
-                                            context: context);
-                                      } else {
-                                        BlocProvider.of<ClientmovesCubit>(
-                                                context)
-                                            .addclientmovemove(
-                                                clientmove: Clientmoverequest(
-                                                    clientid: widget.clientid,
-                                                    date: BlocProvider.of<
-                                                            DateCubit>(context)
-                                                        .date1,
-                                                    qty: null,
-                                                    price: double.tryParse(
-                                                            price.text)
-                                                        .toString(),
-                                                    discount_percentage: null,
-                                                    notes: notes.text,
-                                                    status: BlocProvider.of<
-                                                                fullprodCubit>(
-                                                            context)
-                                                        .type));
+                                        if (notes.text.isEmpty ||
+                                            price.text.isEmpty) {
+                                          showdialogerror(
+                                              error: "لابد من ملىء جميع الحقول",
+                                              context: context);
+                                        } else {
+                                          BlocProvider.of<ClientmovesCubit>(context).addclientmovemove(
+                                              clientmove: Clientmoverequest(
+                                                  clientid: BlocProvider.of<
+                                                          ClientCubit>(context)
+                                                      .clientid[BlocProvider.of<
+                                                          ClientCubit>(context)
+                                                      .clientname]!,
+                                                  date:
+                                                      BlocProvider.of<DateCubit>(context)
+                                                          .date1,
+                                                  qty: null,
+                                                  price:
+                                                      double.tryParse(price.text)
+                                                          .toString(),
+                                                  discount_percentage: null,
+                                                  notes: notes.text,
+                                                  status: BlocProvider.of<fullprodCubit>(context).type));
+                                        }
                                       }
                                     }
                                   },

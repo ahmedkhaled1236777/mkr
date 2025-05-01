@@ -30,6 +30,7 @@ class Attendancepdf {
     final data = categories.map((item) {
       return [
         BlocProvider.of<Attendancecuibt>(context).getsalary(item),
+        item.totalExtraTime,
         item.totalPermissions,
         item.totalVacation,
         item.totalAbsence,
@@ -95,6 +96,7 @@ class Attendancepdf {
                 fontSize: 14),
             headers: [
               "الراتب",
+              "ساعات الاضافى",
               "ساعات الاذن",
               "ايام الاجازه",
               "ايام الغياب",
@@ -110,8 +112,8 @@ class Attendancepdf {
 
   static Future<File> savepdf(String filename, pw.Document pdf) async {
     final bytes = await pdf.save();
-    var dir = await getApplicationDocumentsDirectory();
-    //var dir = await getExternalStorageDirectory();
+    // var dir = await getApplicationDocumentsDirectory();
+    var dir = await getExternalStorageDirectory();
     final file = File(
         '${dir!.path}/$filename${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-${DateTime.now().hour}-${DateTime.now().minute}.pdf');
     await file.writeAsBytes(bytes);

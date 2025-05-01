@@ -2,6 +2,8 @@ abstract class Attendancestate {}
 
 class attendanceintial extends Attendancestate {}
 
+class changedatestate extends Attendancestate {}
+
 class addpermessionloading extends Attendancestate {}
 
 class changepermessionstatus extends Attendancestate {}

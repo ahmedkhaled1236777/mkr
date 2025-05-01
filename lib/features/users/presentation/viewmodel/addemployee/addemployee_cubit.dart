@@ -41,10 +41,12 @@ class AddemployeeCubit extends Cubit<AddemployeeState> {
   List<String> selecteditems = [];
   getselecteditems() {
     List<String> employeepermession = [];
-    employeepermession.add("settings");
+
     for (int i = 0; i < selecteditems.length; i++) {
       employeepermession.add(selecteditems[i]);
     }
+    if (!employeepermession.contains("settings"))
+      employeepermession.add("settings");
     return employeepermession;
   }
 

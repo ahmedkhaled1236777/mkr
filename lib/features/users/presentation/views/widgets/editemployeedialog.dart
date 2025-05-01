@@ -152,41 +152,6 @@ class _editemployeedialogState extends State<editemployeedialog> {
                 const SizedBox(
                   height: 15,
                 ),
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Color(0xff2BA4C8), width: 0.5)),
-                  child: Row(
-                    children: [
-                      Radio(
-                          value: "1",
-                          groupValue: BlocProvider.of<AddemployeeCubit>(context)
-                              .manager,
-                          onChanged: (val) {
-                            BlocProvider.of<AddemployeeCubit>(context)
-                                .changemanager(val!);
-                          }),
-                      Text("مدير"),
-                      Spacer(),
-                      Radio(
-                          value: "0",
-                          groupValue: BlocProvider.of<AddemployeeCubit>(context)
-                              .manager,
-                          onChanged: (val) {
-                            BlocProvider.of<AddemployeeCubit>(context)
-                                .changestatus(val!);
-                          }),
-                      Text("موظف"),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
                 BlocConsumer<AddemployeeCubit, AddemployeeState>(
                   listener: (context, state) async {
                     if (state is updateemployeefailure) {
@@ -213,17 +178,15 @@ class _editemployeedialogState extends State<editemployeedialog> {
                     return custommaterialbutton(
                       button_name: "تعديل البيانات",
                       onPressed: () async {
-                        print(
-                            "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-                        print(BlocProvider.of<AddemployeeCubit>(context)
-                            .getselecteditems());
                         BlocProvider.of<AddemployeeCubit>(context)
                             .updateemployee(
                                 token: cashhelper.getdata(key: "token"),
                                 employee: editemployeemodel(
                                     role: widget.role,
                                     userid: widget.userid,
-                                    isactive: widget.isactive,
+                                    isactive: BlocProvider.of<AddemployeeCubit>(
+                                            context)
+                                        .is_active!,
                                     email: email.text,
                                     name: employeename.text,
                                     jobtittle: jobtittle.text,

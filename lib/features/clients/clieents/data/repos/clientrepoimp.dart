@@ -57,7 +57,7 @@ class Clientrepoimp extends clientrepo {
 
   @override
   Future<Either<failure, String>> editclient(
-      {required Clientrequest client, required int id}) async {
+      {required Clientrequest2 client, required int id}) async {
     try {
       Response response = await Putdata.putdata(
           token: cashhelper.getdata(key: "token"),

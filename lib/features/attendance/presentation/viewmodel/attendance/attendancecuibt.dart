@@ -17,7 +17,14 @@ class Attendancecuibt extends Cubit<Attendancestate> {
   String? month;
   String? year;
   String? attendancestatus;
+  String date = "${DateTime.now().month}-${DateTime.now().year}";
+
   String permessionstatus = "0";
+  changedate(String value) {
+    date = value;
+    emit(changedatestate());
+  }
+
   changepermessiontype(String value) {
     permessionstatus = value;
     emit(changepermessionstatus());

@@ -354,52 +354,6 @@ class _ComponentmovesState extends State<Componentmoves> {
                         onTap: () {
                           if (!cashhelper
                               .getdata(key: "permessions")
-                              .contains('componentmovepdf')) {
-                            showdialogerror(
-                                error: "ليس لديك الصلاحيه", context: context);
-                          } else {}
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: appcolors.primarycolor,
-                              borderRadius: BorderRadius.circular(7)),
-                          height: 45,
-                          width: 45,
-                          child: Icon(
-                            Icons.picture_as_pdf,
-                            color: Colors.white,
-                          ),
-                        )),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    InkWell(
-                        onTap: () async {
-                          if (!cashhelper
-                              .getdata(key: "permessions")
-                              .contains('componentmovepdf')) {
-                            showdialogerror(
-                                error: "ليس لديك الصلاحيه", context: context);
-                          } else {}
-                        },
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          child: Icon(
-                            Icons.share,
-                            color: Colors.white,
-                          ),
-                          decoration: BoxDecoration(
-                              color: appcolors.primarycolor,
-                              borderRadius: BorderRadius.circular(7)),
-                        )),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    InkWell(
-                        onTap: () {
-                          if (!cashhelper
-                              .getdata(key: "permessions")
                               .contains('addcomponentmove')) {
                             showdialogerror(
                                 error: "ليس لديك الصلاحيه", context: context);

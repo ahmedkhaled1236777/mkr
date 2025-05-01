@@ -29,11 +29,11 @@ class Suppliermovepdf {
             ? item.price
             : (item.qty! * item.unitsPerPackaging! * double.parse(item.price!))
                 .toStringAsFixed(1),
-        item.status != 1 ? item.price : "",
-        item.status != 1
+        item.status == 0 || item.status == 2 ? item.price : "",
+        item.status == 0 || item.status == 2
             ? (item.qty! * item.unitsPerPackaging!).toStringAsFixed(1)
             : "",
-        item.status != 0 ? item.stock_name : "",
+        item.status != 1 ? item.stock_name : "",
         item.status == 0
             ? "عمليه"
             : item.status == 1
@@ -70,7 +70,7 @@ class Suppliermovepdf {
             child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
                 children: [
-                  pw.Text("العميل : ${clientname}",
+                  pw.Text("المورد : ${clientname}",
                       style: pw.TextStyle(
                           fontSize: 20,
                           color: PdfColors.blue900,
@@ -170,7 +170,7 @@ class Suppliermovepdf {
       ],
     ));
 
-    return await savepdf("فاتوره العميل ${clientname}", pdf);
+    return await savepdf("فاتوره المورد ${clientname}", pdf);
   }
 
   static Future<File> savepdf(String filename, pw.Document pdf) async {

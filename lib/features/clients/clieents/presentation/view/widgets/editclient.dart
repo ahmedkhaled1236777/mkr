@@ -11,8 +11,9 @@ import 'package:mkr/features/clients/clieents/presentation/viewmodel/client/clie
 class editclientdialog extends StatelessWidget {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  TextEditingController clientname = TextEditingController();
-  TextEditingController phone = TextEditingController();
+  TextEditingController clientname;
+  TextEditingController phone;
+  TextEditingController place;
 
   final int id;
 
@@ -20,6 +21,7 @@ class editclientdialog extends StatelessWidget {
       {super.key,
       required this.clientname,
       required this.phone,
+      required this.place,
       required this.id});
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,14 @@ class editclientdialog extends StatelessWidget {
               controller: phone,
               hintText: "رقم هاتف العميل",
               val: "برجاء ادخال رقم هاتف العميل",
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            custommytextform(
+              controller: place,
+              hintText: "الجهه",
+              val: "برجاء ادخال الجهه",
             ),
             const SizedBox(
               height: 10,
@@ -79,7 +89,8 @@ class editclientdialog extends StatelessWidget {
                     if (formkey.currentState!.validate()) {
                       BlocProvider.of<ClientCubit>(context).editcoponent(
                           id: id,
-                          client: Clientrequest(
+                          client: Clientrequest2(
+                            place: place.text,
                             name: clientname.text,
                             phone: phone.text,
                           ));

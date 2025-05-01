@@ -8,7 +8,7 @@ abstract class clientrepo {
   /* Future<Either<failure, String>> addclientmove(
       {required clientmoverequest comp});*/
   Future<Either<failure, String>> editclient(
-      {required Clientrequest client, required int id});
+      {required Clientrequest2 client, required int id});
 
   Future<Either<failure, String>> deletclient({required int clientid});
   // Future<Either<failure, String>> deletecompmove({required int compmoveid});

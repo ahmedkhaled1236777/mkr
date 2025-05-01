@@ -61,7 +61,7 @@ class DecimalFormatter extends TextInputFormatter {
 gettext({required String value}) {
   print(value);
   String newString;
-  newString = NumberFormat("#,##0.##").format(double.tryParse(value));
+  newString = NumberFormat("#,##0.##", "en").format(double.tryParse(value));
 
   return newString;
 }

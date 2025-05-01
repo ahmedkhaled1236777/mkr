@@ -18,6 +18,7 @@ import 'package:mkr/core/common/widgets/showdialogerror.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mkr/core/common/widgets/thousand.dart';
 import 'package:mkr/features/workers/presentation/viewmodel/cubit/workers_cubit.dart';
 import 'package:mkr/features/workers/presentation/views/addworker.dart';
 import 'package:mkr/features/workers/presentation/views/widgets/alertsearch.dart';
@@ -180,9 +181,11 @@ class _workerState extends State<worker> {
                                   job: BlocProvider.of<WorkersCubit>(context)
                                       .workers[i]
                                       .jobTitle!,
-                                  salary: BlocProvider.of<WorkersCubit>(context)
-                                      .workers[i]
-                                      .salary!,
+                                  salary: gettext(
+                                      value:
+                                          BlocProvider.of<WorkersCubit>(context)
+                                              .workers[i]
+                                              .salary!),
                                   workerphone:
                                       BlocProvider.of<WorkersCubit>(context)
                                               .workers[i]

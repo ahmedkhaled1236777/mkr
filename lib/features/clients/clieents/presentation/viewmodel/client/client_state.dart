@@ -4,6 +4,8 @@ abstract class clientState {}
 
 class clientInitial extends clientState {}
 
+class changeclientnamestate extends clientState {}
+
 class changematerialstate extends clientState {}
 
 class addclientloading extends clientState {}

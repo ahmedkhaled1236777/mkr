@@ -27,11 +27,9 @@ class Authrepoimp extends Authrepo {
           return left(
               requestfailure(error_message: response.data["errors"][0]));
         } else
-          return left(requestfailure(error_message: response.data["messages"]));
+          return left(requestfailure(error_message: response.data["message"]));
       }
     } catch (e) {
-      print("llllllllllllllllllllllllllllllll");
-      print(e.toString());
       if (e is DioException) {
         return left(requestfailure.fromdioexception(e));
       } else {
