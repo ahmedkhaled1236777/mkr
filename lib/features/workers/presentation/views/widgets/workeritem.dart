@@ -103,7 +103,7 @@ class Workeritem extends StatelessWidget {
                         fontFamily: "cairo",
                         fontSize: 12.5,
                         color: appcolors.maincolor)),
-                Text(componentitem.workedHours.toString(),
+                Text(componentitem.jobTitle!,
                     style: TextStyle(
                         fontFamily: "cairo",
                         fontSize: 12.5,

@@ -20,6 +20,9 @@ class _addsupplierState extends State<addsupplier> {
 
   TextEditingController suppliername = TextEditingController();
   TextEditingController phone = TextEditingController();
+  TextEditingController pay = TextEditingController();
+  TextEditingController process = TextEditingController();
+  TextEditingController destenation = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +85,36 @@ class _addsupplierState extends State<addsupplier> {
                               height: 10,
                             ),
                             custommytextform(
+                              keyboardType: TextInputType.number,
                               controller: phone,
                               hintText: "رقم هاتف العميل",
                               val: "برجاء ادخال رقم هاتف العميل",
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            custommytextform(
+                              controller: destenation,
+                              hintText: "الجهه",
+                              val: "برجاء ادخال الجهه ",
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            custommytextform(
+                              keyboardType: TextInputType.number,
+                              controller: pay,
+                              hintText: "مدين",
+                              val: "برجاء ادخال قيمة المدين",
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            custommytextform(
+                              keyboardType: TextInputType.number,
+                              controller: process,
+                              hintText: "دائن",
+                              val: "برجاء ادخال قيمة الدائن",
                             ),
                             const SizedBox(
                               height: 20,
@@ -100,7 +130,9 @@ class _addsupplierState extends State<addsupplier> {
                                 if (state is addsuppliersuccess) {
                                   phone.clear();
                                   suppliername.clear();
-
+                                  destenation.clear();
+                                  pay.clear();
+                                  process.clear();
                                   BlocProvider.of<supplierCubit>(context)
                                       .getsuppliers();
                                   showtoast(
@@ -119,6 +151,9 @@ class _addsupplierState extends State<addsupplier> {
                                       BlocProvider.of<supplierCubit>(context)
                                           .addcoponent(
                                               supplier: supplierrequest(
+                                        destination: destenation.text,
+                                        pay: pay.text,
+                                        process: process.text,
                                         name: suppliername.text,
                                         phone: phone.text,
                                       ));

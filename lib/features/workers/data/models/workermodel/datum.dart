@@ -9,6 +9,8 @@ class Datum extends Equatable {
   final String? hourlyRate;
   final String? workedHours;
   final String? phone;
+  final String? credit;
+  final String? debit;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? totalAbsence;
@@ -26,6 +28,8 @@ class Datum extends Equatable {
     this.hourlyRate,
     this.workedHours,
     this.phone,
+    this.credit,
+    this.debit,
     this.createdAt,
     this.updatedAt,
     this.totalAbsence,
@@ -51,6 +55,8 @@ class Datum extends Equatable {
             ? null
             : DateTime.parse(json['updated_at'] as String),
         totalAbsence: json['total_absence'] as int?,
+        credit: json['total_credit'],
+        debit: json['total_debit'],
         totalVacation: json['total_vacation'] as int?,
         totalAttendance: json['total_attendance'] as int?,
         totalPermissions: json['total_permissions'] as num?,

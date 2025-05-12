@@ -197,6 +197,48 @@ class _clientState extends State<client> {
                                   navigateto(
                                       context: context,
                                       page: clientmoves(
+                                        daen: gettext(
+                                            value: BlocProvider.of<ClientCubit>(
+                                                            context)
+                                                        .clients[i]
+                                                        .totalPaid! >
+                                                    BlocProvider.of<
+                                                                ClientCubit>(
+                                                            context)
+                                                        .clients[i]
+                                                        .totalProcess!
+                                                ? (BlocProvider.of<ClientCubit>(
+                                                                context)
+                                                            .clients[i]
+                                                            .totalPaid! -
+                                                        BlocProvider.of<
+                                                                    ClientCubit>(
+                                                                context)
+                                                            .clients[i]
+                                                            .totalProcess!)
+                                                    .toStringAsFixed(1)
+                                                : "0"),
+                                        maden: gettext(
+                                            value: BlocProvider.of<ClientCubit>(
+                                                            context)
+                                                        .clients[i]
+                                                        .totalProcess! >
+                                                    BlocProvider.of<
+                                                                ClientCubit>(
+                                                            context)
+                                                        .clients[i]
+                                                        .totalPaid!
+                                                ? (BlocProvider.of<ClientCubit>(
+                                                                context)
+                                                            .clients[i]
+                                                            .totalProcess! -
+                                                        BlocProvider.of<
+                                                                    ClientCubit>(
+                                                                context)
+                                                            .clients[i]
+                                                            .totalPaid!)
+                                                    .toStringAsFixed(1)
+                                                : "0"),
                                         clientid: BlocProvider.of<ClientCubit>(
                                                 context)
                                             .clients[i]

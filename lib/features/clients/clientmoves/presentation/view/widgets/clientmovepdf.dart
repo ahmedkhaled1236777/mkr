@@ -14,6 +14,8 @@ class Clientmovepdf {
     required Uint8List imageBytes,
     required String maden,
     required String daen,
+    required String totalmaden,
+    required String totaldaen,
     required String clientname,
     required List<datummoves> categories,
   }) async {
@@ -119,7 +121,7 @@ class Clientmovepdf {
         pw.Container(
             padding: pw.EdgeInsets.symmetric(vertical: 5),
             width: PdfPageFormat.cm * 50,
-            child: pw.Text("الاجمالى",
+            child: pw.Text("اجمالى الفاتوره",
                 textAlign: pw.TextAlign.center,
                 style: pw.TextStyle(color: PdfColors.white)),
             decoration: pw.BoxDecoration(
@@ -166,6 +168,66 @@ class Clientmovepdf {
                           left: pw.BorderSide(color: PdfColors.black)))),
               pw.Expanded(
                 child: pw.Text(daen.toString(),
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(color: PdfColors.blue800)),
+              )
+            ]),
+            decoration: pw.BoxDecoration(
+                border: pw.Border(
+                    bottom: pw.BorderSide(color: PdfColors.black),
+                    top: pw.BorderSide(color: PdfColors.black),
+                    right: pw.BorderSide(color: PdfColors.black),
+                    left: pw.BorderSide(color: PdfColors.black)))),
+        pw.Container(
+            padding: pw.EdgeInsets.symmetric(vertical: 5),
+            width: PdfPageFormat.cm * 50,
+            child: pw.Text("اجمالى الحساب",
+                textAlign: pw.TextAlign.center,
+                style: pw.TextStyle(color: PdfColors.white)),
+            decoration: pw.BoxDecoration(
+                color: PdfColor.fromInt(0xffC70039),
+                border: pw.Border(
+                    bottom: pw.BorderSide(color: PdfColors.black),
+                    top: pw.BorderSide(color: PdfColors.black),
+                    right: pw.BorderSide(color: PdfColors.black),
+                    left: pw.BorderSide(color: PdfColors.black)))),
+        pw.Container(
+            width: PdfPageFormat.cm * 50,
+            child: pw.Row(children: [
+              pw.Container(
+                  width: PdfPageFormat.cm * 4,
+                  padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                  child: pw.Text("مدين",
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(color: PdfColors.blue800)),
+                  decoration: pw.BoxDecoration(
+                      border: pw.Border(
+                          left: pw.BorderSide(color: PdfColors.black)))),
+              pw.Expanded(
+                child: pw.Text(totalmaden.toString(),
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(color: PdfColors.blue800)),
+              )
+            ]),
+            decoration: pw.BoxDecoration(
+                border: pw.Border(
+                    bottom: pw.BorderSide(color: PdfColors.black),
+                    top: pw.BorderSide(color: PdfColors.black),
+                    right: pw.BorderSide(color: PdfColors.black),
+                    left: pw.BorderSide(color: PdfColors.black)))),
+        pw.Container(
+            width: PdfPageFormat.cm * 50,
+            child: pw.Row(children: [
+              pw.Container(
+                  width: PdfPageFormat.cm * 4,
+                  child: pw.Text("دائن",
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(color: PdfColors.blue800)),
+                  decoration: pw.BoxDecoration(
+                      border: pw.Border(
+                          left: pw.BorderSide(color: PdfColors.black)))),
+              pw.Expanded(
+                child: pw.Text(totaldaen.toString(),
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(color: PdfColors.blue800)),
               )

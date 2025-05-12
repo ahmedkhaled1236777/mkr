@@ -8,11 +8,11 @@ class datummoves extends Equatable {
   final int? clientId;
   final String? date;
   final int? warehouseId;
-  final int? qty;
+  final num? qty;
   final String? price;
   final dynamic notes;
   final String? packagingType;
-  final int? unitsPerPackaging;
+  final num? unitsPerPackaging;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? warehouseName;
@@ -43,11 +43,11 @@ class datummoves extends Equatable {
         clientId: json['client_id'] as int?,
         date: json['date'] as String?,
         warehouseId: json['warehouse_id'] as int?,
-        qty: json['qty'] as int?,
+        qty: json['qty'] as num?,
         price: json['price'] as String?,
         notes: json['notes'] as dynamic,
         packagingType: json['packaging_type'] as String?,
-        unitsPerPackaging: json['units_per_packaging'] as int?,
+        unitsPerPackaging: json['units_per_packaging'] as num?,
         createdAt: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at'] as String),

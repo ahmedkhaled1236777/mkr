@@ -4,7 +4,37 @@ class attendanceintial extends Attendancestate {}
 
 class changedatestate extends Attendancestate {}
 
+class changemoneytypestate extends Attendancestate {}
+
 class addpermessionloading extends Attendancestate {}
+
+class addmoneyloading extends Attendancestate {}
+
+class addmoneysuccess extends Attendancestate {
+  final String successmessage;
+
+  addmoneysuccess({required this.successmessage});
+}
+
+class addmoneyfailure extends Attendancestate {
+  final String errormessage;
+
+  addmoneyfailure({required this.errormessage});
+}
+
+class deletemoneyloading extends Attendancestate {}
+
+class deletemoneysuccess extends Attendancestate {
+  final String successmessage;
+
+  deletemoneysuccess({required this.successmessage});
+}
+
+class deletemoneyfailure extends Attendancestate {
+  final String errormessage;
+
+  deletemoneyfailure({required this.errormessage});
+}
 
 class changepermessionstatus extends Attendancestate {}
 
@@ -48,6 +78,20 @@ class getattendancemovefailure extends Attendancestate {
   final String errormessage;
 
   getattendancemovefailure({required this.errormessage});
+}
+
+class getmoneymoveloading extends Attendancestate {}
+
+class getmoneymovesuccess extends Attendancestate {
+  final String successmessage;
+
+  getmoneymovesuccess({required this.successmessage});
+}
+
+class getmoneymovefailure extends Attendancestate {
+  final String errormessage;
+
+  getmoneymovefailure({required this.errormessage});
 }
 
 class addattendanceloading extends Attendancestate {}

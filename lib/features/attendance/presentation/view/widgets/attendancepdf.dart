@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' as ll;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mkr/core/common/widgets/thousand.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancecuibt.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,7 +30,9 @@ class Attendancepdf {
     );
     final data = categories.map((item) {
       return [
-        BlocProvider.of<Attendancecuibt>(context).getsalary(item),
+        gettext(
+            value: BlocProvider.of<Attendancecuibt>(context).getsalary(item)),
+        gettext(value: item.credit!),
         item.totalExtraTime,
         item.totalPermissions,
         item.totalVacation,
@@ -96,6 +99,7 @@ class Attendancepdf {
                 fontSize: 14),
             headers: [
               "الراتب",
+              "السلف",
               "ساعات الاضافى",
               "ساعات الاذن",
               "ايام الاجازه",

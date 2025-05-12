@@ -3,11 +3,16 @@ import 'package:mkr/core/common/errors/failure.dart';
 import 'package:mkr/features/attendance/data/models/attendancemodelrequest.dart';
 import 'package:mkr/features/attendance/data/models/attendancemovemodel/attendancemovemodel.dart';
 import 'package:mkr/features/attendance/data/models/attendancepermessionrequest.dart';
+import 'package:mkr/features/attendance/data/models/moneymodel/moneymodel.dart';
+import 'package:mkr/features/attendance/data/models/moneyrequest.dart';
 import 'package:mkr/features/workers/data/models/workermodel/workermodel.dart';
 
 abstract class attendancerepo {
   Future<Either<failure, String>> addattendance(
       {required Attendancemodelrequest attendance});
+  Future<Either<failure, String>> addmoney(
+      {required moneyrequset moneyrequest});
+  Future<Either<failure, String>> deletemoney({required int id});
   Future<Either<failure, String>> addpermession(
       {required Attendancepermessionrequest permession});
   Future<Either<failure, String>> editattendancemove(
@@ -16,6 +21,8 @@ abstract class attendancerepo {
       {required Attendancepermessionrequest attendance, required int id});
 
   Future<Either<failure, Workermodel>> getattendances(
+      {required Map<String, dynamic> queryparma});
+  Future<Either<failure, Moneymodel>> getmoney(
       {required Map<String, dynamic> queryparma});
   Future<Either<failure, Attendancemovemodel>> getattendancesemoves(
       {required Map<String, dynamic> queryparma});

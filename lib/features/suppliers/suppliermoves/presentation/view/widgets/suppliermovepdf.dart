@@ -14,6 +14,8 @@ class Suppliermovepdf {
     required String maden,
     required String daen,
     required String clientname,
+    required String totalmaden,
+    required String totaldaen,
     required List<datummoves> categories,
   }) async {
     final pdf = pw.Document();
@@ -110,7 +112,7 @@ class Suppliermovepdf {
         pw.Container(
             padding: pw.EdgeInsets.symmetric(vertical: 5),
             width: PdfPageFormat.cm * 50,
-            child: pw.Text("الاجمالى",
+            child: pw.Text("اجمالى الفاتوره",
                 textAlign: pw.TextAlign.center,
                 style: pw.TextStyle(color: PdfColors.white)),
             decoration: pw.BoxDecoration(
@@ -167,6 +169,66 @@ class Suppliermovepdf {
                     top: pw.BorderSide(color: PdfColors.black),
                     right: pw.BorderSide(color: PdfColors.black),
                     left: pw.BorderSide(color: PdfColors.black)))),
+        pw.Container(
+            padding: pw.EdgeInsets.symmetric(vertical: 5),
+            width: PdfPageFormat.cm * 50,
+            child: pw.Text("اجمالى الحساب",
+                textAlign: pw.TextAlign.center,
+                style: pw.TextStyle(color: PdfColors.white)),
+            decoration: pw.BoxDecoration(
+                color: PdfColor.fromInt(0xffC70039),
+                border: pw.Border(
+                    bottom: pw.BorderSide(color: PdfColors.black),
+                    top: pw.BorderSide(color: PdfColors.black),
+                    right: pw.BorderSide(color: PdfColors.black),
+                    left: pw.BorderSide(color: PdfColors.black)))),
+        pw.Container(
+            width: PdfPageFormat.cm * 50,
+            child: pw.Row(children: [
+              pw.Container(
+                  width: PdfPageFormat.cm * 4,
+                  padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                  child: pw.Text("مدين",
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(color: PdfColors.blue800)),
+                  decoration: pw.BoxDecoration(
+                      border: pw.Border(
+                          left: pw.BorderSide(color: PdfColors.black)))),
+              pw.Expanded(
+                child: pw.Text(totalmaden.toString(),
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(color: PdfColors.blue800)),
+              )
+            ]),
+            decoration: pw.BoxDecoration(
+                border: pw.Border(
+                    bottom: pw.BorderSide(color: PdfColors.black),
+                    top: pw.BorderSide(color: PdfColors.black),
+                    right: pw.BorderSide(color: PdfColors.black),
+                    left: pw.BorderSide(color: PdfColors.black)))),
+        pw.Container(
+            width: PdfPageFormat.cm * 50,
+            child: pw.Row(children: [
+              pw.Container(
+                  width: PdfPageFormat.cm * 4,
+                  child: pw.Text("دائن",
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(color: PdfColors.blue800)),
+                  decoration: pw.BoxDecoration(
+                      border: pw.Border(
+                          left: pw.BorderSide(color: PdfColors.black)))),
+              pw.Expanded(
+                child: pw.Text(totaldaen.toString(),
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(color: PdfColors.blue800)),
+              )
+            ]),
+            decoration: pw.BoxDecoration(
+                border: pw.Border(
+                    bottom: pw.BorderSide(color: PdfColors.black),
+                    top: pw.BorderSide(color: PdfColors.black),
+                    right: pw.BorderSide(color: PdfColors.black),
+                    left: pw.BorderSide(color: PdfColors.black)))),
       ],
     ));
 
@@ -175,7 +237,7 @@ class Suppliermovepdf {
 
   static Future<File> savepdf(String filename, pw.Document pdf) async {
     final bytes = await pdf.save();
-    //var dir = await getApplicationDocumentsDirectory();
+    // var dir = await getApplicationDocumentsDirectory();
     var dir = await getExternalStorageDirectory();
     final file = File(
         '${dir!.path}/$filename${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-${DateTime.now().hour}-${DateTime.now().minute}.pdf');

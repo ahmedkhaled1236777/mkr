@@ -62,6 +62,8 @@ class getworkermovesfailure extends WorkersState {
 
 class editworkerloading extends WorkersState {}
 
+class changeworkerstate extends WorkersState {}
+
 class editworkersuccess extends WorkersState {
   final String successmessage;
 

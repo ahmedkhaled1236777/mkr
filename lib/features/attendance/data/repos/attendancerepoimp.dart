@@ -8,6 +8,8 @@ import 'package:mkr/core/services/apiservice.dart';
 import 'package:mkr/features/attendance/data/models/attendancemodelrequest.dart';
 import 'package:mkr/features/attendance/data/models/attendancemovemodel/attendancemovemodel.dart';
 import 'package:mkr/features/attendance/data/models/attendancepermessionrequest.dart';
+import 'package:mkr/features/attendance/data/models/moneymodel/moneymodel.dart';
+import 'package:mkr/features/attendance/data/models/moneyrequest.dart';
 import 'package:mkr/features/attendance/data/repos/attendancerepo.dart';
 import 'package:mkr/features/workers/data/models/workermodel/workermodel.dart';
 
@@ -183,6 +185,74 @@ class attendancerepoimp extends attendancerepo {
           queryParameters: permession.tojson());
       if (response.statusCode == 200 && response.data["success"] == true) {
         return right("تم الانشاء بنجاح");
+      } else {
+        if (response.data["errors"] != null) {
+          return left(
+              requestfailure(error_message: response.data["errors"][0]));
+        } else
+          return left(requestfailure(error_message: response.data["message"]));
+      }
+    } catch (e) {
+      if (e is DioException) return left(requestfailure.fromdioexception(e));
+      return left(requestfailure(error_message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<failure, String>> addmoney(
+      {required moneyrequset moneyrequest}) async {
+    try {
+      Response response = await Postdata.postdata(
+          token: cashhelper.getdata(key: "token"),
+          path: "transactions",
+          data: moneyrequest.tojson());
+      if (response.statusCode == 200 && response.data["success"] == true) {
+        return right("تم الانشاء بنجاح");
+      } else {
+        if (response.data["errors"] != null) {
+          return left(
+              requestfailure(error_message: response.data["errors"][0]));
+        } else
+          return left(requestfailure(error_message: response.data["message"]));
+      }
+    } catch (e) {
+      if (e is DioException) return left(requestfailure.fromdioexception(e));
+      return left(requestfailure(error_message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<failure, String>> deletemoney({required int id}) async {
+    try {
+      Response response = await Deletedata.deletedata(
+        token: cashhelper.getdata(key: "token"),
+        path: "transactions/${id}",
+      );
+      if (response.statusCode == 200 && response.data["success"] == true) {
+        return right("تم الحذف بنجاح");
+      } else {
+        if (response.data["errors"] != null) {
+          return left(
+              requestfailure(error_message: response.data["errors"][0]));
+        } else
+          return left(requestfailure(error_message: response.data["message"]));
+      }
+    } catch (e) {
+      if (e is DioException) return left(requestfailure.fromdioexception(e));
+      return left(requestfailure(error_message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<failure, Moneymodel>> getmoney(
+      {required Map<String, dynamic> queryparma}) async {
+    try {
+      Response response = await Getdata.getdata(
+          queryParameters: queryparma,
+          token: cashhelper.getdata(key: "token"),
+          path: "transactions");
+      if (response.statusCode == 200 && response.data["status"] == true) {
+        return right(Moneymodel.fromJson(response.data));
       } else {
         if (response.data["errors"] != null) {
           return left(

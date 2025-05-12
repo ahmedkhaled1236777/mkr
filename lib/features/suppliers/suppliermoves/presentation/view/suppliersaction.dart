@@ -33,10 +33,14 @@ class suppliermoves extends StatefulWidget {
   ScrollController nscrollController = ScrollController();
   final int supplierid;
   final String suppliername;
+  final String maden;
+  final String daen;
 
   suppliermoves({
     super.key,
     required this.supplierid,
+    required this.maden,
+    required this.daen,
     required this.suppliername,
   });
 
@@ -440,6 +444,8 @@ class _suppliermovesState extends State<suppliermoves> {
                                 .load('assets/images/logo.jpeg');
                             final imageBytes = img.buffer.asUint8List();
                             File file = await Suppliermovepdf.generatepdf(
+                              totaldaen: widget.daen,
+                              totalmaden: widget.maden,
                               clientname: widget.suppliername,
                               categories: supplierfatora,
                               daen: totalprocess >= totalpay
@@ -529,6 +535,8 @@ class _suppliermovesState extends State<suppliermoves> {
                                 .load('assets/images/logo.jpeg');
                             final imageBytes = img.buffer.asUint8List();
                             File file = await Suppliermovepdf.generatepdf(
+                              totaldaen: widget.daen,
+                              totalmaden: widget.maden,
                               clientname: widget.suppliername,
                               categories: supplierfatora,
                               daen: totalprocess >= totalpay

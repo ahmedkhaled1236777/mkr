@@ -168,6 +168,50 @@ class _supplierState extends State<supplier> {
                                   navigateto(
                                       context: context,
                                       page: suppliermoves(
+                                        daen: gettext(
+                                            value: BlocProvider.of<
+                                                                supplierCubit>(
+                                                            context)
+                                                        .suppliers[i]
+                                                        .totalProcess! >
+                                                    BlocProvider.of<
+                                                                supplierCubit>(
+                                                            context)
+                                                        .suppliers[i]
+                                                        .totalPaid!
+                                                ? (BlocProvider.of<supplierCubit>(
+                                                                context)
+                                                            .suppliers[i]
+                                                            .totalProcess! -
+                                                        BlocProvider.of<
+                                                                    supplierCubit>(
+                                                                context)
+                                                            .suppliers[i]
+                                                            .totalPaid!)
+                                                    .toStringAsFixed(1)
+                                                : "0"),
+                                        maden: gettext(
+                                            value: BlocProvider.of<
+                                                                supplierCubit>(
+                                                            context)
+                                                        .suppliers[i]
+                                                        .totalPaid! >
+                                                    BlocProvider.of<
+                                                                supplierCubit>(
+                                                            context)
+                                                        .suppliers[i]
+                                                        .totalProcess!
+                                                ? (BlocProvider.of<supplierCubit>(
+                                                                context)
+                                                            .suppliers[i]
+                                                            .totalPaid! -
+                                                        BlocProvider.of<
+                                                                    supplierCubit>(
+                                                                context)
+                                                            .suppliers[i]
+                                                            .totalProcess!)
+                                                    .toStringAsFixed(1)
+                                                : "0"),
                                         supplierid:
                                             BlocProvider.of<supplierCubit>(
                                                     context)
@@ -246,11 +290,14 @@ class _supplierState extends State<supplier> {
                                                   insetPadding:
                                                       EdgeInsets.all(35),
                                                   content: editsupplierdialog(
+                                                      destenation:
+                                                          TextEditingController(
+                                                              text: BlocProvider.of<supplierCubit>(context)
+                                                                  .suppliers[i]
+                                                                  .destination),
                                                       suppliername:
                                                           TextEditingController(
-                                                              text: BlocProvider
-                                                                      .of<supplierCubit>(
-                                                                          context)
+                                                              text: BlocProvider.of<supplierCubit>(context)
                                                                   .suppliers[i]
                                                                   .name),
                                                       phone: TextEditingController(
@@ -260,8 +307,7 @@ class _supplierState extends State<supplier> {
                                                               .suppliers[i]
                                                               .phone),
                                                       id: BlocProvider.of<
-                                                                  supplierCubit>(
-                                                              context)
+                                                              supplierCubit>(context)
                                                           .suppliers[i]
                                                           .id!),
                                                 );

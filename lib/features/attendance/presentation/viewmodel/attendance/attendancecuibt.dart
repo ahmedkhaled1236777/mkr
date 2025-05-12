@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mkr/features/attendance/data/models/attendancemodelrequest.dart';
 import 'package:mkr/features/attendance/data/models/attendancemovemodel/datum.dart';
 import 'package:mkr/features/attendance/data/models/attendancepermessionrequest.dart';
+import 'package:mkr/features/attendance/data/models/moneymodel/datum.dart';
+import 'package:mkr/features/attendance/data/models/moneyrequest.dart';
 import 'package:mkr/features/attendance/data/repos/attendancerepoimp.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancestate.dart';
 
@@ -12,17 +14,23 @@ class Attendancecuibt extends Cubit<Attendancestate> {
   final attendancerepoimp attendancerepo;
   List<Datum> attendances = [];
   List<datamoves> employeeattendances = [];
+  List<moneymoves> moneys = [];
   List<String> status = [];
   List<String> workersnames = [];
   String? month;
   String? year;
   String? attendancestatus;
   String date = "${DateTime.now().month}-${DateTime.now().year}";
-
+  String moneyname = "credit";
   String permessionstatus = "0";
   changedate(String value) {
     date = value;
     emit(changedatestate());
+  }
+
+  changemoneytype(String value) {
+    moneyname = value;
+    emit(changemoneytypestate());
   }
 
   changepermessiontype(String value) {
@@ -47,6 +55,29 @@ class Attendancecuibt extends Cubit<Attendancestate> {
       emit(addattendancefailure(errormessage: failure.error_message));
     }, (success) {
       emit(addattendancesuccess(successmessage: success));
+    });
+  }
+
+  addmoney({required moneyrequset money}) async {
+    emit(addmoneyloading());
+    var result = await attendancerepo.addmoney(moneyrequest: money);
+    result.fold((failure) {
+      emit(addmoneyfailure(errormessage: failure.error_message));
+    }, (success) {
+      emit(addmoneysuccess(successmessage: success));
+    });
+  }
+
+  deletemoney({required int id}) async {
+    emit(deletemoneyloading());
+    var result = await attendancerepo.deletemoney(id: id);
+    result.fold((failure) {
+      emit(deletemoneyfailure(errormessage: failure.error_message));
+    }, (success) {
+      moneys.removeWhere((e) {
+        return e.id == id;
+      });
+      emit(deletemoneysuccess(successmessage: success));
     });
   }
 
@@ -115,6 +146,17 @@ class Attendancecuibt extends Cubit<Attendancestate> {
     });
   }
 
+  getmoneymoves({required Map<String, dynamic> queryparma}) async {
+    emit(getmoneymoveloading());
+    var result = await attendancerepo.getmoney(queryparma: queryparma);
+    result.fold((failure) {
+      emit(getmoneymovefailure(errormessage: failure.error_message));
+    }, (Success) {
+      moneys = Success.data!;
+      emit(getmoneymovesuccess(successmessage: "تم الحصول علي البيانات بنجاح"));
+    });
+  }
+
   getsalary(Datum data) {
     if ((data.totalAttendance! + data.totalVacation!) == 31) {
       return (int.parse(data.salary!) -
@@ -134,7 +176,9 @@ class Attendancecuibt extends Cubit<Attendancestate> {
                   data.totalPermissions!) +
               (((double.parse(data.salary!) / 30) /
                       double.parse(data.workedHours!)) *
-                  data.totalExtraTime!))
+                  data.totalExtraTime!) -
+              double.parse(data.credit!) -
+              double.parse(data.debit!))
           .ceil()
           .toString();
     }

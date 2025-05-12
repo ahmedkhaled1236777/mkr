@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:mkr/features/attendance/presentation/view/addattendance.dart';
+import 'package:mkr/features/attendance/presentation/view/money/addmoney.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/alertswarch.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/attendancepdf.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/customtableattendanceitem.dart';
@@ -256,6 +257,24 @@ class _attendanceState extends State<attendance> {
                         icon: Icon(
                           color: Colors.white,
                           Icons.add,
+                        )),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                        color: appcolors.primarycolor,
+                        borderRadius: BorderRadius.circular(7)),
+                    child: IconButton(
+                        onPressed: () async {
+                          navigateto(context: context, page: Addmoney());
+                        },
+                        icon: Icon(
+                          color: Colors.white,
+                          Icons.money,
                         )),
                   ),
                   SizedBox(

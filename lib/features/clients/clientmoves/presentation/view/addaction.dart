@@ -287,11 +287,11 @@ class _addclientmoveState extends State<addclientmove> {
                                             .type !=
                                         "1")
                                       custommytextform(
+                                        keyboardType: TextInputType.number,
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.allow(
                                               RegExp("[0-9-.]")),
                                         ],
-                                        keyboardType: TextInputType.number,
                                         controller: discount_perc,
                                         hintText: "نسبة الخصم %",
                                         val: "برجاء ادخال نسبة الخصم",

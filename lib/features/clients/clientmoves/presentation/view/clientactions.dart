@@ -33,9 +33,13 @@ class clientmoves extends StatefulWidget {
   ScrollController nscrollController = ScrollController();
   final int clientid;
   final String clientname;
+  final String maden;
+  final String daen;
 
   clientmoves({
     super.key,
+    required this.maden,
+    required this.daen,
     required this.clientid,
     required this.clientname,
   });
@@ -442,6 +446,8 @@ class _clientmovesState extends State<clientmoves> {
                                 .load('assets/images/logo.jpeg');
                             final imageBytes = img.buffer.asUint8List();
                             File file = await Clientmovepdf.generatepdf(
+                              totaldaen: widget.daen,
+                              totalmaden: widget.maden,
                               clientname: widget.clientname,
                               categories: clientfatora,
                               maden: totalprocess >= totalpay
@@ -536,6 +542,8 @@ class _clientmovesState extends State<clientmoves> {
                                 .load('assets/images/logo.jpeg');
                             final imageBytes = img.buffer.asUint8List();
                             File file = await Clientmovepdf.generatepdf(
+                              totaldaen: widget.daen,
+                              totalmaden: widget.maden,
                               clientname: widget.clientname,
                               categories: clientfatora,
                               maden: totalprocess >= totalpay

@@ -12,6 +12,7 @@ import 'package:mkr/core/common/widgets/nodata.dart';
 import 'package:mkr/core/common/widgets/shimmerloading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mkr/features/attendance/presentation/view/money/money.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/addpermession.dart';
 import 'package:mkr/features/attendance/presentation/view/widgets/editattendancedialog.dart';
 import 'package:mkr/features/attendance/presentation/viewmodel/attendance/attendancecuibt.dart';
@@ -328,6 +329,30 @@ class _WorkersmovesState extends State<Workersmoves> {
                         icon: Icon(
                           color: Colors.white,
                           Icons.add,
+                        )),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                        color: appcolors.primarycolor,
+                        borderRadius: BorderRadius.circular(7)),
+                    child: IconButton(
+                        onPressed: () async {
+                          navigateto(
+                              context: context,
+                              page: money(
+                                month: widget.month,
+                                year: widget.year,
+                                employerid: widget.workerid,
+                              ));
+                        },
+                        icon: Icon(
+                          color: Colors.white,
+                          Icons.money_sharp,
                         )),
                   ),
                   SizedBox(

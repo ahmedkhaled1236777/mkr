@@ -13,12 +13,14 @@ class editsupplierdialog extends StatelessWidget {
 
   TextEditingController suppliername = TextEditingController();
   TextEditingController phone = TextEditingController();
+  TextEditingController destenation = TextEditingController();
 
   final int id;
 
   editsupplierdialog(
       {super.key,
       required this.suppliername,
+      required this.destenation,
       required this.phone,
       required this.id});
   @override
@@ -80,6 +82,9 @@ class editsupplierdialog extends StatelessWidget {
                       BlocProvider.of<supplierCubit>(context).editcoponent(
                           id: id,
                           supplier: supplierrequest(
+                            destination: destenation.text,
+                            pay: null,
+                            process: null,
                             name: suppliername.text,
                             phone: phone.text,
                           ));
