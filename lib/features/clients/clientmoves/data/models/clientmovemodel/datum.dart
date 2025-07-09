@@ -2,24 +2,22 @@ import 'package:equatable/equatable.dart';
 
 class datummoves extends Equatable {
   final int? id;
-  final int? type;
-  final int? status;
-  final String? discountPercentage;
-  final int? clientId;
+  final String? status;
+  final dynamic discountPercentage;
+  final String? clientId;
   final String? date;
-  final int? warehouseId;
-  final num? qty;
+  final String? warehouseId;
+  final String? qty;
   final String? price;
-  final dynamic notes;
-  final String? packagingType;
-  final num? unitsPerPackaging;
+  final String? notes;
+  final dynamic packagingType;
+  final String? unitsPerPackaging;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? warehouseName;
 
   const datummoves({
     this.id,
-    this.type,
     this.status,
     this.discountPercentage,
     this.clientId,
@@ -37,17 +35,16 @@ class datummoves extends Equatable {
 
   factory datummoves.fromJson(Map<String, dynamic> json) => datummoves(
         id: json['id'] as int?,
-        type: json['type'] as int?,
-        status: json['status'] as int?,
-        discountPercentage: json['discount_percentage'] as String?,
-        clientId: json['client_id'] as int?,
+        status: json['status'] as String?,
+        discountPercentage: json['discount_percentage'] as dynamic,
+        clientId: json['client_id'] as String?,
         date: json['date'] as String?,
-        warehouseId: json['warehouse_id'] as int?,
-        qty: json['qty'] as num?,
+        warehouseId: json['warehouse_id'] as String?,
+        qty: json['qty'] as String?,
         price: json['price'] as String?,
-        notes: json['notes'] as dynamic,
-        packagingType: json['packaging_type'] as String?,
-        unitsPerPackaging: json['units_per_packaging'] as num?,
+        notes: json['notes'] as String?,
+        packagingType: json['packaging_type'] as dynamic,
+        unitsPerPackaging: json['units_per_packaging'] as String?,
         createdAt: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at'] as String),
@@ -59,7 +56,6 @@ class datummoves extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'type': type,
         'status': status,
         'discount_percentage': discountPercentage,
         'client_id': clientId,
@@ -79,7 +75,6 @@ class datummoves extends Equatable {
   List<Object?> get props {
     return [
       id,
-      type,
       status,
       discountPercentage,
       clientId,

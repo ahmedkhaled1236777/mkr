@@ -227,21 +227,19 @@ class _clientmovesState extends State<clientmoves> {
                                       value: BlocProvider.of<ClientmovesCubit>(context)
                                                   .datamoves[i]
                                                   .status !=
-                                              1
-                                          ? (BlocProvider.of<ClientmovesCubit>(context)
+                                              "1"
+                                          ? (double.parse(BlocProvider.of<ClientmovesCubit>(context)
                                                       .datamoves[i]
-                                                      .unitsPerPackaging! *
-                                                  double.parse(
-                                                      BlocProvider.of<ClientmovesCubit>(context)
-                                                          .datamoves[i]
-                                                          .qty
-                                                          .toString()) *
+                                                      .unitsPerPackaging!) *
+                                                  double.parse(BlocProvider.of<ClientmovesCubit>(context)
+                                                      .datamoves[i]
+                                                      .qty
+                                                      .toString()) *
                                                   ((100 - double.parse(BlocProvider.of<ClientmovesCubit>(context).datamoves[i].discountPercentage!)) /
                                                       100) *
-                                                  double.parse(
-                                                      BlocProvider.of<ClientmovesCubit>(context)
-                                                          .datamoves[i]
-                                                          .price!))
+                                                  double.parse(BlocProvider.of<ClientmovesCubit>(context)
+                                                      .datamoves[i]
+                                                      .price!))
                                               .toStringAsFixed(1)
                                           : BlocProvider.of<ClientmovesCubit>(context)
                                               .datamoves[i]
@@ -250,13 +248,13 @@ class _clientmovesState extends State<clientmoves> {
                                       BlocProvider.of<ClientmovesCubit>(context)
                                                   .datamoves[i]
                                                   .status ==
-                                              0
+                                              "0"
                                           ? "عمليه"
                                           : BlocProvider.of<ClientmovesCubit>(
                                                           context)
                                                       .datamoves[i]
                                                       .status ==
-                                                  1
+                                                  "1"
                                               ? "دفع مبلغ"
                                               : "مرتجع",
                                   delte: IconButton(
@@ -402,19 +400,18 @@ class _clientmovesState extends State<clientmoves> {
                                 if (BlocProvider.of<ClientmovesCubit>(context)
                                         .datamoves[i]
                                         .status !=
-                                    1) {
+                                    "1") {
                                   totalprocess = totalprocess +
-                                      (BlocProvider.of<ClientmovesCubit>(
-                                                  context)
-                                              .datamoves[i]
-                                              .qty! *
-                                          BlocProvider.of<ClientmovesCubit>(
-                                                  context)
-                                              .datamoves[i]
-                                              .unitsPerPackaging! *
+                                      (double.parse(
+                                              BlocProvider.of<ClientmovesCubit>(context)
+                                                  .datamoves[i]
+                                                  .qty!) *
                                           double.parse(
-                                              BlocProvider.of<ClientmovesCubit>(
-                                                      context)
+                                              BlocProvider.of<ClientmovesCubit>(context)
+                                                  .datamoves[i]
+                                                  .unitsPerPackaging!) *
+                                          double.parse(
+                                              BlocProvider.of<ClientmovesCubit>(context)
                                                   .datamoves[i]
                                                   .price!) *
                                           ((100 -
@@ -429,7 +426,7 @@ class _clientmovesState extends State<clientmoves> {
                                 if (BlocProvider.of<ClientmovesCubit>(context)
                                         .datamoves[i]
                                         .status ==
-                                    1) {
+                                    "1") {
                                   totalpay = totalpay +
                                       double.parse(
                                           BlocProvider.of<ClientmovesCubit>(
@@ -498,19 +495,18 @@ class _clientmovesState extends State<clientmoves> {
                                 if (BlocProvider.of<ClientmovesCubit>(context)
                                         .datamoves[i]
                                         .status !=
-                                    1) {
+                                    "1") {
                                   totalprocess = totalprocess +
-                                      (BlocProvider.of<ClientmovesCubit>(
-                                                  context)
-                                              .datamoves[i]
-                                              .qty! *
-                                          BlocProvider.of<ClientmovesCubit>(
-                                                  context)
-                                              .datamoves[i]
-                                              .unitsPerPackaging! *
+                                      (double.parse(
+                                              BlocProvider.of<ClientmovesCubit>(context)
+                                                  .datamoves[i]
+                                                  .qty!) *
                                           double.parse(
-                                              BlocProvider.of<ClientmovesCubit>(
-                                                      context)
+                                              BlocProvider.of<ClientmovesCubit>(context)
+                                                  .datamoves[i]
+                                                  .unitsPerPackaging!) *
+                                          double.parse(
+                                              BlocProvider.of<ClientmovesCubit>(context)
                                                   .datamoves[i]
                                                   .price!) *
                                           ((100 -
@@ -525,7 +521,7 @@ class _clientmovesState extends State<clientmoves> {
                                 if (BlocProvider.of<ClientmovesCubit>(context)
                                         .datamoves[i]
                                         .status ==
-                                    1) {
+                                    "1") {
                                   totalpay = totalpay +
                                       double.parse(
                                           BlocProvider.of<ClientmovesCubit>(

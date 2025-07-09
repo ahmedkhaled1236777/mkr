@@ -4,8 +4,8 @@ class Datum extends Equatable {
   final int? id;
   final String? name;
   final String? phone;
-  final num? process;
-  final num? pay;
+  final String? process;
+  final String? pay;
   final String? destination;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -29,8 +29,8 @@ class Datum extends Equatable {
         id: json['id'] as int?,
         name: json['name'] as String?,
         phone: json['phone'] as String?,
-        process: json['process'] as num?,
-        pay: json['pay'] as num?,
+        process: json['process'],
+        pay: json['pay'],
         destination: json['destination'] as String?,
         createdAt: json['created_at'] == null
             ? null
@@ -38,8 +38,8 @@ class Datum extends Equatable {
         updatedAt: json['updated_at'] == null
             ? null
             : DateTime.parse(json['updated_at'] as String),
-        totalPaid: (json['total_paid'] as num?),
-        totalProcess: (json['total_process'] as num?),
+        totalPaid: (json['total_paid']),
+        totalProcess: (json['total_process']),
       );
 
   Map<String, dynamic> toJson() => {

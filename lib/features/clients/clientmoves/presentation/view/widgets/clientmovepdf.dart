@@ -28,25 +28,26 @@ class Clientmovepdf {
     );
     final data = categories.map((item) {
       return [
-        item.status == 1
+        item.status == "1"
             ? item.price
-            : (item.qty! *
-                    item.unitsPerPackaging! *
+            : (double.parse(item.qty!) *
+                    double.parse(item.unitsPerPackaging!) *
                     double.parse(item.price!) *
                     ((100 - double.parse(item.discountPercentage.toString())) /
                         100))
                 .toStringAsFixed(1),
-        item.status == 0 || item.status == 2
+        item.status == "0" || item.status == "2"
             ? item.discountPercentage.toString()
             : "",
-        item.status == 0 || item.status == 2 ? item.price : "",
-        item.status == 0 || item.status == 2
-            ? (item.qty! * item.unitsPerPackaging!).toStringAsFixed(1)
+        item.status == "0" || item.status == "2" ? item.price : "",
+        item.status == "0" || item.status == "2"
+            ? (double.parse(item.qty!) * double.parse(item.unitsPerPackaging!))
+                .toStringAsFixed(1)
             : "",
-        item.status == 0 ? item.warehouseName : "",
-        item.status == 0
+        item.status == "0" ? item.warehouseName : "",
+        item.status == "0"
             ? "عمليه"
-            : item.status == 1
+            : item.status == "1"
                 ? "دفعه"
                 : "مرتجع",
         item.date,
@@ -246,8 +247,8 @@ class Clientmovepdf {
 
   static Future<File> savepdf(String filename, pw.Document pdf) async {
     final bytes = await pdf.save();
-    // var dir = await getApplicationDocumentsDirectory();
-    var dir = await getExternalStorageDirectory();
+    var dir = await getApplicationDocumentsDirectory();
+    // var dir = await getExternalStorageDirectory();
     final file = File(
         '${dir!.path}/$filename${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-${DateTime.now().hour}-${DateTime.now().minute}.pdf');
     await file.writeAsBytes(bytes);

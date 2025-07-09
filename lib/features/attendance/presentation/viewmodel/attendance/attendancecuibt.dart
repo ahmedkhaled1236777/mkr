@@ -158,7 +158,7 @@ class Attendancecuibt extends Cubit<Attendancestate> {
   }
 
   getsalary(Datum data) {
-    if ((data.totalAttendance! + data.totalVacation!) == 31) {
+    if ((data.totalAttendance! + data.totalVacation!+data.totalAbsence!) == 31) {
       return (int.parse(data.salary!) -
               (((double.parse(data.salary!) / 30) /
                       double.parse(data.workedHours!)) *
